@@ -1,0 +1,23 @@
+<section class="widget">
+    <header style="background-color: #555555">
+        <h4 style="color: white;">
+            <strong>Cierre Financiero de Años</strong>
+        </h4>
+        <div class="acciones">
+            <!-- <i class="fa fa-search" (click)="cierres=true"></i> -->
+            <mat-icon class="ml5" (click)="cierres=true" matTooltip="Cierres de Centros de costo" [matTooltipPosition]="'above'">show_chart</mat-icon>
+        </div>
+    </header>
+    <div class="widget-body">
+        <div class="row">
+            <div class="col-6">
+                <app-cierre-anual (selectCentro)="selectCentro($event)" (reload)="restart()" (listado)='setCerrados($event)' *ngIf="totales" [totales]="totales"></app-cierre-anual>
+            </div>
+            <div class="col-6" *ngIf="reload">
+                <app-listado-cierre *ngIf="totales" [totales]="totales"></app-listado-cierre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<app-graph-cierres *ngIf="cierres" (cerrar)="cierres=false"></app-graph-cierres>

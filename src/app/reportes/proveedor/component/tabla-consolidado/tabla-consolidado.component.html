@@ -1,0 +1,82 @@
+<table class="table table-bordered table-striped table-hover no-footer principal fix">
+    <thead>
+        <tr class="bold">
+            <th class="center" colspan="2">
+                Año</th>
+            <th class="center" *ngFor="let item of consolidado">{{item.agno}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="divisor">
+            <td rowspan="2" class="valign center bold">Área de Negocio Arquitectura</td>
+            <td>Utilidad</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': item.utilidadArq <0}">
+                ${{item.utilidadArq  | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <tr>
+            <td>% Rentabilidad</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': item.rentabilidadArq <=0}">
+                {{item.rentabilidadArq | number:'1.2-2' | comatopoint}}%
+            </td>
+        </tr>
+        <tr class="divisor">
+            <td rowspan="2" class="valign center bold">Área de Negocio Construcción</td>
+            <td>Utilidad</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': item.utilidadConstruccion <0}">
+                ${{item.utilidadConstruccion | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <tr>
+            <td>% Rentabilidad</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': item.rentabilidadConstruccion <=0}">
+                {{item.rentabilidadConstruccion | number:'1.2-2' | comatopoint}}%
+            </td>
+        </tr>
+        <tr class="divisor">
+            <td [attr.rowspan]="rowCount" class="valign center bold">Consolidado Operacional</td>
+            <td>{{'Total Utilidad Áreas de Negocio' | cortarTextos:30}}</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': item.utilidadArq + item.utilidadConstruccion <0}">
+                ${{item.utilidadArq + item.utilidadConstruccion | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <tr class="bold">
+            <td>Ventas consolidadas</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': item.ventasArea <0}">
+                ${{item.ventasArea | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <tr *ngFor="let ope of operacional">
+            <td>{{ope.nombre | cortarTextos:30}}</td>
+            <td *ngFor="let item of consolidado" class="right" [ngClass]="{'rojo': retItem(ope,item) <0}">
+                ${{retItem(ope,item) | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <!-- <tr class="bold">
+                            <td rowspan="2" class="valign center bold">Antes de Retiros</td>
+                            <td>{{'Rentabilidad' | cortarTextos:30}}</td>
+                            <td *ngFor="let item of consolidado" class="right">
+                                ${{item.rentabilidadRetiros | number:'1.0-0' | comatopoint}}
+                            </td>
+                        </tr>
+                        <tr class="bold">
+                            <td>{{'Porcentaje' | cortarTextos:30}}</td>
+                            <td *ngFor="let item of consolidado" class="right">
+                                {{item.porcentajeRetiros | number:'1.2-2' | comatopoint}}%
+                            </td>
+                        </tr> -->
+        <tr class="bold">
+            <td rowspan="2" class="valign center bold">Resultado Consolidado Utilidad</td>
+            <td>{{'Utilidad Final Neta' | cortarTextos:30}}</td>
+            <td *ngFor="let item of consolidado" class="right">
+                ${{item.utilidadArq + item.utilidadConstruccion + retOperacional(item) | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <tr class="bold">
+            <td>{{'Rentabilidad Final Neta' | cortarTextos:30}}</td>
+            <td *ngFor="let item of consolidado" class="right">
+                {{item.finalPorcentaje | number:'1.2-2' | comatopoint}}%
+            </td>
+        </tr>
+    </tbody>
+</table>

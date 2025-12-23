@@ -1,0 +1,115 @@
+<div class="bkPopUp">
+  <div class="popUp">
+    <div id="popUp" *ngIf="ordenCompra">
+      <app-heder-trazas></app-heder-trazas>
+      <div class="row gray Folio bold py-1 mt-1">
+        <div class="col-12 center barTitle">
+          <span *ngIf="ordenCompra.ingresoEgreso == 1">Egreso</span>
+          <span *ngIf="ordenCompra.ingresoEgreso == 2">Ingreso</span>
+        </div>
+      </div>
+      <div class="centroCosto caja">
+        <div class="row labelHeder">
+          <div class="col-3 bold">
+            <u>1.-CENTRO DE COSTO</u>
+          </div>
+          <div class="col-9 center">
+            - {{ordenCompra.subCentroCosto}}
+          </div>
+        </div>
+      </div>
+      <div class="Descripcion caja">
+        <mat-form-field class="w100 padLeftRight">
+          <input matInput type="text" placeholder="Descripcion" [(ngModel)]="ordenCompra.descripcion" name="txtDescripcion">
+        </mat-form-field>
+      </div>
+      <app-pop-up-tipo-gasto [tipoGasto]="ordenCompra.tipoGasto" [subTipoGasto]="ordenCompra.subTipoGasto" (cambiaTipoGasto)="cambiarTipo($event)" (cambiaSubTipoGasto)="cambiarSubTipo($event)"></app-pop-up-tipo-gasto>
+      <div class="EstadosPago caja">
+        <div class="row">
+          <div class="col-12 bold">
+            <u *ngIf="ordenCompra.ingresoEgreso == 1">2.- Pagos ${{totalOc | number:'1.0-0' | comatopoint}}</u>
+            <u *ngIf="ordenCompra.ingresoEgreso == 2">2.- Cobros ${{totalOc | number:'1.0-0' | comatopoint}}</u>
+          </div>
+        </div>
+        <!-- <h3>Total: </h3>  -->
+        <mat-list class="lista">
+          <mat-checkbox class="h4 pdl10" [(ngModel)]="exenta">Exenta</mat-checkbox>
+          <mat-list-item>
+            <div class="row w100 font-weight-bold border-bottom">
+              <div class="col-2">Fecha</div>
+              <div class="col-2">Monto</div>
+              <div class="col-2">MetodoPago</div>
+              <div class="col-3">Numero Pago</div>
+              <div class="col-2">Factura</div>
+            </div>
+          </mat-list-item>
+          <mat-list-item *ngFor="let estadoPago of ordenCompra.estadosPagos; let i=index">
+            <div class="row w100 align-middle" *ngIf="estadoPago.estado < 5">
+              <div class="col-2 d-flex justify-content-center align-items-center">
+                <div class="input-group date" *ngIf="estadoPago.estado < 4">
+                  <input id="{{'txtCompromiso'+i}}" name="txtCompromiso" type="text"
+                    (focusout)="AsignaFechaCompromiso(i)" class="form-control" />
+                  <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                  </span>
+                </div>
+                <div *ngIf="estadoPago.estado == 4">
+                  {{estadoPago.fecha | date:'dd/MM/yy':'UTC'}}
+                </div>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <mat-form-field class="w100" *ngIf="!estadoPago.cheque && estadoPago.estado < 4">
+                  <input matInput type="number" placeholder="Monto $" [(ngModel)]="estadoPago.monto" [name]="'monto'+i">
+                </mat-form-field>
+                <span
+                  *ngIf="estadoPago.cheque || estadoPago.estado == 4">${{estadoPago.monto | number :'1.0-0' | comatopoint}}</span>
+              </div>
+              <div class="col-2 d-flex justify-content-center align-items-center" [ngSwitch]="estadoPago.metodoPago">
+                <mat-icon *ngIf="estadoPago.cheque" class="text-success">attach_money</mat-icon>
+                <span *ngSwitchCase="2">Efectivo</span>
+                <span *ngSwitchCase="3">Cheque</span>
+                <span *ngSwitchCase="4">Transferencia</span>
+              </div>
+              <div class="col-3">
+                <mat-form-field *ngIf="estadoPago.estado < 4">
+                  <input matInput placeholder="Numero Pago" [(ngModel)]="estadoPago.numeroPago" [name]="'pago'+i">
+                </mat-form-field>
+                <div *ngIf="estadoPago.estado == 4" class="text-center w100">
+                  {{estadoPago.numeroPago | number:'1.0-0' | comatopoint}}
+                </div>
+              </div>
+              <div class="col-2">
+                <mat-form-field class="w100">
+                    <input matInput placeholder="Factura" [(ngModel)]="estadoPago.factura" [name]="'factura'+i" (change)="addFecha(estadoPago)">
+                </mat-form-field>
+              </div>
+              <div class="col-1 d-flex justify-content-center align-items-center" *ngIf="estadoPago.estado < 4">
+                <button mat-icon-button data-toggle="dropdown" class="text-primary super" *ngIf="estadoPago.estado < 4">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <div class="dropdown-menu super2" aria-labelledby="btnGroupDrop1">
+                  <button mat-button class="d-block" *ngIf="!estadoPago.cheque" (click)="emitido(i)">
+                    <img src="/assets/Icon/cheque.PNG" alt="" class="icon">
+                    Cheque
+                  </button>
+                  <button mat-button class="d-block text-success" (click)="Pagar(i)">
+                    <mat-icon>attach_money</mat-icon> Pagar
+                  </button>
+                  <button mat-button class="d-block text-danger" (click)="rechazar(i)">
+                    <mat-icon>close</mat-icon> Anular
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <br>
+      <div id="Acciones" class="flex Fcenter">
+        <button class="btn btn-primary" (click)="guardar()">Guardar</button>
+        <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

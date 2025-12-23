@@ -1,0 +1,34 @@
+<table class="table table-bordered table-striped table-hover no-footer principal">
+  <thead>
+    <tr>
+      <th colspan="7" class="center">Rentabilidad Área de Negocio</th>
+    </tr>
+    <tr>
+      <th class="center">Años</th>
+      <th class="center">Ingreso Total Neto</th>
+      <th class="center">Margen 1 de Utilidad Área</th>
+      <th class="center">Margen 1 de Rentabilidad (%) Área</th>
+      <th class="center">Gasto Operacional Área</th>
+      <th class="center">Margen 2 Utilidad Área</th>
+      <th class="center">Margen 2 Rentabilidad (%) Área</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of VentasAreaNegocio">
+      <td>{{item.year}}</td>
+      <td class="right" [ngClass]="{'text-danger': item.ingresos <0}">$ {{item.ingresos | number:'1.0-0' | comatopoint}}
+      </td>
+      <td class="right" [ngClass]="{'text-danger': item.margen1Utilidad <0}">$ {{item.margen1Utilidad | number:'1.0-0' |
+        comatopoint}}</td>
+      <td class="right" [ngClass]="{'text-danger': item.margen1Utilidad * 100 / item.ingresos <0}">
+        {{((item.margen1Utilidad * 100 / item.ingresos) ? (item.margen1Utilidad * 100 / item.ingresos) : 0) |
+        number:'1.0-2' | comatopoint}}%</td>
+      <td class="right" [ngClass]="{'text-danger': item.totalOperacional <0}">$ {{item.totalOperacional | number:'1.0-0'
+        | comatopoint}}</td>
+      <td class="right" [ngClass]="{'text-danger': item.margen2Utilidad <0}">$ {{item.margen2Utilidad | number:'1.0-0' |
+        comatopoint}}</td>
+      <td class="right" [ngClass]="{'text-danger': item.margen2Utilidad*100/item.ingresos <=0}">{{item.margen2Utilidad*100/item.ingresos |
+        number:'1.0-2' | comatopoint}}%</td>
+    </tr>
+  </tbody>
+</table>

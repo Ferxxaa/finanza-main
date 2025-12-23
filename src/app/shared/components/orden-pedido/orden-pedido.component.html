@@ -1,0 +1,55 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div id="popUp" *ngIf="ordenCompra">
+            <app-heder-trazas></app-heder-trazas>
+            <div class="row gray Folio bold">
+                <div class="col-9 center barTitle">
+                    ORDEN DE PEDIDO <span class="fs">N° {{ordenPedido.correlativo}}</span>
+                </div>
+                <div class="col-3 ">
+                    <a>
+                        OC <span class="FloatRight marginR fs">N° {{ordenCompra.folio}}</span>
+                    </a>
+                </div>
+            </div>
+            <app-pop-up-proveedor [proveedor]="ordenPedido.proveedor" [fechaCreacion]="ordenPedido.fechaCreacion"></app-pop-up-proveedor>
+            <app-pop-up-tipo-gasto [tipoGasto]="ordenPedido.tipoGasto" [subTipoGasto]="ordenPedido.subTipoGasto" (cambiaTipoGasto)="cambiarTipo($event)" (cambiaSubTipoGasto)="cambiarSubTipo($event)"></app-pop-up-tipo-gasto>
+            <div class="centroCosto caja">
+                <div class="row labelHeder">
+                    <div class="col-3 bold">
+                        <u>1.-CENTRO DE COSTO</u>
+                    </div>
+                    <div class="col-9 center">
+                        {{ordenPedido.centroCosto.nombre}} - {{ordenPedido.subCentroCosto}}
+                    </div>
+                </div>
+            </div>
+            <app-pop-up-items [items]="ordenPedido.Items" [iva]="ordenPedido.iva" [boleta]="ordenPedido.boleta" [cotizacion]="ordenPedido.cotizacion"></app-pop-up-items>
+            <app-pop-up-condicion [estadosPagos]="ordenPedido.estadosPagos" [metodoPago]="ordenPedido.metodoPago" [indice]="0" [sobregiro]="ordenPedido.sobregiro" (sobregirar)="OpSobregirar($event)" (anular)="devolverSaldoOC($event)"></app-pop-up-condicion>
+            <app-pop-up-despacho [despacho]="ordenPedido.despacho"></app-pop-up-despacho>
+            <app-pop-up-firma [usuarioCreador]="ordenPedido.usuarioCreador" [Estado]="ordenPedido.Estado"></app-pop-up-firma>
+            <div class="motivo" *ngIf="rechazarMotivo">
+                <div class="row">
+                    <div class="col-12">
+                        <span class="cRed">*Debe Ingresar un motivo de rechazo</span>
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-12">
+                        Motivo rechazo
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <textarea name="txtMotivo" rows="3" class="form-control" [(ngModel)]="motivo"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- {{ordenPedido | json}} -->
+            <div id="Acciones" class="flex Fcenter">
+                <button class="btn btn-primary" (click)="guardar()">Guardar</button>
+                <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

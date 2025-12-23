@@ -1,0 +1,165 @@
+<div class="row">
+
+  <div class="col-lg-12">
+    <section class="widget">
+      <header style="background-color: #555555">
+        <h2 style="color: white;">
+          <strong>Proyección ingresos y egresos</strong>
+        </h2>
+      </header>
+
+      <div class="widget-body">
+        <form #CForm="ngForm">
+          <fieldset>
+            <legend></legend>
+
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-6 text-right">
+                  <label class="btn btn-secondary" (click)="movimiento.tipo=2">
+                    <input type="radio" name="rdIngEg" id="rdEgreso"> Egreso
+                  </label>
+                </div>
+                <div class="col-6">
+                  <label class="btn btn-secondary" (click)="movimiento.tipo=3">
+                    <input type="radio" name="rdIngEg" id="rdIngreso"> Ingreso
+                  </label>
+                </div>
+              </div>
+              <div class="row labelHeder">
+                <div class="col-6">
+                  Ingrese descripción del movimiento
+                </div>
+                <div class="col-6">
+                  Centro de costo
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <input class="form-control" type="text" placeholder="Descripcion de movimiento" name="txtGasto"
+                    required [(ngModel)]="movimiento.descripcion">
+                </div>
+                <div class="col-6">
+                  <select id="drdSubCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                    [(ngModel)]="movimiento.centroCosto" name="drdSubCentroCosto" appSelectValidator (change)="selectCentroCosto()">
+                    <option value=0 selected>--- Seleccione una opcion ---
+                    </option>
+                    <option *ngFor="let subCentroCosto of centroCosto$ | async; let i = index"
+                      value={{subCentroCosto.idCentroCosto}}>
+                      {{subCentroCosto.nombreCentroCosto}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row labelHeder">
+                <div class="col-6">
+                  Ingrese el tipo de gasto
+                  <span class="opcional"></span>
+                </div>
+                <div class="col-6">
+                  Sub tipo de gasto
+                  <span class="opcional"></span>
+                </div>
+              </div>
+              <div class="row ">
+                <div class="col-6">
+                  <select id="drdTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                    [(ngModel)]="movimiento.tipoGasto" name="drdTipoGasto" (change)="AsignaTipoGasto()">
+                    <option value=0 selected>--- Seleccione una opcion ---
+                    </option>
+                    <option *ngFor="let tipoGasto of tipoGasto$ | async; let i = index" value={{tipoGasto.idTipoGasto}}>
+                      {{tipoGasto.nombreTipoGasto}}</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <select id="drdSubTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                    [(ngModel)]="movimiento.subTipoGasto" name="drdSubTipoGasto"
+                    *ngIf="movimiento.tipoGasto && movimiento.tipoGasto != 0">
+                    <option value=0 selected>--- Seleccione una opcion ---
+                    </option>
+                    <option *ngFor="let subTipoGasto of subTipoGasto$ | async; let i = index"
+                      value={{subTipoGasto.idSubTipoGasto}}>
+                      {{subTipoGasto.nombreSubtipoGasto}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row labelHeder">
+                <div class="col-6">
+                  Metodo de Pago
+                </div>
+                <!-- <div class="col-6">
+                                  Detalle
+                              </div> -->
+              </div>
+              <div class="row ">
+                <div class="col-6">
+                  <select id="drdMetodoPago" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                    [(ngModel)]="movimiento.metodoPago" name="drdMetodoPago" appSelectValidator>
+                    <option value=0 selected>--- Seleccione una opcion ---
+                    </option>
+                    <option value=2>Efectivo</option>
+                    <option value=3>Cheque</option>
+                    <option value=4>Transferencia</option>
+                  </select>
+                </div>
+                <!-- <div class="col-6">
+                                  <input class="form-control" type="text" placeholder="Detalle" name="txtDetalle"
+                                      [(ngModel)]="item.detalle">
+                              </div> -->
+              </div>
+              <div class="row labelHeder">
+                <div class="col-3">Cantidad de Pagos</div>
+              </div>
+              <div class="row">
+                <div class="col-3"><input class="form-control" type="number" min=1 placeholder="Cantidad de Pagos"
+                    name="txtCantPagos" [(ngModel)]="cantEstadosPago" (change)="agregaEstadosPago()"></div>
+              </div>
+              <div class="row labelHeder">
+                <div class="col-6">
+                  Fecha de Pago
+                </div>
+                <div class="col-6">
+                  Monto
+                </div>
+              </div>
+              <div class="row" *ngFor="let estadoPago of movimiento.estadoPago;let i = index">
+                <div class="col-6">
+                  <div id="FechaPago" class="input-group date">
+                    <input id="{{'txtFechaPago' + i}}" type="text" (focusout)="asignaFechaPago(i)" class="form-control"
+                      name="{{'txtFechaPago' + i}}" />
+                    <span class="input-group-addon">
+                      <span class="fa fa-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <input class="form-control" type="number" placeholder="Monto" name="{{'txtPrecioUnitario' + i}}"
+                    [(ngModel)]="estadoPago.monto">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-9"></div>
+                <div class="col-3 text-right h4 bold">
+                  Total : ${{retTotal() | number:'1.0-0' | comatopoint}}
+                </div>
+              </div>
+              <!-- {{movimiento | json}} -->
+              <div class="row">
+                <div class="col-6 text-right">
+                  <button class="btn btn-primary" [disabled]="!CForm.valid || movimiento.tipo==null"
+                    (click)="guardar()">Guardar</button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                </div>
+              </div>
+            </div>
+
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </div>
+
+
+</div>

@@ -1,0 +1,10 @@
+<app-content-pages>
+  <app-cards>
+    <h4 style="color: white;">
+      <strong>Mis Ordenes de compra</strong>
+    </h4>
+    <div class="contentComponent" *ngIf="centrosCosto$ | async as centros">
+      <app-card-ocelement *ngFor="let item of ordenesCompra$ | async | filterOcbyUser | sortOcDesc" [orden]="item" [centrosCosto]="centros"></app-card-ocelement>
+    </div>
+  </app-cards>
+</app-content-pages>

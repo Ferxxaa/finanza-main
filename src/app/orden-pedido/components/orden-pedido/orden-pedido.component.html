@@ -1,0 +1,381 @@
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Orden de pedido</strong>
+                </h4>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+                        <legend></legend>
+
+                        <div class="col-lg-12">
+
+                            <div class="margin05">
+                                <div class="proveedor">
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Proveedor
+                                        </div>
+                                        <div class="col-6">
+                                            Fecha
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <select id="drdProveedor" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.proveedor._id" name="drdProveedor" appSelectValidator>
+                                                        <option value=0 selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option *ngFor="let Proveedor of Proveedores | ordenaProveedor; let i = index"
+                                                            value={{Proveedor._id}}>
+                                                            {{Proveedor.nombre}}</option>
+                                                    </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label>{{fecha}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Dirección
+                                        </div>
+                                        <div class="col-6">
+                                            RUT
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-6">
+                                            <label>{{ordenPedido.proveedor.direccion}}</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label>{{ordenPedido.proveedor.rutProveedor}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Teléfono
+                                        </div>
+                                        <div class="col-6">
+                                            Contacto
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label>{{ordenPedido.proveedor.telefono}}</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label>{{ordenPedido.proveedor.contacto}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            E-Mail
+                                        </div>
+                                        <div class="col-6">
+                                            Categoria
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label>{{ordenPedido.proveedor.mail}}</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <select id="drdCategoria" class="dropdown-toggle select2-chosen-2 form-control" [(ngModel)]="ordenPedido.proveedor.categoria" name="drdCategoria">
+                                                        <option value=0 selected>--- Seleccione una opcion --- </option>
+                                                        <option value=1>Producto</option>
+                                                        <option value=2>Servicio</option>
+                                                        <option value=3>Subcontrato</option>
+                                                    </select>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Solicita
+                                            <!-- {{ordenPedido.solicita | json}} -->
+                                        </div>
+                                        <div class="col-6">
+                                            Metodo de pago
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-6">
+                                            <!-- <input list="Solicita" name="select" class="form-control" placeholder="--- Seleccione una opcion ---" name="drdSolicita" required [(ngModel)]="ordenPedido.solicita" [class.Invalid]="CForm.controls.drdSolicita.touched && CForm.controls.drdSolicita.status=='INVALID'">
+                                                    <datalist id="Solicita">
+                                                        <option value="Solicita 1">Solicita 1</option>
+                                                        <option value="Solicita 2">Solicita 2</option>
+                                                        <option value="Solicita 3">Solicita 3</option>
+                                                    </datalist> -->
+                                            <select id="drdSolicita" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.solicita.id" name="drdSolicita" appSelectValidator (change)="addNombreResponsable($event)">
+                                                        <option value=0 selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option *ngFor="let user of usuarios; let i=index" value={{user.idUsuario}}>{{user.nombre}} {{user.paterno}}</option>
+                                                    </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select id="drdMetodoPago" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.metodoPago" name="drdMetodoPago" appSelectValidator>
+                                                        <option value=0 selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option value=2>Efectivo</option>
+                                                        <option value=3>Cheque</option>
+                                                        <option value=4>Transferencia</option>
+                                                    </select>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Centro de Costo
+                                        </div>
+                                        <div class="col-6">
+                                            Prioridad
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <select id="drdSubCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.subCentroCosto" name="drdSubCentroCosto" appSelectValidator>
+                                                        <option value=0 selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option
+                                                            *ngFor="let subCentroCosto of ordenPedido.centroCosto.subCentroCosto; let i = index"
+                                                            value={{subCentroCosto.nombre}}>
+                                                            {{subCentroCosto.nombre}}</option>
+                                                    </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select id="drdPrioridad" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.prioridad" name="drdPrioridad">
+                                                        <option value="0" selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option value="1">Baja</option>
+                                                        <option value="2">Media</option>
+                                                        <option value="3">Alta</option>
+                                                    </select>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Tipo Gasto
+                                        </div>
+                                        <div class="col-6">
+                                            Sub Tipo Gasto
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <select id="drdTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.tipoGasto._id" name="drdTipoGasto" appSelectValidator (change)="AsignaTipoGasto()">
+                                                        <option value=0 selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option *ngFor="let TipoGasto of TiposGastos; let i = index"
+                                                            value={{TipoGasto._id}}>
+                                                            {{TipoGasto.nombre}}</option>
+                                                    </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select id="drdSubTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenPedido.subTipoGasto" name="drdSubTipoGasto" appSelectValidator>
+                                                        <option value=0 selected>--- Seleccione una opcion ---
+                                                        </option>
+                                                        <option
+                                                            *ngFor="let subTipoGasto of ordenPedido.tipoGasto.subTipoGasto; let i = index"
+                                                            value={{subTipoGasto}}>
+                                                            {{subTipoGasto}}</option>
+                                                    </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Servicio">
+                                    <div class="row labelHeder">
+                                        <div class="col-12">
+                                            Descripción del servicio
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <textarea class="form-control" rows="3" name="txtDescripcion" [(ngModel)]="ordenPedido.descripcion"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-6">
+                                        Adjunto
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput">
+                                                <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                <span class="fileinput-filename" id="NombreArch"></span>
+                                            </div>
+                                            <span class="input-group-addon btn btn-secondary btn-file">
+                                                        <span class="fileinput-new">Adjuntar</span>
+                                            <span class="fileinput-exists">Change</span>
+                                            <input id="fileupload1" type="file" name="fileupload1" (change)="NombreArchivo()">
+                                            <!-- ngFileSelect [options]="options" (onUpload)="handleUpload($event)" -->
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 offset-md-4 text-right bold">Saldo de la OC: $ {{saldoOC | number : '1.0-0' | comatopoint}}</div>
+                                </div>
+                                <div class="Items">
+                                    <a class="cotizacion" href="{{url+cotizacion.adjunto}}" target="_blank" *ngIf="cotizacion">Adjunto</a>
+                                    <table class="table table-bordered table-striped table-hover no-footer">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Codigo</th>
+                                                <th scope="col">Detalle</th>
+                                                <th scope="col">Cantidad</th>
+                                                <th scope="col">Impuesto</th>
+                                                <th scope="col">Moneda</th>
+                                                <th scope="col">Unitario</th>
+                                                <th scope="col">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let elementos of item; let i = index">
+                                                <td>{{i + 1}}</td>
+                                                <td><input class="form-control" type="text" placeholder="Centro de costo" name="{{'txtCodigo'+i}}" [(ngModel)]="elementos.codigo" (keydown)="addItem(i)">
+                                                </td>
+                                                <td><input class="form-control" type="text" placeholder="Detalle" name="{{'txtDetalle'+i}}" [(ngModel)]="elementos.detalle" (keydown)="addItem(i)">
+                                                </td>
+                                                <td><input class="form-control" type="number" placeholder="Cantidad" name="{{'txtCantidad'+i}}" [(ngModel)]="elementos.cantidad" (change)="AsignaTotal()"></td>
+                                                <td>
+                                                    <select id="{{'drdIva'+i}}" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="elementos.iva" name="{{'drdIva'+i}}" (change)="AsignaTotal()">
+                                                                <option value=0 selected>--- Seleccione una opcion ---</option>
+                                                                <option value=1 selected>Exento</option>
+                                                                <option value=2 selected>Afecto</option>
+                                                                <option value=3 selected>Boleta</option>
+                                                            </select>
+                                                </td>
+                                                <td><input class="form-control" type="text" placeholder="Moneda" name="{{'txtMoneda'+i}}" [(ngModel)]="elementos.moneda"></td>
+                                                <td><input class="form-control" type="number" placeholder="Precio" name="{{'txtPrecioUnitario'+i}}" [(ngModel)]="elementos.precioUnitario" (change)="AsignaTotal()"></td>
+                                                <td>{{elementos.precioUnitario * elementos.cantidad | number}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>Monto Final (con IVA):</td>
+                                                <td>$ {{total | number : '1.0-0' | comatopoint}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="MetodoPago">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <input class="form-check-input" type="radio" id="rdMetodo1" name="rdMetodo" value="1" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,1)">
+                                            <label class="form-check-label" for="rdMetodo1">
+                                                        Contado
+                                                    </label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input class="form-check-input" id="rdMetodo2" type="radio" name="rdMetodo" value="2" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,2)">
+                                            <label class="form-check-label" for="rdMetodo2">
+                                                        Credito 30 Dias
+                                                    </label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input class="form-check-input" id="rdMetodo3" type="radio" name="rdMetodo" value="3" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,3)">
+                                            <label class="form-check-label" for="rdMetodo3">
+                                                        Credito 45 Dias
+                                                    </label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input class="form-check-input" id="rdMetodo4" type="radio" name="rdMetodo" value="4" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,4)">
+                                            <label class="form-check-label" for="rdMetodo4">
+                                                        Credito 60 Dias
+                                                    </label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input class="form-check-input" id="rdMetodo5" type="radio" name="rdMetodo" value="5" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,5)">
+                                            <label class="form-check-label" for="rdMetodo5">
+                                                        Credito 90 Dias
+                                                    </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <input class="form-check-input" id="rdMetodo6" type="radio" name="rdMetodo" value="6" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,6)">
+                                            <label class="form-check-label" for="rdMetodo6">
+                                                        A Convenir
+                                                    </label>
+                                        </div>
+                                        <div class="col-2">
+                                            <div id="Convenir" class="input-group date" [hidden]="!(estadosPagos[0].opcion == '6')">
+                                                <input id="txtConvenir" name="txtConvenir" type="text" (focusout)="AsignaFechaEstadosPagoSix('txtConvenir')" class="form-control" />
+                                                <span class="input-group-addon">
+                                                            <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <input class="form-check-input" id="rdMetodo7" type="radio" name="rdMetodo" value="7" [(ngModel)]="estadosPagos[0].opcion" (click)="setFechaEstadosPago(0,7)">
+                                            <label class="form-check-label" for="rdMetodo7">
+                                                        Estados de Pago
+                                                    </label>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="input-group flex" [hidden]="!(estadosPagos[0].opcion == '7')">
+                                                <div>
+                                                    <input type="number" class="form-control" min="0" name="cantidadEstadosPago" [(ngModel)]="cantidadEstadosPago" (change)="AgregarEstadosPago()">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div id="estadosPago" [hidden]="!(estadosPagos[0].opcion == '7')">
+                                                <div class="input-group date" *ngFor="let estPag of estadosPagos; let i = index">
+                                                    <input id="{{'txtEstadoPago'+i}}" name="{{'txtEstadoPago'+i}}" type="text" (focusout)="AsignaFechaEstadosPago('txtEstadoPago',i)" class="form-control" />
+                                                    <span class="input-group-addon">
+                                                                <span class="fa fa-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Condicion de Pago
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <textarea class="form-control" rows="3" name="txtCondicion" [(ngModel)]="ordenPedido.condicionPago"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Despacho">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Dirección y descripción del despacho
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <textarea class="form-control" rows="3" name="txtDespacho" [(ngModel)]="ordenPedido.despacho"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex Fcenter">
+                                    <button class="btn btn-primary" [disabled]="!CForm.valid" (click)="Agregar()">Guardar</button>
+                                    <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+
+
+</div>
+
+<app-correcto [text]="mensaje.ok" *ngIf="mensaje.ok" ></app-correcto>

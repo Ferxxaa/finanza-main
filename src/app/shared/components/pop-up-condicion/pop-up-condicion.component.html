@@ -1,0 +1,191 @@
+<div class="CondicionPago caja">
+    <div class="row">
+        <div class="col-8 bold">
+            <u>3.- CONDICIONES DE PAGO Y PLAZO</u>
+        </div>
+        <div class="col-4 bold" *ngIf="saldoDiponible()">
+            Saldo pendiente de pago: ${{saldoDiponible() | number:'1.0-0' | comatopoint}}
+        </div>
+    </div>
+    <mat-list class="lista">
+        <mat-list-item>
+            <div class="row w100 font-weight-bold border-bottom">
+                <div class="col-2">Fecha</div>
+                <div class="col-2">Monto</div>
+                <div class="col-2">MetodoPago</div>
+                <div class="col-3">Numero Pago</div>
+                <div class="col-2">Factura</div>
+                <div class="col-1"></div>
+            </div>
+        </mat-list-item>
+        <mat-list-item *ngFor="let estadoPago of estadosPagos; let i=index">
+            <div class="row w100 align-middle" *ngIf="estadoPago.estado < 4">
+                <div class="col-2">
+                    <div class="input-group date">
+                        <input id="{{'txtCompromiso'+i}}" name="txtCompromiso" type="text" (focusout)="AsignaFechaCompromiso(i)" class="form-control"/>
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    <!-- {{estadoPago.fecha | date:'dd/MM/yy':'UTC'}} -->
+                </div>
+                <div class="col-2">
+                    <mat-form-field class="w100" *ngIf="!estadoPago.cheque">
+                        <input matInput type="number" placeholder="Monto $" [(ngModel)]="estadoPago.monto" [name]="'pago'+i" (change)="validaMonto(i)">
+                    </mat-form-field>
+                    <span *ngIf="estadoPago.cheque">${{estadoPago.monto | number :'1.0-0' | comatopoint}}</span>
+                </div>
+                <!-- [ngSwitch]="estadoPago.metodoPago" -->
+                <div class="col-2 d-flex">
+                    <mat-icon *ngIf="estadoPago.cheque" class="text-success">attach_money</mat-icon>
+                    <!-- <span *ngSwitchCase="2">Efectivo</span>
+                                                                                <span *ngSwitchCase="3">Cheque</span>
+                                                                                <span *ngSwitchCase="4">Transferencia</span> -->
+                    <!-- {{estadoPago.metodoPago}} -->
+                    <mat-select placeholder="Metodo de Pago" name="drdMetodoPago" [(ngModel)]="estadoPago.metodoPago">
+                        <mat-option>--- Seleccione una opcion ---</mat-option>
+                        <mat-option value="2">Efectivo</mat-option>
+                        <mat-option value="3">Cheque</mat-option>
+                        <mat-option value="4">Transferencia</mat-option>
+                    </mat-select>
+                </div>
+                <div class="col-3">
+                    <mat-form-field>
+                        <input matInput placeholder="Numero Pago" [(ngModel)]="estadoPago.numeroPago" [name]="'pago'+i">
+                    </mat-form-field>
+                </div>
+                <div class="col-2">
+                    <mat-form-field class="w100">
+                        <input matInput placeholder="Factura" [(ngModel)]="estadoPago.factura" [name]="'factura'+i">
+                    </mat-form-field>
+                </div>
+                <div class="col-1">
+                    <button mat-icon-button data-toggle="dropdown" class="opciones">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <div class="dropdown-menu super2" aria-labelledby="btnGroupDrop1" *ngIf="estadoPago.estado < 4">
+                        <button mat-button class="d-block" *ngIf="!estadoPago.cheque && GerenteAdmin && estadoPago.estado < 4" (click)="emitido(i)">
+                            <img src="/assets/Icon/cheque.PNG" alt="" class="icon">
+                            Cheque
+                        </button>
+                        <button mat-button class="d-block text-success" (click)="Pagar(i)" *ngIf="estadoPago.estado < 4">
+                            <mat-icon>attach_money</mat-icon>
+                            Pagar
+                        </button>
+                        <button mat-button class="d-block text-primary" *ngIf="!estadoPago.cheque && estadoPago.estado < 4" (click)="distribuir(i,estadoPago.monto)">
+                            <mat-icon>device_hub</mat-icon>
+                            Distribuir
+                        </button>
+                        <button mat-button class="d-block text-primary" *ngIf="!estadoPago.cheque && estadoPago.estado < 4" (click)="distribuir(i,estadoPago.monto)">
+                            <mat-icon>rate_review</mat-icon>
+                            Fijar Fujo
+                        </button>
+                        <button mat-button class="d-block text-danger" (click)="rechazar(i)" *ngIf="estadoPago.estado < 4">
+                            <mat-icon>close</mat-icon>
+                            Anular
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row w100 align-middle pagada" *ngIf="estadoPago.estado == 4">
+                <div class="col-2">
+                    {{estadoPago.fecha | date:'dd/MM/yy':'UTC'}}
+                </div>
+                <div class="col-2">
+                    $
+                    {{estadoPago.monto | number:'1.0-0' | comatopoint}}
+                </div>
+                <div class="col-2" [ngSwitch]="estadoPago.metodoPago">
+                    <span *ngSwitchCase="2">Efectivo</span>
+                    <span *ngSwitchCase="3">Cheque</span>
+                    <span *ngSwitchCase="4">Transferencia</span>
+                </div>
+                <div class="col-3">
+                    {{estadoPago.numeroPago}}
+                </div>
+                <div class="col-2">
+                    <mat-form-field class="w100" *ngIf="!estadosPagosPrev[i].factura">
+                        <input matInput placeholder="Factura" [(ngModel)]="estadoPago.factura" [name]="'factura'+i">
+                    </mat-form-field>
+                    <span *ngIf="estadosPagosPrev[i].factura">{{estadoPago.factura}}</span>
+                </div>
+                <div class="col-1">
+                    <button mat-icon-button aria-label="Deshacer" *ngIf="GerenteAdmin" mattooltip="Deshacer" (click)="reiniciarEP(i)">
+                        <mat-icon>undo</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row w100 align-middle anulada" *ngIf="estadoPago.estado == 5">
+                <div class="col-2">
+                    {{estadoPago.fecha | date:'dd/MM/yy':'UTC'}}
+                </div>
+                <div class="col-2">
+                    $
+                    {{estadoPago.monto | number:'1.0-0' | comatopoint}}
+                </div>
+                <div class="col-2 d-flex" [ngSwitch]="estadoPago.metodoPago">
+                    <mat-icon class="text-danger">close</mat-icon>
+                    <span *ngSwitchCase="2">Efectivo</span>
+                    <span *ngSwitchCase="3">Cheque</span>
+                    <span *ngSwitchCase="4">Transferencia</span>
+                </div>
+                <div class="col-3">
+                    {{estadoPago.numeroPago}}
+                </div>
+                <div class="col-2">
+                    {{estadoPago.factura}}
+                </div>
+                <div class="col-1">
+                    <button mat-icon-button aria-label="Deshacer" *ngIf="GerenteAdmin" mattooltip="Deshacer" (click)="reiniciarEP(i)">
+                        <mat-icon>undo</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-list-item>
+    </mat-list>
+    <!-- <div class="row mt10">
+                    <div class="col-12">
+            
+                    </div>
+                </div> -->
+    <!-- <div class="row mt10" *ngIf="estadosPagos[indice].estado != 4">
+                    <div class="col-6">
+                        <span *ngIf="metodoPago == 2 && imprimir">Efectivo</span>
+                        <span *ngIf="metodoPago == 3 && imprimir">Cheque</span>
+                        <span *ngIf="metodoPago == 4 && imprimir">Transferencia Bancaria</span>
+                        <select id="drdMetodoPago" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="estadosPagos[indice].metodoPago" name="drdMetodoPago" appSelectValidator *ngIf="!imprimir">
+                          <option value=0 selected>--- Seleccione una opcion ---
+                          </option>
+                          <option value=2>Efectivo</option>
+                          <option value=3>Cheque</option>
+                          <option value=4>Transferencia</option>
+                      </select>
+                    </div>
+                    <div class="col-6">
+                        <span *ngIf="imprimir">N° {{estadosPagos[indice].numeroPago}}</span>
+                        <input class="form-control" name="txtNumPago" type="text" placeholder="N°" *ngIf="estadosPagos[indice].metodoPago > 2 && !imprimir" [(ngModel)]="estadosPagos[indice].numeroPago">
+                    </div>
+                </div>
+                <div class="row mt10" *ngIf="!imprimir">
+                    <div class="col-6 fechaCompromiso">
+                        N° de Factura
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" name="txtFactura" type="text" placeholder="N° Factura" [(ngModel)]="estadosPagos[indice].factura">
+                    </div>
+                </div>
+                <div class="row mt10" *ngIf="!imprimir && estadosPagos[indice].estado != 4">
+                    <div class="col-6 fechaCompromiso">
+                        Fecha compromiso de pago
+                    </div>
+                    <div class="col-6">
+                        <div id="dvCompromiso" class="input-group date">
+                            <input id="txtCompromiso" name="txtCompromiso" type="text" (focusout)="AsignaFechaCompromiso()" class="form-control" />
+                            <span class="input-group-addon">
+                              <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div> -->
+</div>

@@ -1,0 +1,24 @@
+<div class="cotizacion" [ngStyle]="{'border-color': cotizacion.centroCosto && cotizacion.centroCosto.fondo ? cotizacion.centroCosto.fondo : 'black'}" [ngClass]="{'bBlack': whiteColor > 450}">
+  <div class="solictado" [ngStyle]="{'background-color': cotizacion.centroCosto && cotizacion.centroCosto.fondo ? cotizacion.centroCosto.fondo : 'white', 'color': cotizacion.centroCosto ? cotizacion.centroCosto.letras : 'black'}" [ngClass]="{'fBlack': whiteColor > 450}">
+    N° {{cotizacion.idCotizacion}}
+    <span class="fecha">
+      {{cotizacion.fechaCreacion | date: 'dd-MM-yyyy'}}
+    </span>
+    <div class="cc">
+      <!-- {{cotizacion.centroCosto}} -->
+    </div>
+  </div>
+  <div class="cardContent">
+    <div class="observacion">
+      {{cotizacion.observacion}}
+    </div>
+    <a [href]="url.concat(cotizacion.nombreAdjunto)" class="adjunto" *ngIf="cotizacion.nombreAdjunto" target="_blank">
+      <mat-icon>link</mat-icon>Adjunto
+    </a>
+  </div>
+  <div class="statusColor" [ngClass]="{
+    'bg-success': cotizacion.prioridad==1,
+    'bg-warning': cotizacion.prioridad==2,
+    'bg-danger': cotizacion.prioridad==3
+  }"></div>
+</div>

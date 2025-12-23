@@ -1,0 +1,18 @@
+th{
+    background-color: #0070c0 !important;
+    color: white;
+    text-transform: capitalize !important;
+    font-weight: bold;
+}
+
+.right{
+    text-align: right;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.fleft{
+    float: left;
+}

@@ -1,0 +1,134 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div id="popUp">
+
+            <div class="row">
+                <div class="col-12">
+                    <h3>Resumen de tipos de costo</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12" *ngIf="{
+                    tiposGastos:(reportTipoGasto$ | async),
+                    subTipoGasto: (reportSubTipoGasto$ | async)} as data ">
+                    <ng-container *ngIf="data && data.tiposGastos">
+                        <ul class="TiposGastos" *ngFor="let tipoGasto of data.tiposGastos; let i = index"
+                            (click)="abrir(tipoGasto.idTipoGasto)" [ngClass]="{
+                                'gastosGenerales': tipoGasto.nombreTipoGasto=='Bolsa - GASTOS GENERALES',
+                                'iva': tipoGasto.nombreTipoGasto=='Bolsa - IMPUESTO',
+                                'manoObra': tipoGasto.nombreTipoGasto =='Bolsa - MANO DE OBRA SUELDOS',
+                                'imposiciones': tipoGasto.nombreTipoGasto =='Bolsa - MANO DE OBRA IMPOSICIONES',
+                                'financiero': tipoGasto.nombreTipoGasto =='Bolsa - MATERIALES - SUB CONTRATO'
+                              }">
+                            <li>
+                                <div class="row bold">
+                                    <div class="col-3">
+                                        {{tipoGasto.nombreTipoGasto}}
+                                    </div>
+                                    <div class="col-3">
+                                        $ {{tipoGasto.monto | number : '1.0-0' | comatopoint }}
+                                    </div>
+                                    <div class="col-3">
+                                        $ {{(tipoGasto.iva + tipoGasto.boleta) | number : '1.0-0' | comatopoint }}
+                                    </div>
+                                    <div class="col-3">
+                                        {{(tipoGasto.monto > 0 && tipoGasto.total > 0 ?
+                                        tipoGasto.monto*100/tipoGasto.total : 0) | number : '1.0-0'
+                                        | comatopoint }}%
+                                    </div>
+                                </div>
+                            </li>
+                            <ul class="h0 transit" [attr.id]="tipoGasto.idTipoGasto">
+                                <li
+                                    *ngFor="let subGasto of data.subTipoGasto | filterSubTipoGastoByTipoGasto:tipoGasto.idTipoGasto">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            {{subGasto.nombreSubTipoGasto}}
+                                        </div>
+                                        <div class="col-3">
+                                            $ {{subGasto.monto | number : '1.0-0' | comatopoint }}
+                                        </div>
+                                        <div class="col-3">
+                                            $ {{(subGasto.iva + subGasto.boleta) | number : '1.0-0' | comatopoint }}
+                                        </div>
+                                        <div class="col-3">
+                                            {{(subGasto.monto > 0 && subGasto.total > 0 ?
+                                            subGasto.monto*100/subGasto.total:0) | number : '1.0-0' | comatopoint }}%
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </ul>
+                        <ul class="TiposGastos">
+                            <li>
+                                <div class="row bold">
+                                    <div class="col-3">
+                                        Total Sin Bolsa
+                                    </div>
+                                    <div class="col-3">
+                                        $ {{data.tiposGastos[0].total | number : '1.0-0' | comatopoint }}
+                                    </div>
+                                    <div class="col-3">
+                                        ${{data.tiposGastos | totalImpuestos | number : '1.0-0' | comatopoint}}
+                                    </div>
+                                    <div class="col-3">
+                                        {{data.tiposGastos[0].total*100 / (data.tiposGastos[0].total
+                                        +data.tiposGastos[data.tiposGastos.length -1].total) | number : '1.0-0' |
+                                        comatopoint }}%
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="TiposGastos">
+                            <li>
+                                <div class="row bold">
+                                    <div class="col-3">
+                                        Total Bolsas
+                                    </div>
+                                    <div class="col-3">
+                                        $ {{data.tiposGastos[data.tiposGastos.length -1].total | number : '1.0-0' |
+                                        comatopoint }}
+                                    </div>
+                                    <div class="col-3">
+                                        $0
+                                    </div>
+                                    <div class="col-3">
+                                        {{data.tiposGastos[data.tiposGastos.length -1].total*100 /
+                                        (data.tiposGastos[0].total +data.tiposGastos[data.tiposGastos.length -1].total)
+                                        | number : '1.0-0' | comatopoint }}%
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="TiposGastos">
+                            <li>
+                                <div class="row bold">
+                                    <div class="col-3">
+                                        Total
+                                    </div>
+                                    <div class="col-3">
+                                        $ {{data.tiposGastos[0].total +data.tiposGastos[data.tiposGastos.length
+                                        -1].total | number : '1.0-0' |
+                                        comatopoint }}
+                                    </div>
+                                    <div class="col-3">
+                                        ${{data.tiposGastos | totalImpuestos | number : '1.0-0' | comatopoint}}
+                                    </div>
+                                    <div class="col-3">
+                                        100%
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="flex Fcenter">
+                <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<ng-container *ngIf="flujo">
+    <ul class="mes py-2" *ngIf="Mes(flujo.fecha)">
+        <li>{{flujo.fecha | date:'MMMM' | mesEsp}}
+            /
+            {{flujo.fecha | date:'yyyy'}}</li>
+    </ul>
+    <!-- 'Proyeccion':flujo.estadoPago==-1, -->
+    <div class="d-flex ulflex" (click)="PopUp(flujo._id, flujo.indice,flujo.ordenCompra,flujo.estado)" [ngClass]="getClassFondo(flujo)">
+        <div [ngClass]="{'text-danger': esPasado(flujo.fecha)}" [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            {{flujo.fecha | date:'dd/MM/yy':'UTC'}}</div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            <span *ngIf="flujo.estado != 6 && flujo.estado != -1">{{flujo.ordenCompra}}
+                <span *ngIf="flujo.maxIndice > 1">{{flujo.indice}}/{{flujo.maxIndice}}</span>
+            </span>
+
+        </div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            {{flujo.proveedor.nombre}}
+            <span *ngIf="flujo.ingresoEgreso == 2 && flujo.items.length">{{flujo.items[0].detalle}}</span>
+        </div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            {{flujo.descripcion}}
+            <span *ngIf="flujo.estado == 6">Contrato:
+                {{ getContrato(flujo) }}</span>
+        </div>
+        <div [class.centroCostoComprometido]=" flujo.estadoPago==2 || flujo.estadoPago==3 " [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            <ng-container *ngIf="flujo.ingresoEgreso==1 && flujo.ordenCompra">
+                <span *ngIf="flujo.estadoPago==1" class="centroCostoPendiente">Orden decompra</span>
+                <span *ngIf="flujo.estadoPago==2">Comprometido</span>
+                <span *ngIf="flujo.estadoPago==3">Facturado</span>
+                <span *ngIf="flujo.estadoPago==4">Pagado</span>
+                <span *ngIf="flujo.estadoPago==5">Anulado</span>
+            </ng-container>
+
+            <span *ngIf="flujo.ingresoEgreso==1 && !flujo.ordenCompra">Proyección Egresos</span>
+            <span *ngIf="flujo.estado == -1">Proyección Egresos</span>
+            <span *ngIf="flujo.estado == 6 || flujo.ingresoEgreso==2">Proyección Ingreso</span>
+            <!-- <span *ngIf="flujo.ingresoEgreso==2 ">Por cobrar</span> -->
+            <span *ngIf="flujo.ingresoEgreso==3 ">Orden de pedido</span>
+        </div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            <span *ngIf="flujo.tipoGasto ">
+                {{flujo.tipoGasto.nombre}}
+            </span>
+
+        </div>
+        <div [style.color]="flujo.subCentro.letras " [style.background-color]="flujo.subCentro.fondo ">
+            <span *ngIf="flujo.subCentro ">
+                {{flujo.subCentro.nombre}}
+            </span>
+        </div>
+        <div [class.centroCostoComprometido]="flujo.estadoPago==2 || flujo.estadoPago==3 " [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            <mat-icon class="cheque text-danger" *ngIf="flujo.chequeEmitido">attach_money</mat-icon>
+            <span *ngIf="flujo.metodoPago==2 && (flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) ">Efectivo</span>
+            <span *ngIf="flujo.metodoPago==3 && (flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) ">Cheque</span>
+            <span *ngIf="flujo.metodoPago==4 && (flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) ">Transferencia</span>
+            <span *ngIf="flujo.ingresoEgreso==2 " class="bold " style="color: red; ">ABONO</span>
+        </div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            {{flujo.factura }}
+        </div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+            {{flujo.numero }}
+        </div>
+        <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">$
+            {{flujo.costo | number : '1.0-0' | comatopoint}}
+        </div>
+        <div class="bold " [ngStyle]="{ 'color':flujo.saldo>= 0 ? 'black' : 'red'}">
+            $
+            {{flujo.saldo | number : '1.0-0' | comatopoint}}
+        </div>
+    </div>
+</ng-container>

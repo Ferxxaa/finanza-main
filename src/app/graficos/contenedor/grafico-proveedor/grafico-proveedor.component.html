@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Resumen de Proveedores Evaluados</strong>
+                </h4>
+                <!-- <div class="buscador">
+                                                    <mat-icon class="ml5" (click)="resumen=true" matTooltip="Resumen" [matTooltipPosition]="'above'">reduce_capacity</mat-icon>
+                                                    <mat-icon class="ml5" (click)="estrategico=true" matTooltip="Proveedores por OC" [matTooltipPosition]="'above'">how_to_reg</mat-icon>
+                                                    <mat-icon (click)="costo=true" matTooltip="Proveedores por monto" [matTooltipPosition]="'above'">engineering</mat-icon>
+                                                </div> -->
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+                    <div class="row">
+                        <div class="col-7">
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <app-resumen [data]='data'></app-resumen>
+                        </div>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="col-12">
+                                    <app-colores-evaluacion></app-colores-evaluacion>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <app-grafico [data]='data'></app-grafico>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+        </section>
+    </div>
+</div>
+
+<app-loading *ngIf="loading"></app-loading>

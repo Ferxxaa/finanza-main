@@ -1,0 +1,146 @@
+select {
+    padding: 1px 12px;
+    font-size: 12px;
+    height: calc(1em + .75rem + 2px);
+}
+
+.widget {
+    margin-bottom: 5px;
+}
+
+#content {
+    padding-bottom: 5px;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.color-blue {
+    color: rgb(39, 39, 238);
+    font-size: 21px;
+    text-align: right;
+}
+
+.color-blue i {
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    margin-right: 15px;
+}
+
+.limit::-webkit-scrollbar-track,
+.limit2::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.limit::-webkit-scrollbar,
+.limit2::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.limit::-webkit-scrollbar-thumb,
+.limit2::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}
+
+.limit {
+    max-height: 125px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.limit2 {
+    max-height: calc(81vh - 125px);
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.mb1 {
+    margin-bottom: 1px;
+}
+
+.bgGray{
+    background: #4f5a5f;
+    background: #4f5a5f;
+    margin-left: 2px;
+    margin-right: 0px;
+    width: 100%;
+}
+
+.subTitle {
+    padding: 2px 0px;
+    color: white;
+}
+
+.ptb5 {
+    padding: 5px 20px;
+}
+
+.pl0 {
+    padding-left: 0px;
+}
+
+.margin {
+    margin: 0px 15px;
+}
+
+.pl15 {
+    padding-left: 15px;
+}
+
+.padlat15 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.acciones {
+    position: absolute;
+    right: 25px;
+    top: 0px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.desplegar {
+    transition: all 0.5s;
+    max-height: 0vh;
+    overflow-x: hidden;
+}
+
+.desplegado {
+    max-height: 72vh;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.stickyHeader{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.hoverClick{
+    transition: 0.5s;
+}
+
+.clicked{
+    background-color: blue;
+    color: white;
+}
+
+.hoverClick:hover{
+    background-color: rgba(0, 0, 0, 0.2);
+}

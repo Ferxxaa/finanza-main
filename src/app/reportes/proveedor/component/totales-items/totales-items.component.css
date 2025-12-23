@@ -1,0 +1,20 @@
+li{
+    display: grid;
+    grid-template-columns: 30px 1fr 100px 120px 120px 100px 130px 120px 100px 120px 130px 115px 120px;
+}
+
+li > div {
+    text-align: center;
+}
+
+.left{
+    border-left: 1px solid #cccccc;
+}
+
+.bot{
+    border-bottom: 1px solid #cccccc;
+}
+
+.right{
+    border-right: 1px solid #cccccc;
+}

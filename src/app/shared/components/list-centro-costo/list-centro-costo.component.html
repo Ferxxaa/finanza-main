@@ -1,0 +1,11 @@
+<mat-list class="grid">
+  <h3 mat-subheader="mat-subheader" class="bold">Centros de costo</h3>
+  <h3 mat-subheader="mat-subheader"></h3>
+  <mat-list-item *ngFor="let centro of getCentroCostos$ | async | subCentroCosto" (click)="activate(centro.nombre)" class="li" [ngClass]="{Active: isActive(centro.nombre)}">
+      <mat-icon mat-list-icon="mat-list-icon">
+        <!-- request_page -->
+        request_quote
+      </mat-icon>
+      <h4 mat-line="mat-line">{{centro.nombre}}</h4>
+  </mat-list-item>
+</mat-list>

@@ -1,0 +1,58 @@
+<ng-template #NoData>
+  <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<app-pop-up-template (close)="closeEvent()" *ngIf="movimiento else NoData;">
+  <div class="title">
+    <div class="row gray Folio bold">
+      <div class="col-9 center barTitle">
+        ORDEN DE COMPRA
+      </div>
+      <div class="col-3 ">
+        <span class="FloatRight marginR fs">N° {{movimiento.folio}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row OP">
+    <div class="col-12 text-right mb-1">
+      <div class="fr10 btn-group" *ngIf="movimiento.folio">
+        <a class="btn btn-secondary" [routerLink]="['/OrdenPedido',movimiento.idMovimiento]">Orden de Pedido</a>
+        <button class="btn btn-secondary" data-toggle="dropdown" data-original-title="" title="">
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <!-- <ul class="dropdown-menu">
+          <li *ngFor="let ordenPedido of ordenesPedido, let i = index"> OP: {{ordenCompra.folio}} {{i
+            +1}}/{{ordenesPedido.length}}</li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+  <app-proveedor-pop-up [proveedor]="movimiento.proveedor"></app-proveedor-pop-up>
+  <app-tipo-gasto-pop-up [tipoGasto]="movimiento.tipoGasto" [subTipoGasto]="movimiento.subTipoGasto"
+    (emitSubTipoGasto)="movimiento.subTipoGasto=$event">
+  </app-tipo-gasto-pop-up>
+  <app-centro-costopop-up [areaNegocio]="movimiento.areaNegocio" [centroCosto]="movimiento.centroCosto">
+  </app-centro-costopop-up>
+  <app-item-pop-up [items]="movimiento.item" [cotizacion]="movimiento.cotizacion"></app-item-pop-up>
+  <app-condicion-pop-up [estadoPagos]="movimiento.estadoPago" [tipoMovimiento]="movimiento.tipo"></app-condicion-pop-up>
+  <app-pop-up-despacho [despacho]="movimiento.despacho"></app-pop-up-despacho>
+  <app-popup-evaluacion [idMovimiento]='movimiento.idMovimiento'
+    [solicitante]="movimiento.idSolicitador"></app-popup-evaluacion>
+  <app-pop-up-firma [usuarioCreador]="movimiento.idCreador"></app-pop-up-firma>
+  <app-pop-up-motivo [rechazarMotivo]="movimiento.estado==1" [motivo]="movimiento.motivoRechazo"></app-pop-up-motivo>
+
+
+  <div class="acciones flex Fcenter">
+    <!-- {{movimiento | json}} -->
+    <button class="btn btn-primary" *ngIf="movimiento.estado == 1 && isAprobador" (click)="firmar()">Firmar</button>
+    <button class="btn btn-primary" *ngIf="movimiento.estado == 2" (click)="guardar()">Guardar</button>
+    <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+    <ng-container *ngIf="movimiento.estado == 2">
+      <button class="btn btn-danger" (click)="anular()" *ngIf="bolAnular">Anular</button>
+      <button class="btn btn-secondary" (click)="genPDF(movimiento)">Generar PDF en red</button>
+    </ng-container>
+    <ng-container *ngIf="movimiento.estado == 1 && isAprobador">
+      <button class="btn btn-danger" (click)="rechazar()">Rechazar</button>
+    </ng-container>
+  </div>
+</app-pop-up-template>

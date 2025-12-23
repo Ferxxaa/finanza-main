@@ -1,0 +1,6 @@
+.navbar-nav>.nav-item>.nav-link {
+    display: flex;
+    justify-content: flex-end;
+    justify-items: center;
+    align-items: center;
+}

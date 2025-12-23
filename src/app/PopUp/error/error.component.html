@@ -1,0 +1,25 @@
+<div class="Alert" (keydown.enter)="cerrar()">
+    <div class="flex-content">
+        <div class="caja">
+            <div class="row center">
+                <img src="assets/Images/ok.gif" alt="ok.gif">
+            </div>
+            <div class="relative">
+                <div class="col-12 flex-content">
+                    <h4>Resultado Correcto</h4>
+                </div>
+                <!-- <div class="absolute click" (click)="cerrar()">X</div> -->
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>{{mensaje}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <button id="btnOk" class="btn btn-primary" (click)="cerrar()" (keydown.enter)="cerrar()">OK</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+.orden{
+    width: 200px;
+    height: 250px;
+    font-size: 10px;
+    position: relative;
+    border: 0.1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0 auto;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.orden:hover{
+    transform: scale(1.01);
+    box-shadow: 2px 2px 5px #5d5d5d;
+}
+
+.contentElement{
+    padding: 0.5em;
+}
+
+.Title{
+    text-align: right;
+    padding-right: 5px;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 1.3em;
+}
+
+.proveedor,
+.items{
+    margin-bottom: 5px;
+}
+
+.fBlack{
+    color: black;
+}
+
+.bBlack{
+    border-color: black !important;
+}
+
+.statusColor{
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+}

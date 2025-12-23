@@ -1,0 +1,9 @@
+.popUp{
+    max-height: 90%;
+    margin-top: 25px;
+    overflow-y: auto;
+}
+
+.blue{
+    color: rgb(81, 97, 241);
+}

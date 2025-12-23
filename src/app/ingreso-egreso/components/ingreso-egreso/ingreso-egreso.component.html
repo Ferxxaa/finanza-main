@@ -1,0 +1,223 @@
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h2 style="color: white;">
+                    <strong>Proyección ingresos y egresos</strong>
+                </h2>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+                        <legend></legend>
+
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <label class="btn btn-secondary" (click)="ordenCompra.ingresoEgreso=1">
+                                        <input type="radio" name="rdIngEg" id="rdEgreso"> Egreso
+                                    </label>
+                                </div>
+                                <div class="col-6">
+                                    <label class="btn btn-secondary" (click)="ordenCompra.ingresoEgreso=2">
+                                        <input type="radio" name="rdIngEg" id="rdIngreso"> Ingreso
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row labelHeder">
+                                <div class="col-6">
+                                    Ingrese descripción del movimiento
+                                </div>
+                                <div class="col-6">
+                                    Centro de costo
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input class="form-control" type="text" placeholder="Descripcion de movimiento"
+                                        name="txtGasto" required [(ngModel)]="ordenCompra.descripcion"
+                                        [class.Invalid]="CForm.controls.txtGasto.touched && CForm.controls.txtGasto.status=='INVALID'">
+                                </div>
+                                <div class="col-6">
+                                    <select id="drdSubCentroCosto"
+                                        class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                        [(ngModel)]="ordenCompra.subCentroCosto" name="drdSubCentroCosto"
+                                        appSelectValidator>
+                                        <option value=0 selected>--- Seleccione una opcion ---
+                                        </option>
+                                        <option
+                                            *ngFor="let subCentroCosto of ordenCompra.centroCosto.subCentroCosto; let i = index"
+                                            value={{subCentroCosto.nombre}}>
+                                            {{subCentroCosto.nombre}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row labelHeder">
+                                <div class="col-6">
+                                    Ingrese el tipo de gasto
+                                    <span class="opcional"></span>
+                                </div>
+                                <div class="col-6">
+                                    Sub tipo de gasto
+                                    <span class="opcional"></span>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-6">
+                                    <select id="drdTipoGasto"
+                                        class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                        [(ngModel)]="ordenCompra.tipoGasto._id" name="drdTipoGasto"
+                                        (change)="AsignaTipoGasto()">
+                                        <option value=0 selected>--- Seleccione una opcion ---
+                                        </option>
+                                        <option *ngFor="let TipoGasto of TiposGastos; let i = index"
+                                            value={{TipoGasto._id}}>
+                                            {{TipoGasto.nombre}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <select id="drdSubTipoGasto"
+                                        class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                        [(ngModel)]="ordenCompra.subTipoGasto" name="drdSubTipoGasto"
+                                        *ngIf="ordenCompra.tipoGasto._id && ordenCompra.tipoGasto._id != '0'">
+                                        <option value=0 selected>--- Seleccione una opcion ---
+                                        </option>
+                                        <option
+                                            *ngFor="let subTipoGasto of ordenCompra.tipoGasto.subTipoGasto; let i = index"
+                                            value={{subTipoGasto}}>
+                                            {{subTipoGasto}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row labelHeder">
+                                <div class="col-6">
+                                    Metodo de Pago
+                                </div>
+                                <!-- <div class="col-6">
+                                    Detalle
+                                </div> -->
+                            </div>
+                            <div class="row ">
+                                <div class="col-6">
+                                    <select id="drdMetodoPago"
+                                        class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                        [(ngModel)]="ordenCompra.estadosPagos[0].metodoPago" name="drdMetodoPago"
+                                        appSelectValidator>
+                                        <option value=0 selected>--- Seleccione una opcion ---
+                                        </option>
+                                        <option value=2>Efectivo</option>
+                                        <option value=3>Cheque</option>
+                                        <option value=4>Transferencia</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="col-6">
+                                    <input class="form-control" type="text" placeholder="Detalle" name="txtDetalle"
+                                        [(ngModel)]="item.detalle">
+                                </div> -->
+                            </div>
+                            <div class="row labelHeder">
+                                <div class="col-3">Cantidad de Pagos</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"><input class="form-control" type="number" min=1
+                                        placeholder="Cantidad de Pagos" name="txtCantPagos"
+                                        [(ngModel)]="cantEstadosPago" (change)="agregaEstadosPago()"></div>
+                            </div>
+                            <div class="row labelHeder">
+                                <div class="col-6">
+                                    Fecha de Pago
+                                </div>
+                                <div class="col-6">
+                                    Monto
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let estadoPago of ordenCompra.estadosPagos;let i = index">
+                                <div class="col-6">
+                                    <div id="FechaPago" class="input-group date">
+                                        <input id="{{'txtFechaPago' + i}}" type="text" (focusout)="asignaFechaPago(i)"
+                                            class="form-control" name="{{'txtFechaPago' + i}}" />
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" type="number" placeholder="Monto"
+                                        name="{{'txtPrecioUnitario' + i}}" [(ngModel)]="estadoPago.monto">
+                                </div>
+                                <!-- <div class="col-3 text-right">
+                                    ${{estadoPago.monto | number:'1.0-0' | comatopoint}}
+                                </div> -->
+                            </div>
+                            <div class="row">
+                                <div class="col-9"></div>
+                                <div class="col-3 text-right h4 bold">
+                                    Total : ${{retTotal() | number:'1.0-0' | comatopoint}}
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-12">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="chkPeriodicidad" name="chkActivo" [(ngModel)]="periodicidad.activo">
+                                    <label class="form-check-label" for="chkPeriodicidad">
+                                                Periodicidad
+                                            </label>
+                                </div>
+                            </div>
+                            <div class="Periodicidad justify-content-center" [hidden]="!(periodicidad.activo)">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input class="form-check-input" id="rdCada" type="radio" name="rdPeriodicidad" value="Cada" [(ngModel)]="periodicidad.propperiodicidad">
+                                        <label class="form-check-label" for="rdCada">
+                                                    Cada
+                                                </label>
+                                    </div>
+                                    <div class="col-6" *ngIf="periodicidad.propperiodicidad=='Cada'">
+                                        <input class="" type="number" min="1" placeholder="1" name="txtdias" required [(ngModel)]="periodicidad.dias"> dias
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-check-input" id="rdMensual" type="radio" name="rdPeriodicidad" value="Mensual" [(ngModel)]="periodicidad.propperiodicidad">
+                                        <label class="form-check-label" for="rdMensual">
+                                                    Mensual
+                                                </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        Termino de periodicidad:
+                                    </div>
+                                    <div class="col-6">
+                                        <div id="TerminoPeriodicidad" class="input-group date">
+                                            <input id="txtInicio" name="txtInicio" type="text" (focusout)="asignaFechaInicio()" class="form-control" name="txtTermino" [(ngModel)]="periodicidad.termino" />
+                                            <span class="input-group-addon">
+                                                        <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- {{ordenCompra | json}} -->
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <button class="btn btn-primary"
+                                        [disabled]="!CForm.valid || ordenCompra.ingresoEgreso==null"
+                                        (click)="guardar()">Guardar</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+
+
+</div>

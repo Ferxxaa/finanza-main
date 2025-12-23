@@ -1,0 +1,9 @@
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+tbody tr td:hover {
+    cursor: pointer;
+}

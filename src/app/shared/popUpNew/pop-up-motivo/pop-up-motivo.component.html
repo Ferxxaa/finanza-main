@@ -1,0 +1,17 @@
+<div class="motivo" *ngIf="rechazarMotivo">
+  <div class="row">
+      <div class="col-12">
+          <span class="cRed">*Debe Ingresar un motivo de rechazo</span>
+      </div>
+  </div>
+  <div class="row labelHeder">
+      <div class="col-12">
+          Motivo rechazo
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-12">
+          <textarea name="txtMotivo" rows="3" class="form-control" [(ngModel)]="motivo"></textarea>
+      </div>
+  </div>
+</div>

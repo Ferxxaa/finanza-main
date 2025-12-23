@@ -1,0 +1,17 @@
+.container {
+    margin: 0.5rem;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+    margin-right: 0px;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.flex button {
+    margin: 0.3rem;
+}

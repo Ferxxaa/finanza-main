@@ -1,0 +1,86 @@
+<div class="Evaluacion caja" *ngIf="evaluacion$ | async as evaluacion">
+    <div class="row labelHeder">
+        <div class="col-12 bold">
+            <u>5.- Evaluación <span class="blue" *ngIf="persona$ | async as user">{{user[0].nombre}}
+                    {{user[0].paterno}}</span></u>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="row labelHeder text-center">
+                <div class="col-6">Disponibilidad</div>
+                <div class="col-6">Precio</div>
+            </div>
+            <div class="row eval text-center">
+                <div class="col-6">
+                    <app-star-evaluacion [Eval]="evaluacion.disponibilidad"></app-star-evaluacion>
+                </div>
+                <div class="col-6">
+                    <app-star-evaluacion [Eval]="evaluacion.precio"></app-star-evaluacion>
+                </div>
+            </div>
+            <div class="row labelHeder text-center">
+                <div class="col-6">Tiempo</div>
+                <div class="col-6">Calidad</div>
+            </div>
+            <div class="row eval text-center">
+                <div class="col-6">
+                    <app-star-evaluacion [Eval]="evaluacion.tiempo"></app-star-evaluacion>
+                </div>
+                <div class="col-6">
+                    <app-star-evaluacion [Eval]="evaluacion.calidad"></app-star-evaluacion>
+                </div>
+            </div>
+            <ng-container *ngIf="evaluacion.ssoma">
+                <div class="row labelHeder text-center">
+                    <div class="col-6">SSO-MA</div>
+                    <div class="col-6 bold">Promedio</div>
+                </div>
+                <div class="row eval text-center">
+                    <div class="col-6">
+                        <app-star-evaluacion [Eval]="evaluacion.ssoma"></app-star-evaluacion>
+                    </div>
+                    <div class="col-6 subir d-flex justify-content-center align-items-center">
+                        <mat-icon [ngClass]="{
+                            'text-success': retPromedio(evaluacion) >= 2.54,
+                            'text-warning': retPromedio(evaluacion) < 2.54 && retPromedio(evaluacion) >= 1.8,
+                            'text-danger': retPromedio(evaluacion) < 1.8
+                        }">star</mat-icon>
+                        <span class="promedio">
+                            {{retPromedio(evaluacion) | number : '1.0-2'}}
+                        </span>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="row labelHeder text-center" *ngIf="!evaluacion.ssoma">
+                <div class="col-6 bold">
+                    Promedio
+                </div>
+            </div>
+            <div class="row" *ngIf="!evaluacion.ssoma">
+                <div class="col-6 d-flex justify-content-center align-items-center">
+                    <mat-icon [ngClass]="{
+                                                                            'text-success': retPromedio(evaluacion) >= 2.54,
+                                                                            'text-warning': retPromedio(evaluacion) < 2.54 && retPromedio(evaluacion) >= 1.8,
+                                                                            'text-danger': retPromedio(evaluacion) < 1.8
+                                                                          }">star</mat-icon>
+                    <span class="promedio">
+                        {{retPromedio(evaluacion) | number : '1.0-2'}}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 b1px">
+            <div class="row">
+                <div class="col-12 bold">
+                    observacion
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {{evaluacion.Comentario}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

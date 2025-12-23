@@ -1,0 +1,183 @@
+<table class="table table-bordered table-striped table-hover no-footer principal">
+    <thead>
+        <tr>
+            <th>N° De Factura</th>
+            <th>Tipo</th>
+            <th>Cliente</th>
+            <th>Área de Negocio</th>
+            <th>Centro de Costo</th>
+            <th>GLOSA / EP</th>
+            <th>Estado</th>
+            <th>Fecha de Emisión</th>
+            <th>Monto Neto</th>
+            <th>IVA</th>
+            <th>Total Bruto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let mes of ResumenAgno">
+            <tr class="mes" (click)="toggleMes(mes)">
+                <td>
+                    <mat-icon aria-hidden="false" aria-label="Desplegar">add_box</mat-icon>
+                </td>
+                <td colspan="6">
+                    {{mes.mes}}
+                </td>
+
+                <td>
+                    Total:
+                </td>
+                <td>
+                    $
+                    {{retTotalNeto(mes.reporteVentas) | number:'1.0-0' | comatopoint}}
+                </td>
+                <td>
+                    $
+                    {{retTotalIVA(mes.reporteVentas) | number:'1.0-0' | comatopoint}}
+                </td>
+                <td>
+                    $
+                    {{retTotalBruto(mes.reporteVentas) | number:'1.0-0' | comatopoint}}
+                </td>
+
+            </tr>
+            <tr *ngFor="let factura of pagadas(mes.reporteVentas)" class="myCollapse" [attr.name]="'tr-' + mes.mes">
+                <td>{{factura.numeroFactura}}</td>
+                <td>{{factura.tipo == 5 ? 'AFECTA': 'EXENTA'}}</td>
+                <td>{{factura.descripcion | cortarTextos:35}}</td>
+                <td>{{factura.nombreAreaNegocio}}</td>
+                <td [ngStyle]="{'color': factura.letras, 'background-color': factura.fondo}" class="bold center">
+                    {{factura.nombreCentroCosto}}
+                </td>
+                <td>{{factura.descripcion | cortarTextos:45}}</td>
+                <td class="text-white bold center bg-success">
+                    <!-- [ngClass]="{'bg-success': factura.estado == 4, 'bg-danger': factura.estado<4}" -->
+                    Pagado
+                </td>
+                <td class="center">{{factura.fechaPago | date:'dd/MM/yyyy'}}</td>
+                <td class="right">
+                    $
+                    <span *ngIf="factura.tipo == 5">
+                        {{factura.monto / 1.19 | number:'1.0-0' | comatopoint}}
+                    </span>
+                    <span *ngIf="factura.tipo != 5">
+                        {{factura.monto | number:'1.0-0' | comatopoint}}
+                    </span>
+                </td>
+                <td class="right">
+                    <span *ngIf="factura.tipo == 5">
+                        $
+                        {{factura.monto / 1.19 * .19 | number:'1.0-0' | comatopoint}}
+                    </span>
+                    <span *ngIf="factura.tipo != 5">
+                        $ 0
+                    </span>
+                </td>
+                <td class="right">
+                    $
+                    {{factura.monto | number:'1.0-0' | comatopoint}}
+                </td>
+            </tr>
+        </ng-container>
+        <tr class="totales">
+            <td colspan="7"></td>
+            <td>
+                Total:
+            </td>
+            <td>
+                $
+                {{retTotalNetoAgno() | number:'1.0-0' | comatopoint}}
+            </td>
+            <td>
+                $
+                {{retTotalIVAAgno() | number:'1.0-0' | comatopoint}}
+            </td>
+            <td>
+                $
+                {{retTotalBrutoAgno() | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+        <ng-container>
+            <tr class="mes" (click)="toggleProyectadas('proyectadas')">
+                <td>
+                    <mat-icon aria-hidden="false" aria-label="Desplegar">add_box</mat-icon>
+                </td>
+                <td colspan="6">
+                    Proyectadas
+                </td>
+
+                <td>
+                    Total:
+                </td>
+                <td>
+                    $
+                    {{retTotalNetoProyectadas() | number:'1.0-0' | comatopoint}}
+                </td>
+                <td>
+                    $
+                    {{retTotalIVAProyectadas() | number:'1.0-0' | comatopoint}}
+                </td>
+                <td>
+                    $
+                    {{retTotalBrutoPendientes() | number:'1.0-0' | comatopoint}}
+                </td>
+            </tr>
+            <tr *ngFor="let factura of pendientes(ResumenAgno)" class="myCollapse" name="proyectadas">
+                <td>{{factura.numeroFactura}}</td>
+                <td>{{factura.tipo == 5 ? 'AFECTA': 'EXENTA'}}</td>
+                <td>{{factura.descripcion | cortarTextos:35}}</td>
+                <td>{{factura.nombreAreaNegocio}}</td>
+                <td [ngStyle]="{'color': factura.letras, 'background-color': factura.fondo}" class="bold center">
+                    {{factura.nombreCentroCosto}}
+                </td>
+                <td>{{factura.descripcion | cortarTextos:45}}</td>
+                <td class="text-white bold center bg-danger">
+                    <!-- [ngClass]="{'bg-success': factura.estado == 'Pagado', 'bg-danger': factura.estado=='Pendiente'}">
+                    {{factura.estado}} -->
+                    Pendiente
+                </td>
+                <td class="center">{{factura.fechaPago | date:'dd/MM/yyyy'}}</td>
+                <td class="right">
+                    $
+                    <span *ngIf="factura.tipo == 5">
+                        {{factura.monto / 1.19 | number:'1.0-0' | comatopoint}}
+                    </span>
+                    <span *ngIf="factura.tipo != 5">
+                        {{factura.monto | number:'1.0-0' | comatopoint}}
+                    </span>
+                </td>
+                <td class="right">
+                    <span *ngIf="factura.tipo == 5">
+                        $
+                        {{factura.monto / 1.19 * .19 | number:'1.0-0' | comatopoint}}
+                    </span>
+                    <span *ngIf="factura.tipo != 5">
+                        $ 0
+                    </span>
+                </td>
+                <td class="right">
+                    $
+                    {{factura.monto | number:'1.0-0' | comatopoint}}
+                </td>
+            </tr>
+            <tr class="totales">
+                <td colspan="7"></td>
+                <td>
+                    Total con proyectadas:
+                </td>
+                <td>
+                    $
+                    {{retTotalNetoAgno() + retTotalNetoAgnoProyectadas() | number:'1.0-0' | comatopoint}}
+                </td>
+                <td>
+                    $
+                    {{retTotalIVAAgno() + retTotalIVAAgnoPendientes() | number:'1.0-0' | comatopoint}}
+                </td>
+                <td>
+                    $
+                    {{retTotalBrutoAgno() + retTotalBrutoPendientes() | number:'1.0-0' | comatopoint}}
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>

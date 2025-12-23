@@ -1,0 +1,66 @@
+<section class="widget" *ngIf="profesional$ | async as profesional">
+  <header style="background-color: #555555">
+    <div class="row">
+      <div class="col-8">
+        <h4 style="color: #ffffff;">
+          <strong>Flujo caja chica - {{profesional.nombreProfesional}}</strong>
+        </h4>
+      </div>
+      <div class="col-4 text-right">
+        <button mat-button class="text-white bold border" (click)="activarPopUp()">Rendición</button>
+      </div>
+    </div>
+  </header>
+  <div class="widget-body">
+    <fieldset>
+      <legend></legend>
+      <ul class="pl-0 ml-3 mheight">
+        <li>
+          <div class="row text-center bg-success text-white">
+            <div class="col-2 h6 bold border-right mb-0">Fecha Registro</div>
+            <div class="col-3 h6 bold border-right mb-0">Descripción</div>
+            <div class="col-2 h6 bold border-right mb-0">Centro Costo</div>
+            <div class="col-2 h6 bold border-right mb-0">Monto</div>
+            <div class="col-2 h6 bold mb-0">Saldo</div>
+            <div class="col-1"></div>
+          </div>
+        </li>
+        <!-- | calcSaldo -->
+        <li class="ulflex" *ngFor="let cajaChica of profesional.cajaChica | sortCajaChicaDesc; let i = indice">
+          <div class="row" *ngIf="cajaChica.estado != 2">
+            <div class="col-2 d-flex align-items-center">{{cajaChica.fechaCreacion | date:'dd/MM/yy':'UTC'}}</div>
+            <div class="col-3 d-flex align-items-center">
+              <a href="{{url+cajaChica.nombreAdjunto}}" target="_blank" *ngIf="cajaChica.nombreAdjunto">
+                <mat-icon class="icon">attach_file</mat-icon>
+              </a>
+              {{cajaChica.descripcion}}
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-center" [ngStyle]="{
+              'color': cajaChica.centroCosto ? cajaChica.centroCosto.letras : '#000000',
+              'background-color': cajaChica.centroCosto ? cajaChica.centroCosto.fondo:'#FFFFFF'
+            }">{{cajaChica.centroCosto ? cajaChica.centroCosto.nombreCentroCosto : null}}</div>
+            <div class="col-2 d-flex align-items-center">
+              ${{cajaChica.monto | number:'1.0-0' | comatopoint}}
+            </div>
+            <div class="col-2 text-right d-flex align-items-center">${{cajaChica.saldo | number:'1.0-0' | comatopoint}}</div>
+            <!-- <div class="col-2 text-right d-flex align-items-center">$0</div> -->
+            <div class="col-1">
+              <button mat-icon-button data-toggle="dropdown" class="text-primary super"
+                *ngIf="cajaChica.estado ==1 && cajaChica.tipo == 1 && GerenteAdmin">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <div class="dropdown-menu super2" aria-labelledby="dropdownMenuButton1">
+                <button mat-button class="d-block text-success" (click)="Aprobar(cajaChica)">
+                  <mat-icon>check</mat-icon> Aprobar
+                </button>
+                <button mat-button class="d-block text-danger" (click)="rechazar(cajaChica)">
+                  <mat-icon>close</mat-icon> Anular
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </fieldset>
+  </div>
+</section>

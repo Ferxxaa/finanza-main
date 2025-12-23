@@ -1,0 +1,20 @@
+.buscador {
+    position: absolute;
+    right: 30px;
+    top: 1px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.buscador *{
+    margin-left: 10px;
+}
+
+.material-icons{
+    font-size: 40px;
+}
+
+.mb-10{
+    margin-bottom: 10px;
+}

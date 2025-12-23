@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555" class="flex">
+                <h4 style="color: white;" class="capital">
+                    <strong>Consolidado Centro de Costo</strong>
+                </h4>
+                <h5>
+                    <select id="drdAreaNegocio" class="dropdown-toggle select2-chosen-2 requiered black" [(ngModel)]="areaNegocio" name="drdAreaNegocio" appSelectValidator="appSelectValidator">
+                        <option value="0" selected="selected">--- Área Negocio ---
+                        </option>
+                        <option *ngFor="let areaNegocio of centroCosto$ | async | removeOperacional ; let i = index" value={{areaNegocio.idAreaNegocio}}>
+                            {{areaNegocio.nombreAreaNegocio}}</option>
+                    </select>
+                </h5>
+            </header>
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+                    <app-tabla-reporte-centro-costo [areaNegocio]="areaNegocio"></app-tabla-reporte-centro-costo>
+                </fieldset>
+            </div>
+        </section>
+    </div>
+</div>

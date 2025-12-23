@@ -1,0 +1,25 @@
+.navbar-nav {
+    display: block;
+    flex-direction: unset;
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.bell-wrapper {
+    margin-right: 10px;
+}
+
+.bell-badge {
+    position: relative;
+    top: -10px;
+    left: -5px;
+}
+
+.bell-list {
+    max-height: 320px;
+    overflow: auto;
+}

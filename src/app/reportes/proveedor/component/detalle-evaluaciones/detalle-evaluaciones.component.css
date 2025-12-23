@@ -1,0 +1,10 @@
+*{
+    font-size: small;
+}
+
+thead tr,
+th {
+    background-color: #1a9702;
+    color: white;
+    text-align: center;
+}

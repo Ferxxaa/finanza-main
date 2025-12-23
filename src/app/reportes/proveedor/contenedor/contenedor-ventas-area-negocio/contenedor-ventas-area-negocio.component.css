@@ -1,0 +1,11 @@
+.black{
+    color: black;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex h4{
+    width: 90%;
+}

@@ -1,0 +1,36 @@
+<section class="widget">
+  <header style="background-color: #555555">
+    <h4 style="color: #ffffff;">
+      <strong>Resumen personal</strong>
+    </h4>
+  </header>
+
+  <div class="widget-body">
+    <fieldset>
+      <legend></legend>
+
+      <ul class="pl-0">
+        <li>
+          <div class="row bg-success text-white">
+            <div class="col-6 text-center h5 border-right mb-0">Nombre</div>
+            <div class="col-5 text-center h5 mb-0">Saldo</div>
+            <div class="col-1"></div>
+          </div>
+        </li>
+        <li *ngFor="let profesional of saldo$ | async">
+          <div class="row">
+            <div class="col-6">{{profesional.nombreProfesional}}
+              <mat-icon *ngIf="profesional.cajaChica" class="text-primary cursor">playlist_add_check</mat-icon>
+            </div>
+            <div class="col-5 text-right">${{profesional.saldo | number:'1.0-0' | comatopoint}}</div>
+            <div class="col-1" (click)="dropProfesional(profesional)">
+              <mat-icon class="text-danger">close</mat-icon>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+    </fieldset>
+  </div>
+  
+</section> 

@@ -1,0 +1,25 @@
+.firmas {
+    margin-top: 7em;
+}
+
+.Firma {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.Firma li {
+    border: 1px solid rgb(99, 99, 99);
+    width: 200px;
+}
+
+.FloatRight {
+    float: right;
+}
+
+.FirmaImg {
+    top: 0;
+    right: 0%;
+    position: absolute;
+    max-width: 50%;
+    transform: translatey(-45%);
+}

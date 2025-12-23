@@ -1,0 +1,26 @@
+<div class="col-lg-12">
+  <div class="container">
+    <div class="row labelHeder">
+      <div class="col-6">
+        Area de negocio
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="form-control" type="text" placeholder="Area de negocio" name="txtNombre" required
+          [(ngModel)]="areaNegocio.nombreAreaNegocio">
+      </div>
+      <!-- <div class="col-6">
+        <input id="chkCentroEstado" name="chkCentroEstado" type="checkbox" checked class="custom-control-input"
+          [(ngModel)]="areaNegocio.activo">
+        <label class="custom-control-label" for="chkCentroEstado">Activo</label>
+      </div> -->
+    </div>
+    <!-- {{centroCosto.nombre}} -->
+    <!-- {{centroCosto | json}} -->
+    <div class="flex">
+      <button class="btn btn-primary " (click)="Agregar()">Guardar</button>
+      <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+    </div>
+  </div>
+</div>

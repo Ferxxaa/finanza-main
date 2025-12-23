@@ -1,0 +1,140 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555" class="ptb5">
+                <h4 style="color: white;">
+                    <strong>Centro de Costo</strong>
+                </h4>
+                <div class="acciones">
+                    <i class="fa fa-refresh" (click)="selectCentroCosto()"></i>
+                    <i class="fa fa-search" (click)="TraeBuscador()"></i>
+                </div>
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <buscador *ngIf="buscador" (event)="Filtrar($event)" [tipoGasto]="true"></buscador>
+                    <legend></legend>
+
+                    <div class="row">
+                        <div class="col-3 pl0 pl15">
+                            <!-- <select id="drdCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                [(ngModel)]="subCentroCosto" name="drdCentroCosto"
+                                appSelectValidator="appSelectValidator" (change)="selectCentroCosto()">
+                                <option value="0" selected="selected">--- Seleccione una opcion ---</option>
+                                <option *ngFor="let cetroCosto of centrosCostos; let i = index"
+                                    value={{cetroCosto.nombre}}>{{cetroCosto.nombre}}</option>
+                            </select> -->
+                            <select id="drdCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                name="drdCentroCosto" appSelectValidator="appSelectValidator"
+                                (change)="selectCentroCosto()" [(ngModel)]="centroCosto">
+                                <option value="0" selected="selected">--- Seleccione una opcion ---</option>
+                                <option *ngFor="let cetroCosto of centrosCostos$ | async | filterCentroCostoActive; let i = index"
+                                    value={{cetroCosto.idCentroCosto}}>{{cetroCosto.nombreCentroCosto}}</option>
+                            </select>
+                        </div>
+                        <div class="col-3 bold center">
+                            <!-- pointer hoverClick [ngClass]="{clicked: historico}" -->
+                            <mat-checkbox class="example-margin" (click)="getHistoricos()">Centros de Costo Historicos
+                            </mat-checkbox>
+                        </div>
+                        <div class="col-6 pointer color-blue" (click)="graficar()">
+                            <i class="fa fa-bar-chart-o"></i>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <!-- (change)="filtraTipos()" -->
+                            <mat-checkbox color="primary" [(ngModel)]="filterListado.ordenes"
+                                (change)="reloadPendiente()">
+                                Ordenes de Compra</mat-checkbox>
+                        </div>
+                        <div class="col-4">
+                            <mat-checkbox color="primary" [(ngModel)]="filterListado.proyecciones"
+                                (change)="reloadPendiente()">Proyección</mat-checkbox>
+                            <!-- (change)="filtraTipos()" -->
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="detalleCentroCosto$ | async  as detalleCentroCosto">
+                        <div class="col-12 margin">
+                            <!-- <app-detalle [centroCosto]="centroCostoDetalle"></app-detalle> -->
+                            <app-view-detalle-centro-costo [detalleCentroCosto]="detalleCentroCosto">
+                            </app-view-detalle-centro-costo>
+                        </div>
+                    </div>
+
+                    <div class="row mb1 stickyHeader">
+                        <div class="col-12">
+                            <!-- <app-tabla-centro-costo [header]="true" [contenidos]="[]"></app-tabla-centro-costo> -->
+                            <app-get-view-centro-costo tipo=1 contenidos=[]></app-get-view-centro-costo>
+                        </div>
+                    </div>
+                    <div class="row mb1 bgGray">
+                        <div class="col-9 pointer" (click)="desplegar()">
+                            <h6 class="bold mb1 subTitle">
+                                <i id="iconCambiar" class="fa fa-plus-square"></i>
+                                Pagos confirmados
+                            </h6>
+                        </div>
+                        <div class="col-3 text-right">
+                            <span class="h6 subTitle bold">Total: ${{totalFilter(confirmados$ | async) | number: '1.0-0'
+                                |
+                                comatopoint}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 click limit desplegar" id="irAlFinal">
+                            <ng-container *ngIf="centroCosto != 0">
+                                <!-- <app-tabla-centro-costo [header]="false" [contenidos]="confirmados"
+                                    (popUpEmit)="cargaTablaOC($event)"></app-tabla-centro-costo> -->
+                                <ng-container *ngIf="confirmados$ | async as confirmados else NoData">
+                                    <app-get-view-centro-costo [flujos]="confirmados"
+                                        (popUpEmit)="cargaTablaOC($event)" (popUpload)="update()"></app-get-view-centro-costo>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="row mb1 bgGray">
+                        <div class="col-9">
+                            <h6 class="bold mb1 subTitle">Pagos proyectados</h6>
+                        </div>
+                        <div class="col-3 text-right ">
+                            <span class="h6 subTitle bold">Total: ${{totalFilter(pendientes$ | async |
+                                filtraTipos:filterListado) | number: '1.0-0'
+                                |
+                                comatopoint}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ng-container *ngIf="centroCosto != 0">
+                            <div class="col-12 click limit2"
+                                *ngIf="pendientes$ | async | filtraTipos:filterListado as pedientes  else NoData">
+                                <!-- <app-tabla-centro-costo [header]="false" [contenidos]="pendientes"
+                                    (popUpEmit)="cargaTablaOC($event)"></app-tabla-centro-costo> -->
+                                <app-get-view-centro-costo [flujos]="pedientes" (popUpEmit)="cargaTablaOC($event)" (popUpload)="update()">
+                                </app-get-view-centro-costo>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                </fieldset>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+<app-popup-oc [id]="idOC" *ngIf="idOC" (cerrar)="cerrarPopUp()" (actualizar)="selectCentroCosto()"></app-popup-oc>
+<popUp-orden-pedido [id]="idOP" *ngIf="idOP" (cerrar)="cerrarPopUp()" (actualizar)="selectCentroCosto()">
+</popUp-orden-pedido>
+
+<app-pop-up-oc *ngIf="ordenCompra" [OC]="ordenCompra" (cerrar)="cerrarPopUp()" (actualizar)="cargaCentroCosto()">
+</app-pop-up-oc>
+<app-lista-tipo-gasto *ngIf="grafico" [idCentroCosto]="centroCosto" (cerrar)="cerrarReporte()"
+    (actualizar)="cargaCentroCosto()"></app-lista-tipo-gasto>

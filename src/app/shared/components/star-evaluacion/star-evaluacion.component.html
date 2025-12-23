@@ -1,0 +1,9 @@
+<ng-container *ngFor="let estrella of estrellas">
+    <mat-icon *ngIf="estrella == 1" [ngClass]="{'text-success': Eval >= 2.54 , 'text-warning': Eval < 2.54 && Eval >= 1.8, 'text-danger': Eval < 1.8}">star</mat-icon>
+    <mat-icon *ngIf="estrella == 0.5" [ngClass]="{'text-success': Eval >= 2.54 , 'text-warning': Eval < 2.54 && Eval >= 1.8, 'text-danger': Eval < 1.8}">star_half</mat-icon>
+    <mat-icon *ngIf="estrella == 0" [ngClass]="{'text-success': Eval >= 2.54 , 'text-warning': Eval < 2.54 && Eval >= 1.8, 'text-danger': Eval < 1.8}">star_outline</mat-icon>  
+</ng-container>
+<!-- {{Eval}} <br>
+text-success: {{Eval >= 2.54}} <br>
+text-warning: {{Eval < 2.54 && Eval >= 1.8}} <br>
+text-danger: {{Eval < 1.8}} <br> -->

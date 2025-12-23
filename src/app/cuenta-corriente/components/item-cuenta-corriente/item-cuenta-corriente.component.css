@@ -1,0 +1,163 @@
+ul {
+    list-style: none;
+    padding: 0px;
+    font-size: 12px;
+    color: black;
+}
+
+.ulflex div {
+    border-right: 1px solid #cccccc;
+    padding: 3px 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.mes {
+    background-color: rgb(32, 54, 64);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    cursor: default !important;
+
+}
+
+.mes li {
+    cursor: default !important;
+    border-bottom: none !important;
+}
+
+.ulflex div:nth-child(1) {
+    min-width: 7%;
+    border-left: 1px solid #cccccc;
+    text-align: center;
+}
+
+/* Num OC */
+
+.ulflex div:nth-child(2) {
+    min-width: 7%;
+}
+
+
+/* Proveedor */
+
+.ulflex div:nth-child(3) {
+    min-width: 10%;
+}
+
+
+/* Descripcion */
+
+.ulflex div:nth-child(4) {
+    min-width: 13%;
+}
+
+
+/* Estado */
+
+.ulflex div:nth-child(5) {
+    min-width: 10%;
+    text-align: center;
+}
+
+
+/* Tipo Gasto */
+
+.ulflex div:nth-child(6) {
+    min-width: 10%;
+    text-align: center;
+}
+
+
+/* Centro Costo */
+
+.ulflex div:nth-child(7) {
+    min-width: 9%;
+    text-align: center;
+}
+
+
+/* Metodo Pago */
+
+.ulflex div:nth-child(8) {
+    min-width: 8%;
+    text-align: center;
+}
+
+
+/* Factura */
+
+.ulflex div:nth-child(9) {
+    min-width: 6%;
+    text-align: center;
+}
+
+
+/* N° Pago */
+
+.ulflex div:nth-child(10) {
+    min-width: 6%;
+    text-align: center;
+}
+
+
+/* Monto */
+
+.ulflex div:nth-child(11) {
+    min-width: 7%;
+    text-align: right;
+}
+
+
+/* Saldo */
+
+.ulflex div:nth-child(12) {
+    min-width: 7%;
+    text-align: right;
+}
+
+/**************************** Tabla Tipos de pagos Especiales ****************************/
+
+.bolsaGenerales div:nth-child(-n+11) {
+    background-color: #bfcc45;
+    color: black;
+}
+
+.bolsaMatSub div:nth-child(-n+11) {
+    background-color: #feff00;
+    color: black;
+}
+
+.bolsaImpuesto div:nth-child(-n+11),
+.iva div:nth-child(-n+11) {
+    background-color: rgb(0, 32, 96);
+    color: white;
+}
+
+.bolsaImposiciones div:nth-child(-n+11),
+.imposiciones div:nth-child(-n+11) {
+    background-color: rgb(112, 48, 170);
+    color: white;
+}
+
+.bolsaSueldos div:nth-child(-n+11),
+.manoObra div:nth-child(-n+11) {
+    background-color: rgb(255, 192, 0);
+    color: black;
+}
+
+.financiero div:nth-child(-n+11) {
+    background-color: red;
+    color: white;
+}
+
+.ingreso div:nth-child(n+8),
+.ingreso div:nth-child(-n+6) {
+    background-color: rgba(0, 255, 0, 0.397) !important;
+}
+
+.ingreso div:last-child {
+    background-color: transparent !important;
+}

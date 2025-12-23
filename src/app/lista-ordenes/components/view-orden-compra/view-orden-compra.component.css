@@ -1,0 +1,272 @@
+.widget{
+    margin-bottom: 0px;
+}
+
+table {
+    font-size: 12px;
+}
+
+.table td {
+    line-height: 1;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+    border-bottom-width: 1px;
+}
+
+.descrip {
+    min-width: 45%;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+tbody .fa-envelope {
+    color: rgb(34, 34, 240);
+}
+
+tbody .fa-check {
+    color: green;
+}
+
+.acciones {
+    position: absolute;
+    right: 25px;
+    top: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.col-12{
+    height: 83vh;
+    overflow-y: auto;
+}
+
+.col-12 thead tr td{
+    position: sticky;
+    top: 0;
+    background-color: #1a9702;
+}
+
+
+/************************* PopUp **********************/
+
+.fs {
+    font-size: 16px;
+}
+
+.popUp {
+    font-size: 12px;
+    overflow: hidden;
+    max-height: 85%;
+    overflow-y: auto;
+}
+
+.margin05 .row .col-12::-webkit-scrollbar-track,
+.popUp::-webkit-scrollbar-track,
+.limit::-webkit-scrollbar-track,
+.limit2::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.margin05 .row .col-12::-webkit-scrollbar,
+.popUp::-webkit-scrollbar,
+.limit::-webkit-scrollbar,
+.limit2::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.margin05 .row .col-12::-webkit-scrollbar-thumb,
+.popUp::-webkit-scrollbar-thumb,
+.limit::-webkit-scrollbar-thumb,
+.limit2::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}
+
+.linea {
+    border-bottom: 1px solid rgb(95, 95, 95);
+}
+
+.lineatop {
+    border-top: 1px solid rgb(95, 95, 95);
+}
+
+.linealeft {
+    border-left: 1px solid rgb(95, 95, 95);
+}
+
+.lineafull {
+    border: 1px solid rgb(95, 95, 95);
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.Folio {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.Fcenter {
+    justify-content: center;
+}
+
+.Fcenter .btn {
+    margin: 0px 4px;
+}
+
+.Proveedor {
+    padding: 0.5em 2px;
+}
+
+.TzS .row {
+    margin-bottom: 1px;
+}
+
+.caja {
+    margin-top: 1em;
+    border: 1px solid gray;
+    padding: 0.4em 0px;
+}
+
+.labelHeder {
+    font-weight: 100;
+    margin-bottom: 0px;
+}
+
+.bgWhite {
+    background-color: white !important;
+}
+
+.bgWhite td {
+    border: 1px solid white;
+}
+
+.bgWhite:hover {
+    background-color: white !important;
+}
+
+.brRigt {
+    border-right: 1px solid rgb(232, 232, 232) !important;
+}
+
+.firmas {
+    margin-top: 7em;
+}
+
+.Firma {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.FloatRight {
+    float: right;
+}
+
+.Firma li {
+    border: 1px solid rgb(99, 99, 99);
+    width: 200px;
+}
+
+.texto {
+    margin-top: 3em;
+}
+
+.marginR {
+    margin-right: 2em;
+}
+
+.fechaCompromiso {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.cotizacion {
+    font-size: 14px;
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cotizacion a {
+    text-decoration: none;
+    background-image: linear-gradient(blue, blue);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+.cotizacion a:hover,
+.cotizacion a:focus {
+    background-size: 100% 2px;
+}
+
+.Pagar {
+    font-size: 13px;
+}
+
+.FirmaImg {
+    top: 0;
+    right: 10%;
+    position: absolute;
+    max-width: 50%;
+    transform: translatey(-45%);
+}
+
+
+/******************* Tabla *******************/
+
+tbody tr td:nth-child(1) {
+    max-width: 52px;
+}
+
+tbody tr td:nth-child(2) {
+    width: 110px;
+}
+
+tbody tr td:nth-child(3) {
+    width: 140px;
+}
+
+tbody tr td:nth-child(4) {
+    width: 100px;
+}
+
+tbody tr td:nth-child(5) {
+    width: 130px;
+}
+
+/****** Estado ******/
+
+.cheque{
+    font-size: 12px;
+    height: auto;
+    color: green;
+    font-weight: bold;
+}
+
+.line{
+    display: inline;
+}

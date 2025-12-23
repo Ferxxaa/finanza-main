@@ -1,0 +1,250 @@
+<div class="row">
+  <div class="col-lg-12">
+    <section class="widget">
+      <header style="background-color: #555555">
+        <h4 style="color: white;">
+          <strong>Orden de compra</strong>
+        </h4>
+      </header>
+
+      <div class="widget-body">
+        <form #CForm="ngForm">
+          <fieldset>
+            <legend></legend>
+
+            <div class="col-lg-12">
+              <div class="margin05">
+                <div class="row Folio">
+                  <div class="col-2 offset-md-8">
+                    Folio
+                  </div>
+                  <div class="col-2">
+                    <label>{{ordenCompra.folio}}</label>
+                    <!-- <input style="margin-top: 5px;" class="form-control" type="text" placeholder="Folio" name="txtFolio" required [(ngModel)]="ordenCompra.folio"> -->
+                  </div>
+                </div>
+                <app-valores-monedas></app-valores-monedas>
+                <div class="proveedor">
+                  <div class="row labelHeder">
+                    <div class="col-6">
+                      Proveedor
+                    </div>
+                    <div class="col-6">
+                      Fecha
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <select id="drdProveedor" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        name="drdProveedor" appSelectValidator>
+                        <option value=0 selected>--- Seleccione una opcion ---
+                        </option>
+                        <option *ngFor="let proveedor of proveedores$ | async | ordenaProveedor; let i = index"
+                          value={{proveedor.idProveedor}}>
+                          {{proveedor.nombre}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row labelHeder">
+                    <div class="col-6">
+                      Dirección
+                    </div>
+                    <div class="col-6">
+                      RUT
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-6">
+                      <label>{{proveedorSelected?.direccion}}</label>
+                    </div>
+                    <div class="col-6">
+                      <label>{{proveedorSelected?.rutProveedor}}</label>
+                    </div>
+                  </div>
+                  <div class="row labelHeder">
+                    <div class="col-6">
+                      Teléfono
+                    </div>
+                    <div class="col-6">
+                      Contacto
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <label>{{proveedorSelected?.telefono}}</label>
+                    </div>
+                    <div class="col-6">
+                      <label>{{proveedorSelected?.contacto}}</label>
+                    </div>
+                  </div>
+                  <div class="row labelHeder">
+                    <div class="col-6">
+                      E-Mail
+                    </div>
+                    <div class="col-6">
+                      Categoria
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <label>{{proveedorSelected?.mail}}</label>
+                    </div>
+                    <div class="col-6">
+                      <select id="drdCategoria" class="dropdown-toggle select2-chosen-2 form-control"
+                        name="drdCategoria" [(ngModel)]="ordenCompra.categoria">
+                        <option value=0 selected>--- Seleccione una opcion --- </option>
+                        <option value=1>Producto</option>
+                        <option value=2>Servicio</option>
+                        <option value=3>Subcontrato</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="solicitador">
+                  <div class="row labelHeder">
+                    <div class="col-6">
+                      Solicita
+                    </div>
+                    <div class="col-6">
+                      Metodo de pago
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-6">
+                      <select id="drdSolicita" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        [(ngModel)]="ordenCompra.idSolicitador" name="drdSolicita" appSelectValidator>
+                        <option value=0 selected>--- Seleccione una opcion ---
+                        </option>
+                        <option *ngFor="let user of usuarios$ | async" value={{user.idUsuario}}>{{user.nombre}}
+                          {{user.paterno}}</option>
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <select id="drdMetodoPago" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        [(ngModel)]="ordenCompra.metodoPago" name="drdMetodoPago" appSelectValidator>
+                        <option value='0' selected>--- Seleccione una opcion ---
+                        </option>
+                        <option value='2'>Efectivo</option>
+                        <option value='3'>Cheque</option>
+                        <option value='4'>Transferencia</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="centroCosto">
+                  <div class="row labelHeder">
+                    <!-- <div class="col-6">
+                                Centro de Costo
+                            </div> -->
+                    <div class="col-6">
+                      Centro de Costo
+                    </div>
+                    <div class="col-6">
+                      Prioridad
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <select id="drdSubCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        [(ngModel)]="ordenCompra.centroCosto" name="drdSubCentroCosto" appSelectValidator
+                        (change)="getAreaNegocio()">
+                        <option value=0 selected>--- Seleccione una opcion ---
+                        </option>
+                        <option *ngFor="let subCentroCosto of centroCostos$ | async"
+                          value={{subCentroCosto.idCentroCosto}}>
+                          {{subCentroCosto.nombreCentroCosto}}</option>
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <select id="drdPrioridad" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        [(ngModel)]="ordenCompra.prioridad" name="drdPrioridad">
+                        <option value="0" selected>--- Seleccione una opcion ---
+                        </option>
+                        <option value="1">Baja</option>
+                        <option value="2">Media</option>
+                        <option value="3">Alta</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="tipoGasto">
+                  <div class="row labelHeder">
+                    <div class="col-6">
+                      Tipo Gasto
+                    </div>
+                    <div class="col-6">
+                      Sub Tipo Gasto
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <select id="drdTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        [(ngModel)]="ordenCompra.tipoGasto" name="drdTipoGasto" appSelectValidator
+                        (change)="selectTipoGasto()">
+                        <option value=0 selected>--- Seleccione una opcion ---
+                        </option>
+                        <option *ngFor="let TipoGasto of tiposGastos$ | async" value={{TipoGasto.idTipoGasto}}>
+                          {{TipoGasto.nombreTipoGasto}}</option>
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <select id="drdSubTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                        [(ngModel)]="ordenCompra.subTipoGasto" name="drdSubTipoGasto" appSelectValidator>
+                        <option value=0 selected>--- Seleccione una opcion ---
+                        </option>
+                        <option *ngFor="let subTipoGasto of subTiposGastos$ | async"
+                          value={{subTipoGasto.idSubTipoGasto}}>
+                          {{subTipoGasto.nombreSubtipoGasto}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="Servicio">
+                  <div class="row labelHeder">
+                    <div class="col-12">
+                      Descripción del servicio
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <textarea class="form-control" rows="3" name="txtDescripcion"
+                        [(ngModel)]="ordenCompra.descripcion"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <app-oc-item *ngIf="ordenCompra" [item]="ordenCompra.item" [estadoPago]="ordenCompra.estadoPago" [cotizacion]="cotizacion"
+                  (changeTotal)="asignaTotal($event)" (changeItem)="ordenCompra.item = $event">
+                </app-oc-item>
+                <ng-container *ngIf="ocItems">
+                  <app-rad-estado-pago [estadoPago]="ordenCompra.estadoPago" [total]="ocItems.total"
+                    [metodoPago]="ordenCompra.metodoPago" (emitCondicion)="ordenCompra.condicionPago = $event"
+                    (emitEP)="ordenCompra.estadoPago = $event">
+                  </app-rad-estado-pago>
+                </ng-container>
+                <div class="Despacho">
+                  <div class="row">
+                    <div class="col-12">
+                      Dirección y descripción del despacho
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <textarea class="form-control" rows="3" name="txtDespacho"
+                        [(ngModel)]="ordenCompra.despacho"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <!-- Solicita: {{ordenCompra.solicita | json}} -->
+                <div class="flex Fcenter">
+                  <button class="btn btn-primary" [disabled]="!CForm.valid" (click)="Agregar()">Guardar</button>
+                  <button class="btn btn-secondary" (click)="clean()">Limpiar</button>
+                </div>
+                <!-- {{ordenCompra | json}} -->
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>

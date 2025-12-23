@@ -1,0 +1,139 @@
+<div class="bgAbs">
+    <div class="contenido">
+        <header [ngStyle]="{'background-color': centroCosto.fondo}">
+            <div class="row" [ngStyle]="{'color': centroCosto.letras}">
+                <div class="col-9">
+                    Configuración bolsas de egresos - <span
+                        *ngIf="centroCosto.nombreCentroCosto">{{centroCosto.nombreCentroCosto}}
+                    </span>
+                </div>
+                <div class="col-3" *ngIf="centroCosto">
+                    $ {{centroCosto.montoProgramado - montoOtasBolsas - pagosTotal | number : '1.0-0' | comatopoint}}
+                </div>
+            </div>
+        </header>
+        <section>
+            <div class="row labelHeader">
+                <div class="col-8">
+                    <div class="row labelHeader">
+                        <div class="col-9">
+                            Tipo de bolsa
+                        </div>
+                        <div class="col-3">
+                            Cantidad de pagos
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    Tipos de Gastos
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 boxPagosBolsa">
+                    <div class="row">
+                        <div class="col-9">
+                            <select id="drdBolsa" name="drdBolsa" class="dropdown-toggle select2-chosen-2 form-control"
+                                [(ngModel)]="bolsa.tipoBolsa" (change)="bolsaActiva(bolsa.tipoBolsa)">
+                                <option value=0 selected>--- Seleccione una opcion ---
+                                </option>
+                                <option value=1>Gastos Generales</option>
+                                <option value=2>Materiales - Sub Contrato</option>
+                                <option value=3>Mano de Obra Sueldos</option>
+                                <option value=4>Mano de Obra Imposiciones</option>
+                                <option value=5>Impuesto</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <input class="form-control mb10px" min=1 type="number" placeholder="Cantidad Pagos"
+                                name="txtCantPagos" [(ngModel)]="cantPagos" (change)="agregaPagos()">
+                        </div>
+                    </div>
+                    <div class="row labelHeader text-center tableTitle">
+                        <div class="col-3">Proyección de Pago</div>
+                        <div class="col-3">Monto Proyectado</div>
+                        <div class="col-3">Monto Gastado</div>
+                        <div class="col-3">Monto Disponible</div>
+                    </div>
+                    <div class="row rowPagosBolsa" *ngFor="let pago of bolsa.pagosBolsa
+                    ; let i = index">
+                        <div class="col-3">
+                            <div class="input-group date" *ngIf="validateFecha(pago.fechaPago)">
+                                <input id="{{'txtFecha' + i}}" name="{{'txtFecha' + i}}" type="text"
+                                    (focusout)="asignaFechas(i)" class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            <span *ngIf="!validateFecha(pago.fechaPago)">{{pago.fechaPago | date:'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="col-3 text-right">
+                            <input class="form-control" min=0 type="number" placeholder="Monto Asignado"
+                                name="{{'txtMonto' + i}}" [(ngModel)]="pago.monto" (change)="calcPagosTotal()"
+                                *ngIf="validateFecha(pago.fechaPago)">
+                            <span *ngIf="!validateFecha(pago.fechaPago)">${{pago.monto}}</span>
+                        </div>
+                        <div class="col-3 text-right">
+                            <span>${{pago.gastado | number | comatopoint}}</span>
+                        </div>
+                        <div class="col-3 text-right">
+                            <span>${{pago.monto - pago.gastado | number | comatopoint}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 offset-md-3 text-right font-weight-bold h6">
+                            ${{pagosTotal | number: '1.0-0' | comatopoint}}</div>
+                        <div class="col-3 text-right font-weight-bold h6">
+                            ${{pagosTotalGastado | number: '1.0-0' | comatopoint}}</div>
+                        <div class="col-3 text-right font-weight-bold h6">
+                            ${{pagosTotalDisponible | number: '1.0-0' | comatopoint}}</div>
+                    </div>
+                </div>
+                <div class="col-4 pares">
+                    <div class="checkbox abc-checkbox-primary" *ngFor="let tipoGasto of TiposGastos; let i = index">
+                        <input id="{{'chkTipoDato' + i}}" name="chkTipoDato" type="checkbox"
+                            (click)="addTipoGasto(i,tipoGasto.nombreTipoGasto)"
+                            [disabled]="tipoUtilizadoOtraBolsa(bolsa.tipoBolsa,tipoGasto.nombreTipoGasto)">
+                        <label for="{{'chkTipoDato' + i}}">
+                            {{tipoGasto.nombreTipoGasto}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <!-- {{bolsa | json}} -->
+            <div class="row mb-3 btns">
+                <div class="col-6 text-right">
+                    <button class="btn btn-primary" [disabled]="txtBotonGuardar == 'Guardando'"
+                        (click)="guardar()">{{txtBotonGuardar}}<span
+                            *ngIf="txtBotonGuardar == 'Guardando'">...</span></button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-secondary" (click)="cancelar()">Salir</button>
+                </div>
+            </div>
+        </section>
+        <section class="gridSistem">
+            <mat-card *ngFor="let tblBolsa of bolsas"
+                [ngClass]="{'bg-primary text-white': tblBolsa.tipoBolsa == bolsa.tipoBolsa}">
+                <mat-card-header class="h5" [ngSwitch]="tblBolsa.tipoBolsa">
+                    <mat-card-title *ngSwitchCase="1">Gastos Generales</mat-card-title>
+                    <mat-card-title *ngSwitchCase="2">Materiales - Sub Contrato</mat-card-title>
+                    <mat-card-title *ngSwitchCase="3">Mano de Obra Sueldos</mat-card-title>
+                    <mat-card-title *ngSwitchCase="4">Mano de Obra Imposiciones</mat-card-title>
+                    <mat-card-title *ngSwitchCase="5">Impuesto</mat-card-title>
+                    <mat-icon class="cerrar text-danger pointer" (click)="confirmEliminar(tblBolsa)">close</mat-icon>
+                </mat-card-header>
+                <mat-card-content class="align-text-bottom h100">
+                    <ul>
+                        <li class="text-right" *ngFor="let pagos of tblBolsa.pagosBolsa">
+                            {{pagos.fechaPago | date:'dd/MM/yy':'UTC'}} -
+                            ${{pagos.monto | number:'1.0-0' | comatopoint}}</li>
+                        <li class="text-right font-weight-bold border-top">Total:
+                            ${{ calcTotalBolsa(tblBolsa.pagosBolsa) | number:'1.0-0' | comatopoint}}</li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<table class="table table-bordered table-striped table-hover no-footer principal">
+  <thead>
+    <tr>
+      <th>Campo</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of tabla">
+      <td>{{item.campo}}</td>
+      <td class="right">$ {{item.valor | number:'1.0-0' | comatopoint}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,639 @@
+.widget {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+table {
+    font-size: 12px;
+}
+
+.table td {
+    line-height: 1;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+    border-bottom-width: 1px;
+}
+
+.descrip {
+    min-width: 45%;
+}
+
+.right {
+    text-align: right;
+}
+
+.cuenta {
+    margin-bottom: 1em;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.Folio {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.flex,
+.ulflex {
+    display: flex;
+}
+
+.flex {
+    align-items: center;
+}
+
+.Fcenter {
+    justify-content: center;
+}
+
+.Fcenter .btn {
+    margin: 0px 4px;
+}
+
+.Proveedor {
+    padding: 0.5em 2px;
+}
+
+.linea {
+    border-bottom: 1px solid rgb(95, 95, 95);
+}
+
+.lineatop {
+    border-top: 1px solid rgb(95, 95, 95);
+}
+
+.linealeft {
+    border-left: 1px solid rgb(95, 95, 95);
+}
+
+.lineafull {
+    border: 1px solid rgb(95, 95, 95);
+}
+
+.gray {
+    background-color: rgb(202, 202, 202);
+}
+
+.center {
+    text-align: center;
+}
+
+.fs {
+    font-size: 16px;
+}
+
+.popUp {
+    font-size: 12px;
+    overflow: hidden;
+    max-height: 85%;
+    overflow-y: auto;
+}
+
+.popUp::-webkit-scrollbar-track,
+.limit::-webkit-scrollbar-track,
+.limit2::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.popUp::-webkit-scrollbar,
+.limit::-webkit-scrollbar,
+.limit2::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.popUp::-webkit-scrollbar-thumb,
+.limit::-webkit-scrollbar-thumb,
+.limit2::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}
+
+.TzS .row {
+    margin-bottom: 1px;
+}
+
+.caja {
+    margin-top: 1em;
+    border: 1px solid gray;
+    padding: 0.4em 0px;
+}
+
+.click .table tbody tr:hover {
+    cursor: pointer;
+}
+
+.labelHeder {
+    font-weight: 100;
+    margin-bottom: 0px;
+}
+
+.bgWhite {
+    background-color: white !important;
+}
+
+.bgWhite td {
+    border: 1px solid white;
+}
+
+.bgWhite:hover {
+    background-color: white !important;
+}
+
+.brRigt {
+    border-right: 1px solid rgb(232, 232, 232) !important;
+}
+
+.firmas {
+    margin-top: 7em;
+}
+
+.Firma {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.FloatRight {
+    float: right;
+}
+
+.Firma li {
+    border: 1px solid rgb(99, 99, 99);
+    width: 200px;
+}
+
+.texto {
+    margin-top: 3em;
+}
+
+.marginR {
+    margin-right: 2em;
+}
+
+.fechaCompromiso {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.cotizacion {
+    font-size: 14px;
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cotizacion a {
+    text-decoration: none;
+    background-image: linear-gradient(blue, blue);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+.cotizacion a:hover,
+.cotizacion a:focus {
+    background-size: 100% 2px;
+}
+
+.Pagar {
+    font-size: 13px;
+}
+
+.limit {
+    overflow-y: auto;
+    /* padding-right: 10px; */
+}
+
+.limit2 {
+    max-height: calc(87vh - 125px);
+    overflow-y: auto;
+    /* padding-right: 10px; */
+}
+
+
+/* thead tr td {
+    position: sticky;
+    top: 0;
+    background-color: #1a9702;
+} */
+
+
+/* table td:nth-child(1) {
+    width: 67px;
+}
+
+table td:nth-child(2) {
+    width: 90px;
+}
+
+table td:nth-child(3) {
+    width: 100px;
+}
+
+table td:nth-child(4) {
+    width: 15%;
+}
+
+table td:nth-child(5) {
+    width: 10%;
+}
+
+table td:nth-child(6) {
+    width: 90px;
+}
+
+table td:nth-child(7) {
+    width: 92px;
+}
+
+table td:nth-child(8),
+table td:nth-child(9) {
+    width: 70px;
+}
+
+table td:nth-child(10) {
+    width: 83px;
+}
+
+table td:nth-child(11) {
+    width: 120px;
+}
+
+table tbody td:nth-child(12) {
+    text-decoration: underline;
+    color: #2b2bf5;
+} */
+
+.mb1 {
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.mb5 {
+    margin-bottom: 5px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.subTitle {
+    background: #4f5a5f;
+    padding: 2px 0px;
+    color: white;
+}
+
+.ptb5 {
+    padding: 5px 20px;
+}
+
+.buscador {
+    position: absolute;
+    right: 10px;
+    top: 1px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.desplegable {
+    cursor: pointer;
+}
+
+.desplegar {
+    transition: all 0.5s;
+    max-height: 0vh;
+    overflow-x: hidden;
+}
+
+.desplegado {
+    max-height: 72vh;
+}
+
+.glyphicon {
+    margin-top: 5px;
+}
+
+.limit {
+    overflow-x: hidden;
+}
+
+.cortar {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* width: inherit; */
+}
+
+
+/* tbody tr, */
+
+
+/* tbody tr td {
+    white-space: nowrap;
+    max-height: 1.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} */
+
+.FirmaImg {
+    top: 0;
+    right: 10%;
+    position: absolute;
+    max-width: 50%;
+    transform: translatey(-45%);
+}
+
+.cRed {
+    color: red;
+    font-size: 12px;
+}
+
+.centroCostoComprometido {
+    background-color: #8EEC8A;
+    color: #1A496E;
+}
+
+.centroCostoPendiente {
+    color: #F87C06;
+}
+
+.w100 {
+    max-width: 100%;
+}
+
+.montoInicial {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.mb0 {
+    margin-bottom: 0px;
+}
+
+.fr10 {
+    position: absolute;
+    right: 10px;
+    z-index: 2;
+}
+
+.fr10 * {
+    font-size: 10px;
+}
+
+.dropdown-menu {
+    min-width: 112px;
+}
+
+
+/**************************** Tabla Tipos de pagos Especiales ****************************/
+
+.bolsaGenerales div:nth-child(-n+11) {
+    background-color: #bfcc45;
+    color: black;
+}
+
+.bolsaMatSub div:nth-child(-n+11) {
+    background-color: #feff00;
+    color: black;
+}
+
+.bolsaImpuesto div:nth-child(-n+11),
+.iva div:nth-child(-n+11) {
+    background-color: rgb(0, 32, 96);
+    color: white;
+}
+
+.bolsaImposiciones div:nth-child(-n+11),
+.imposiciones div:nth-child(-n+11) {
+    background-color: rgb(112, 48, 170);
+    color: white;
+}
+
+.bolsaSueldos div:nth-child(-n+11),
+.manoObra div:nth-child(-n+11) {
+    background-color: rgb(255, 192, 0);
+    color: black;
+}
+
+.financiero div:nth-child(-n+11) {
+    background-color: red;
+    color: white;
+}
+
+.ingreso div:nth-child(n+8),
+.ingreso div:nth-child(-n+6) {
+    background-color: rgba(0, 255, 0, 0.397) !important;
+}
+
+.ingreso div:last-child {
+    background-color: transparent !important;
+}
+
+/**************************** Tabla UL ****************************/
+
+.stickyHeader{
+    position: sticky;
+    top: 0;
+}
+
+.Proyeccion {
+    /* background-color: rgb(59, 59, 59); */
+    background-color: gray;
+    color: white;
+}
+
+.mes {
+    background-color: rgb(32, 54, 64);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    cursor: default !important;
+
+}
+
+.mes li {
+    cursor: default !important;
+    border-bottom: none !important;
+}
+
+.Retrazado {
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+.mt10 {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0px;
+    font-size: 12px;
+    color: black;
+}
+
+.col-12>ul>li:nth-child(1) {
+    background-color: #1a9702;
+    color: white;
+    border-bottom: 1px solid #cccccc;
+    font-weight: bold;
+}
+
+.ulflex div {
+    border-right: 1px solid #cccccc;
+    padding: 3px 8px;
+}
+
+.subTitle .ulflex div {
+    border-right: none;
+    border-left: none;
+    padding: 0;
+}
+
+.limit li,
+.limit2 li {
+    cursor: pointer;
+    border-bottom: 1px solid #cccccc;
+}
+
+.limit li:nth-child(even),
+.limit2 li:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+.ulflex div {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.subTitle .ulflex div {
+    white-space: nowrap;
+    text-overflow: initial;
+    overflow: visible;
+}
+
+
+/* fecha */
+
+.ulflex div:nth-child(1) {
+    min-width: 7%;
+    border-left: 1px solid #cccccc;
+    text-align: center;
+}
+
+.subTitle .ulflex div:nth-child(1) {
+    padding-left: 2px;
+}
+
+
+/* Num OC */
+
+.ulflex div:nth-child(2) {
+    min-width: 7%;
+}
+
+
+/* Proveedor */
+
+.ulflex div:nth-child(3) {
+    min-width: 10%;
+}
+
+
+/* Descripcion */
+
+.ulflex div:nth-child(4) {
+    min-width: 13%;
+}
+
+
+/* Estado */
+
+.ulflex div:nth-child(5) {
+    min-width: 10%;
+    text-align: center;
+}
+
+
+/* Tipo Gasto */
+
+.ulflex div:nth-child(6) {
+    min-width: 10%;
+    text-align: center;
+}
+
+
+/* Centro Costo */
+
+.ulflex div:nth-child(7) {
+    min-width: 9%;
+    text-align: center;
+}
+
+
+/* Metodo Pago */
+
+.ulflex div:nth-child(8) {
+    min-width: 8%;
+    text-align: center;
+}
+
+
+/* Factura */
+
+.ulflex div:nth-child(9) {
+    min-width: 6%;
+    text-align: center;
+}
+
+
+/* N° Pago */
+
+.ulflex div:nth-child(10) {
+    min-width: 6%;
+    text-align: center;
+}
+
+
+/* Monto */
+
+.ulflex div:nth-child(11) {
+    min-width: 7%;
+    text-align: right;
+}
+
+
+/* Saldo */
+
+.ulflex div:nth-child(12) {
+    min-width: 7%;
+    text-align: right;
+}
+
+/****** Estado ******/
+
+.cheque{
+    font-size: 12px;
+    width: auto;
+    height: auto;
+    font-weight: bold;
+}

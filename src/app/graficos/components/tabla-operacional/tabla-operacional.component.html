@@ -1,0 +1,35 @@
+<ng-template #NoData>
+  <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<div class="row">
+  <div class="col-2 col-md-offset-10">
+    <mat-select placeholder="Año" [(ngModel)]="agno" (change)="getData()">
+      <mat-option *ngFor="let item of years$ | async" [value]=item>{{item}}</mat-option>
+    </mat-select>
+  </div>
+</div>
+
+<!-- <mat-tab-group mat-align-tabs="start">
+  <mat-tab label="Tipo de gasto">
+    <app-contenido-tabla-operacional [contenido]="tabla" [inversiones]="inversiones"></app-contenido-tabla-operacional>
+    
+  </mat-tab>
+  <mat-tab label="Sub Tipo de gasto"> -->
+<ng-container *ngIf="reporteOperacional$ | async as reporteOperacional else NoData">
+  <app-contenido-tabla-operacional-sub-tipo [contenido]="reporteOperacional"></app-contenido-tabla-operacional-sub-tipo>
+  <div class="row">
+    <div class="col-6">
+      <app-grafico-tipo-gasto
+        [data]="reporteOperacional | filterOperacionales:['RETIROS','INVERSIONES']"></app-grafico-tipo-gasto>
+    </div>
+    <div class="col-6" *ngIf="reporteOperacionalYears$ | async as operacionalYears">
+      <app-grafico-operacional-agnos [tiposGastos]="operacionalYears">
+      </app-grafico-operacional-agnos>
+    </div>
+  </div>
+</ng-container>
+<!-- </mat-tab>
+</mat-tab-group> -->
+
+<app-loading *ngIf="loading"></app-loading>

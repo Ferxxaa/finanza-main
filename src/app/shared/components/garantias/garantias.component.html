@@ -1,0 +1,165 @@
+<div class="bkPopUp" *ngIf="garantiaBool">
+  <div class="popUp">
+    <div id="popUp">
+      <h3>Garantias</h3>
+      <hr>
+      <div class="row">
+        <div class="col-3">
+          Numero Documento
+        </div>
+        <div class="col-3">
+          Tipo de Garantia
+        </div>
+        <div class="col-3">
+          Vencimiento
+        </div>
+        <div class="col-3">
+          Banco
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <input class="form-control" type="text" placeholder="N° documento" name="txtDocumento" required
+            [(ngModel)]="garantia.NumeroDocumento">
+        </div>
+        <div class="col-3">
+          <select id="drdTipoGarantia" class="dropdown-toggle select2-chosen-2 form-control requiered"
+            [(ngModel)]="garantia.TipoDoc" name="drdTipoGarantia">
+            <option value='0' selected>--- Seleccione una opcion ---</option>
+            <option *ngFor="let tipo of tipoGarantia; let i = index" value={{tipo}}>{{tipo}}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="garantia.vencimiento">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-3">
+          <select id="drdBanco" class="dropdown-toggle select2-chosen-2 form-control requiered"
+            [(ngModel)]="garantia.banco" name="drdTipoGarantia">
+            <option value='0' selected>--- Seleccione una opcion ---</option>
+            <option *ngFor="let banco of bancos; let i = index" value={{banco}}>{{banco}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          Proveedor
+        </div>
+        <div class="col-3">
+          Cliente
+        </div>
+        <div class="col-3">
+          Monto
+        </div>
+        <div class="col-3">
+          descripción
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <select id="drdCliente" class="dropdown-toggle select2-chosen-2 form-control requiered"
+            [(ngModel)]="garantia.proveedor" name="drdCliente">
+            <option value='0' selected>--- Seleccione una opcion ---</option>
+            <option *ngFor="let proveedor of proveedores | async | sortProveedor; let i = index"
+              value={{proveedor.nombre}}>{{proveedor.nombre}}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <select id="drdCliente" class="dropdown-toggle select2-chosen-2 form-control requiered"
+            [(ngModel)]="garantia.cliente" name="drdCliente">
+            <option value='0' selected>--- Seleccione una opcion ---</option>
+            <option *ngFor="let mandante of mandantes | async ; let i = index" value={{mandante.NombreMandante}}>
+              {{mandante.NombreMandante}}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <input class="form-control" type="number" placeholder="Monto" name="txtMonto" required
+            [(ngModel)]="garantia.Monto">
+        </div>
+        <div class="col-3">
+          <input class="form-control" type="text" placeholder="Descripcion" name="txtDescription" required
+            [(ngModel)]="garantia.descripcion">
+        </div>
+      </div>
+      <!-- {{garantia | json}} -->
+      <br>
+      <div class="row top">
+        <div class="col-12">
+          <button mat-raised-button color="primary" matTooltip="Garantias" [matTooltipPosition]="'above'"
+            (click)="saveGarantia()">
+            Agregar Documento
+          </button>
+          <button mat-raised-button matTooltip="Cerrar" [matTooltipPosition]="'above'" (click)="cerrar.emit()">
+            Cerrar
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-bordered table-striped table-hover no-footer">
+            <thead>
+              <tr>
+                <th>Numero</th>
+                <th>Tipo</th>
+                <th>Proveedor/Cliente</th>
+                <th>Banco</th>
+                <th>Monto</th>
+                <th>Vencimiento</th>
+                <th>descripción</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of garantias | async" [ngClass]="{
+                'bg-success': !item.estado || item.estado == 1,
+                'text-white': !item.estado || item.estado == 1 || item.estado == 3 || item.estado == 4,
+                'bg-warning': item.estado == 2,
+                'bg-secondary': item.estado == 3,
+                'bg-danger': item.estado == 4
+              }">
+                <td>{{item.NumeroDocumento}}</td>
+                <td>{{item.TipoDoc}}</td>
+                <td>
+                  <span *ngIf="item.proveedor != '0'">{{item.proveedor}}</span>
+                  <span *ngIf="item.cliente != '0'">{{item.cliente}}</span>
+                </td>
+                <td>{{item.banco}}</td>
+                <td>${{item.Monto | number:'1.0-0' | comatopoint}}</td>
+                <td>{{item.vencimiento | date:'dd/MM/yy':'UTC'}}</td>
+                <td>{{item.descripcion}}</td>
+                <td>
+                  <div class="super2">
+                    <button mat-icon-button data-toggle="dropdown" class="opciones">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                      <button mat-button class="d-block text-success" (click)="changeState(item,1)">
+                        Vigente
+                      </button>
+                      <button mat-button class="d-block text-warning" (click)="changeState(item,2)">
+                        Vencida
+                      </button>
+                      <button mat-button class="d-block text-secondary" (click)="changeState(item,3)">
+                        Devuelta
+                      </button>
+                      <button mat-button class="d-block text-danger" (click)="changeState(item,4)">
+                        Ejecutada
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

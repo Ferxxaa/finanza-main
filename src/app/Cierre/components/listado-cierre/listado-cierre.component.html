@@ -1,0 +1,25 @@
+<div class="header center">
+    <span class="h4 bold">Historial Años Cerrados</span>
+</div>
+<div
+    class="listado">
+    <!-- <mat-list role="list">
+      <mat-list-item role="listitem" *ngFor="let item of listado$ | async">
+        {{item.agno}}
+        <mat-list role="list">
+          <mat-list-item role="listitem" *ngFor="let centroCosto of getCentroCosto(item)">{{centroCosto}}</mat-list-item>
+        </mat-list>
+      </mat-list-item>
+    </mat-list> -->
+    <ul class="cerrados">
+        <li *ngFor="let item of listado | sortAgnos" class="licerrados" (click)="display(item._id)">
+            <span class="bold">{{item.agno}}</span>
+            <ul [id]="item._id" class="oculto internos normal">
+                <li *ngFor="let centroCosto of getCentroCosto(item) | calcPorcentaje:item:totales" [ngClass]="{selected: centrosSelected.includes(centroCosto.nombre)}">
+                    {{centroCosto.nombre}}
+                    <span class="float-right">{{centroCosto.totalOrdenAgno * 100 / centroCosto.totalCentro | number:'1.2-2' | comatopoint}}%</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

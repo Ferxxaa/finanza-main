@@ -1,0 +1,54 @@
+<div class="Proveedor">
+    <div class="row labelHeder">
+        <div class="col-2">
+            Señor (es)
+        </div>
+        <div class="col-7 bold linea lineatop">
+            {{proveedor.nombre}}
+        </div>
+        <div class="col-1 linea lineatop linealeft">
+            Fecha
+        </div>
+        <div class="col-2 lineafull">
+            {{fechaCreacion | date : 'dd/MM/yy':'UTC'}}
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-2">
+            Dirección
+        </div>
+        <div class="col-10 linea">
+            {{proveedor.direccion}}
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-2">
+            RUT
+        </div>
+        <div class="col-10 linea">
+            {{proveedor.rutProveedor}}
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-2">
+            Teléfono
+        </div>
+        <div class="col-10 linea">
+            {{proveedor.telefono}}
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-2">
+            Contacto
+        </div>
+        <div class="col-5 linea">
+            {{proveedor.contacto}}
+        </div>
+        <div class="col-2 linea">
+            E-Mail
+        </div>
+        <div class="col-3 linea">
+            {{proveedor.mail}}
+        </div>
+    </div>
+</div>

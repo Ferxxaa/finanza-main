@@ -1,0 +1,30 @@
+<div class="TipoGasto caja">
+  <div class="row labelHeder">
+    <div class="col-6 bold center">
+      Tipo Gasto
+    </div>
+    <div class="col-6 bold center">
+      Sub Tipo Gasto
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <select id="drdTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+        [(ngModel)]="tipoGasto._id" name="drdTipoGasto" (change)="AsignaTipoGasto()">
+        <option value=0 selected>--- Seleccione una opcion ---
+        </option>
+        <option *ngFor="let TipoGasto of listaTiposGastos; let i = index" value={{TipoGasto._id}}>
+          {{TipoGasto.nombre}}</option>
+      </select>
+    </div>
+    <div class="col-6">
+      <select id="drdSubTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+        [(ngModel)]="subTipoGasto" name="drdSubTipoGasto" (change)="cambiaSubTipo()">
+        <option value=0 selected>--- Seleccione una opcion ---
+        </option>
+        <option *ngFor="let subTipoGasto of tipoGasto.subTipoGasto; let i = index" value={{subTipoGasto}}>
+          {{subTipoGasto}}</option>
+      </select>
+    </div>
+  </div>
+</div>

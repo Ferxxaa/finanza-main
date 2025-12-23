@@ -1,0 +1,34 @@
+.bkPopUpFF {
+    z-index: 99999999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.popUpFF {
+    font-size: 12px;
+    overflow: hidden;
+    max-height: 100%;
+    overflow-y: auto;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 3px;
+    background-color: white;
+}
+
+.title {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.editor {
+    font-size: 15px;
+    margin-top: 15px;
+}

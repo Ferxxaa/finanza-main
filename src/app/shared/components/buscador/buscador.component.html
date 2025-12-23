@@ -1,0 +1,125 @@
+<form action="Buscar()">
+<div class="desplegable">
+    <div class="row">
+        <div class="col-12 bb1">
+            Buscador
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-6">Fecha inicio</div>
+        <div class="col-6">Fecha termino</div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div id="Inicio" class="input-group date">
+                <input id="txtInicio" name="txtInicio" type="text" (focusout)="asignaFechaInicio()"
+                    class="form-control" />
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div id="Termino" class="input-group date">
+                <input id="txtTermino" name="txtTermino" type="text" (focusout)="asignaFechaTermino()"
+                    class="form-control" />
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-6">Numero OC</div>
+        <div class="col-6">Proveedor</div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <input class="form-control" type="text" placeholder="Numero OC" name="txtOC" [(ngModel)]="buscador.oc">
+        </div>
+        <div class="col-6">
+            <select id="drdProveedor" class="dropdown-toggle select2-chosen-2 form-control requiered hiden"
+                [(ngModel)]="buscador.proveedor" name="drdProveedor" appSelectValidator >
+                <option value='' selected>--- Seleccione una opcion ---
+                </option>
+                <option *ngFor="let proveedor of proveedores$ | async | ordenaProveedor; let i = index" value={{proveedor.nombre}}>
+                    {{proveedor.nombre}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row labelHeder" *ngIf="tipoGasto">
+        <div class="col-6">
+            Tipo de gasto
+        </div>
+        <div class="col-6">
+            Sub Tipo de gasto
+        </div>
+    </div>
+    <div class="row" *ngIf="tipoGasto">
+        <div class="col-6">
+            <select id="drdTipoGastoB" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                [(ngModel)]="buscador.tipoGasto" name="drdTipoGastoB">
+                <option value='' selected>--- Seleccione una opcion ---
+                </option>
+                <option *ngFor="let tipoGasto of tiposGastos$ | async ; let i = index" value={{tipoGasto.nombreTipoGasto}}>
+                    {{tipoGasto.nombreTipoGasto}}</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <select id="drdTipoGastoB" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                [(ngModel)]="buscador.subTipoGasto" name="drdTipoGastoB">
+                <option value='' selected>--- Seleccione una opcion ---
+                </option>
+                <option *ngFor="let subTipoGasto of subTipoGasto$ | async " value={{subTipoGasto.nombreSubtipoGasto}}>
+                    {{subTipoGasto.nombreSubtipoGasto}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-6" *ngIf="vista">N° Pago</div>
+        <div class="col-6" *ngIf="vista">Factura</div>
+    </div>
+    <div class="row">
+        <div class="col-6" *ngIf="vista">
+            <input class="form-control" type="text" placeholder="N° Pago" name="txtPago" [(ngModel)]="buscador.pago">
+        </div>
+        <div class="col-6" *ngIf="vista">
+            <input class="form-control" type="text" placeholder="N° Factura" name="txtFactura"
+                [(ngModel)]="buscador.factura">
+        </div>
+    </div>
+    <div class="row labelHeder" >
+        <div class="col-6" *ngIf="vista">Estado</div>
+        <div class="col-6" *ngIf="!tipoGasto">Centro costo</div>
+    </div>
+    <div class="row" >
+        <div class="col-6" *ngIf="vista">
+            <select id="drdEstado" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                [(ngModel)]="buscador.estado" name="drdEstado">
+                <option value=0 selected>--- Seleccione una opcion ---</option>
+                <option value=1 >Pagado</option>
+                <option value=2 >Cobrado</option>
+                <option value=3 >OC / OP</option>
+                <option value=4 >Comprometido / Facturado</option>
+                <option value=5 >Proyección Egresos</option>
+                <option value=6 >Proyección Ingreso</option>
+            </select>
+        </div>
+        <div class="col-6" *ngIf="!tipoGasto">
+            <select id="drdCentroCostoB" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                [(ngModel)]="buscador.cCosto" name="drdCentroCostoB" appSelectValidator>
+                <option value='' selected>--- Seleccione una opcion ---
+                </option>
+                <option *ngFor="let centroCosto of centroCosto$ | async; let i = index" value={{centroCosto.nombreCentroCosto}}>
+                    {{centroCosto.nombreCentroCosto}}</option>
+            </select>
+        </div>
+    </div>
+    <!-- {{buscador | json}} -->
+    <div class="row mt10">
+        <div class="col-2 col-md-offset-5">
+            <button class="btn btn-primary" (click)="Buscar()">Buscar</button>
+        </div>
+    </div>
+    </div>
+</form>

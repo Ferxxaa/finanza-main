@@ -1,0 +1,77 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<ng-container *ngIf="reporteVentas$ | async as reporteVentas else NoData">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="widget Max">
+                <header style="background-color: #555555">
+                    <h4 style="color: white;">
+                        <strong>Resumen de ventas anual</strong>
+                    </h4>
+                    <div class="buscador">
+                        <mat-icon class="ml5" (click)="resumen=true" matTooltip="Resumen"
+                            [matTooltipPosition]="'above'">view_compact</mat-icon>
+                        <mat-icon class="ml5" (click)="tortas=true" matTooltip="Gráficos informe de ventas"
+                            [matTooltipPosition]="'above'">donut_small</mat-icon>
+                        <!-- <mat-icon class="ml5" (click)="tipoFacturacion=true" matTooltip="Tipo facturación" [matTooltipPosition]="'above'">donut_small</mat-icon>
+                        <mat-icon class="ml5" (click)="areaNegocio=true" matTooltip="Área de negocio" [matTooltipPosition]="'above'">donut_small</mat-icon>
+                        <mat-icon class="ml5" (click)="centroCostoBol=true" matTooltip="Centro de costo" [matTooltipPosition]="'above'">donut_small</mat-icon> -->
+                        <mat-icon class="ml5" (click)="facturacionMensual=true" matTooltip="Facturación mensual"
+                            [matTooltipPosition]="'above'">show_chart</mat-icon>
+                    </div>
+                </header>
+
+                <div class="widget-body">
+                    <fieldset>
+                        <legend></legend>
+                        <div class="row">
+                            <div class="col-8"></div>
+                            <div class="col-2">
+                                <mat-form-field>
+                                    <mat-label>Centro costo</mat-label>
+                                    <mat-select placeholder="Centro costo" name="drdCentroCosto"
+                                        [(ngModel)]="centroCosto" (change)="findCentroCosto()">
+                                        <mat-option value="0">--- Seleccione una opcion ---</mat-option>
+                                        <mat-option *ngFor="let centroCostoEl of centroCosto$ | async | subCentroCosto"
+                                            [value]="centroCostoEl.nombre">
+                                            {{ centroCostoEl.nombre }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-2">
+                                <mat-form-field>
+                                    <mat-label>Año</mat-label>
+                                    <mat-select placeholder="Año" name="drdAgno" [(ngModel)]="agno"
+                                        (change)="findRepo(agno)">
+                                        <mat-option>--- Seleccione una opcion ---</mat-option>
+                                        <mat-option *ngFor="let year of years$ | async" [value]="year">
+                                            {{ year }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <app-facturas-emitidas-agno [ResumenAgno]='reporteVentas | addMonth' [proyectadas]='proyectadas'
+                            [centroCosto]='centroCosto' [agno]='agno'></app-facturas-emitidas-agno>
+                    </fieldset>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+    <app-detalle-venta *ngIf="resumen" [ResumenAgno]="reporteVentas" (cerrar)="resumen=false"></app-detalle-venta>
+    <!-- <app-compra-tipo-facturacion *ngIf="tipoFacturacion" [ResumenAgno]="ResumenAgno" (cerrar)="tipoFacturacion=false"></app-compra-tipo-facturacion>
+    <app-facturacion-area-negocio *ngIf="areaNegocio" [ResumenAgno]="ResumenAgno" (cerrar)="areaNegocio=false"></app-facturacion-area-negocio>
+    <app-facturacion-centro-costo *ngIf="centroCostoBol" [ResumenAgno]="ResumenAgno" (cerrar)="centroCostoBol=false"></app-facturacion-centro-costo> -->
+    <app-contenedor-pop-up *ngIf="tortas" [ResumenAgno]="reporteVentas" (cerrar)="tortas=false"></app-contenedor-pop-up>
+    <app-facturacion-mensual *ngIf="facturacionMensual" [ResumenAgno]="reporteVentas | addMonth"
+        (cerrar)="facturacionMensual=false">
+    </app-facturacion-mensual>
+
+    <app-loading *ngIf="loading"></app-loading>
+</ng-container>

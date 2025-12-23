@@ -1,0 +1,12 @@
+<div class="bkPopUp" (click)="salir()">
+    <div class="popUp" (click)="noCerrar($event)">
+        <div class="row">
+            <div class="col-4">
+                <app-list-centro-costo (listadoCentroSelected)="displayGraph($event)"></app-list-centro-costo>
+            </div>
+            <div class="col-8">
+                <app-garph-cierres></app-garph-cierres>
+            </div>
+        </div>
+    </div>
+</div>

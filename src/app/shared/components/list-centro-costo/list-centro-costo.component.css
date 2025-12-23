@@ -1,0 +1,16 @@
+.grid{
+    padding: 9px;
+    border: 1px solid;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.li{
+   cursor: pointer; 
+   transition: 0.5s;
+}
+
+.Active{
+    background-color: #48CAE4;
+    color: white;
+}

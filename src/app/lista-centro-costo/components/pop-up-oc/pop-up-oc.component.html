@@ -1,0 +1,270 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div id="popUp">
+            <div class="row TzS">
+                <div class="col-2">
+                    <img src="http://www.trazas-nbi.com/assets/tzs.jpg" alt="TzS" style="max-width: 100%;">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-12 bold">
+                            TRAZAS GESTION DE PROYECTOS DE INFRAESTRUCTURA LTDA
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            RUT: 76.151.605-1
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Cirujano Guzman 24 Depto 83
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Comuna providencia
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            fono
+                        </div>
+                        <div class="col-11">
+                            2 2982 9588 - 2 2492 0809
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            Giro
+                        </div>
+                        <div class="col-11">
+                            Arquitectura - Construcción
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row gray Folio bold">
+                <div class="col-9 center fs">
+                    ORDEN DE COMPRA
+                </div>
+                <div class="col-3 ">
+                    <span class="FloatRight marginR fs">N° {{ordenCompra.folio}}</span>
+                </div>
+            </div>
+            <div class="Proveedor" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Señor (es)
+                    </div>
+                    <div class="col-7 bold linea lineatop">
+                        {{ordenCompra.proveedor.nombre}}
+                    </div>
+                    <div class="col-1 linea lineatop linealeft">
+                        Fecha
+                    </div>
+                    <div class="col-2 lineafull">
+                        {{ordenCompra.fechaCreacion | date:'dd/MM/yyyy':'UTC'}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Dirección
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.direccion}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        RUT
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.rutProveedor}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Teléfono
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.telefono}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Contacto
+                    </div>
+                    <div class="col-5 linea">
+                        {{ordenCompra.proveedor.contacto}}
+                    </div>
+                    <div class="col-2 linea">
+                        E-Mail
+                    </div>
+                    <div class="col-3 linea">
+                        {{ordenCompra.proveedor.mail}}
+                    </div>
+                </div>
+            </div>
+            <div class="centroCosto caja">
+                <div class="row labelHeder">
+                    <div class="col-3 bold">
+                        <u>1.-CENTRO DE COSTO</u>
+                    </div>
+                    <div class="col-9 center">
+                        {{ordenCompra.centroCosto.nombre}} - {{ordenCompra.subCentroCosto}}
+                    </div>
+                </div>
+            </div>
+            <div class="Items caja">
+                <div class="row labelHeder">
+                    <div class="col-12 bold">
+                        <u>2.- DETALLE DE MATERIALES</u>
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-12">
+                        <table class="table table-bordered table-striped table-hover no-footer">
+                            <thead>
+                                <tr class="center">
+                                    <td>Item</td>
+                                    <td>Codigo</td>
+                                    <td>Detalle</td>
+                                    <td>Cantidad</td>
+                                    <td>Unitario</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ordenCompra.Items; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{item.codigo}}</td>
+                                    <td>{{item.detalle}}</td>
+                                    <td>{{item.cantidad | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.cantidad * item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Neto</td>
+                                    <td>$ {{ordenCompra.estadosPagos[ordenCompra.indice].monto - ordenCompra.iva | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">IVA afecto</td>
+                                    <td>$ {{ordenCompra.iva | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Bruto</td>
+                                    <td>$ {{ordenCompra.estadosPagos[ordenCompra.indice].monto | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="CondicionPago caja">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>3.- CONDICIONES DE PAGO Y PLAZO</u>
+                    </div>
+                </div>
+                <div class="row fechaCompromiso">
+                    <div class="col-6">
+                        <span *ngIf="ordenCompra.metodoPago == 2">Efectivo</span>
+                        <span *ngIf="ordenCompra.metodoPago == 3">Cheque</span>
+                        <span *ngIf="ordenCompra.metodoPago == 4">Transferencia Bancaria</span>
+                    </div>
+                    <div class="col-6">
+                        <span>N° {{ordenCompra.estadosPagos[indice].numeroPago}}</span>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!imprimir">
+                    <div class="col-6 fechaCompromiso">
+                        N° de Factura
+                    </div>
+                    <div class="col-6">
+                        {{ordenCompra.estadosPagos[indice].factura}}
+                    </div>
+                </div>
+                <div class="row" *ngIf="!imprimir">
+                    <div class="col-6 fechaCompromiso">
+                        Fecha compromiso de pago
+                    </div>
+                    <div class="col-6">
+                        {{ordenCompra.compromiso}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="despacho caja" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>4.- DESPACHO (Dirección y Contacto)</u>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ordenCompra.despacho}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="firmas center" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="Firma">
+                            <li>Usuario actual</li>
+                            <li class="bold">Preparado por {{creador}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul class="Firma FloatRight">
+                            <li>Aprobador</li>
+                            <li class="bold">autorizado por</li>
+                        </ul>
+                        <img class="FirmaImg" src="assets/firmaJaime.png" alt="Firma">
+                    </div>
+                </div>
+            </div>
+
+            <div class="texto">
+                <div class="col-12 justificado">
+                    <p>
+                        Nota 1.- Las empresas sub-contratista que ingresen a obras de Trazas Ltda., deben cumplir con lo estipulado ley 20.123 que regula el trabajo en régimen de Subcontratación, el funcionamiento de las Empresas de Servicios Transitorios, y el contrato de trabajo
+                        de servicios transitorios, exigiendo la entrega de lista del personal, contratos, registro entrega de RIOHS, obligacion de informar, entrega elementos de proteccion personal y certificacion de afiliacion de mutualidad con un minimo
+                        de 3 dias de anticipacion, o en su efecto comunicarse con Sr. Rodrigo Méndez, email: rmendez@trazas.cl
+                    </p>
+                </div>
+                <div class="col-12 justificado">
+                    <p>
+                        Nota 2.- Las facturas emitidas a Trazas Ltda. se deberan entregar en la oficina central ubicada en Cirujano Guzman Nº 24 of. 83 Providencia, entre las 9:00 a 13:00 y 15:00 a 19:00 horas, solo los días viernes.
+                    </p>
+                </div>
+                <div class="col-12 justificado">
+                    <p>
+                        Nota 3.- Se informa que nuestra politica de calidad, medio ambiente, seguridad y salud laboral se encuentra a disposicion en pagina web www.trazas.cl
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="cotizacion" *ngIf="ordenCompra.cotizacion">
+            <a href="{{url+adjunto}}" target="_blank" *ngIf="adjunto">Cotizacion</a>
+        </div>
+        <br>
+        <div class="flex Fcenter">
+            <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+        </div>
+    </div>
+</div>

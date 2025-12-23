@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row labelHeder">
+    <div class="col-12">
+      Nombre tipo gasto
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <input class="form-control" type="text" placeholder="Nombre tipo de gasto" name="txtNombreGasto"
+        required="required" [(ngModel)]="gasto.nombreTipoGasto">
+    </div>
+  </div>
+  <div class="flex">
+    <button class="btn btn-primary" (click)="Agregar()">Guardar</button>
+    <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+  </div>
+</div>

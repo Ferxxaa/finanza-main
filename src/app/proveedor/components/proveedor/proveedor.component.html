@@ -1,0 +1,386 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="margin05">
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <section class="widget MaxProveedor">
+                        <header style="background-color: #555555">
+                            <h4 style="color: white;">
+                                <strong>Proveedores</strong>
+                            </h4>
+                            <div class="widget-controls">
+                                <a data-toggle="collapse" href="#widgetBody" *ngIf="!colapse" (click)="colapse=true"><i
+                                        class="glyphicon glyphicon-chevron-up"></i></a>
+                                <a data-toggle="collapse" href="#widgetBody" *ngIf="colapse" (click)="colapse=false"><i
+                                        class="glyphicon glyphicon-chevron-down"></i></a>
+                            </div>
+                        </header>
+                        <div class="widget-body colapse in" id="widgetBody">
+                            <form #CForm="ngForm">
+
+
+                                <fieldset>
+                                    <legend></legend>
+
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Rut Proveedor
+                                        </div>
+
+
+                                        <div class="col-6">
+                                            Nombre Proveedor
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input class="form-control rut" name="txtRutProv" type="text"
+                                                placeholder="Rut Proveedor" required
+                                                [(ngModel)]="Proveedor.rutProveedor"
+                                                [class.Invalid]="CForm.controls.txtRutProv.touched && CForm.controls.txtRutProv.status=='INVALID'"
+                                                (change)="validaProveedor()">
+                                        </div>
+                                        <div class="col-6">
+                                            <input class="form-control" name="txtNomProveedor" type="text"
+                                                placeholder="Nombre Proveedor" required [(ngModel)]="Proveedor.nombre"
+                                                [class.Invalid]="CForm.controls.txtNomProveedor.touched && CForm.controls.txtNomProveedor.status=='INVALID'">
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Categoria
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <select id="drdCategoria"
+                                                class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                                [(ngModel)]="Proveedor.categoria" name="drdCategoria">
+                                                <option value=0 selected>--- Seleccione una opcion --- </option>
+                                                <option value=1>Producto</option>
+                                                <option value=2>Servicio</option>
+                                                <option value=3>Subcontrato</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Teléfono
+                                            <span class="opcional"></span>
+                                        </div>
+                                        <div class="col-6">
+                                            Dirección
+                                            <span class="opcional"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input class="form-control" type="text" placeholder="Teléfono"
+                                                name="txtTelefono" [(ngModel)]="Proveedor.telefono">
+                                        </div>
+                                        <div class="col-6">
+                                            <input class="form-control" type="text" placeholder="Dirección"
+                                                name="txtDireccion" [(ngModel)]="Proveedor.direccion">
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-6">
+                                            Persona de contacto
+                                        </div>
+                                        <div class="col-6">
+                                            Mail
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input class="form-control" type="text" name="txtContato"
+                                                placeholder="Contacto" required [(ngModel)]="Proveedor.contacto"
+                                                [class.Invalid]="CForm.controls.txtContato.touched && CForm.controls.txtContato.status=='INVALID'">
+                                        </div>
+                                        <div class="col-6">
+                                            <input class="form-control" type="text" name="txtCorreo"
+                                                placeholder="Correo" required [(ngModel)]="Proveedor.mail"
+                                                [class.Invalid]="CForm.controls.txtCorreo.touched && CForm.controls.txtCorreo.status=='INVALID'">
+                                        </div>
+                                    </div>
+                                    <div class="row labelHeder">
+                                        <div class="col-12">
+                                            Observación
+                                            <span class="opcional"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <textarea class="form-control" name="txtObservacion" rows="3"
+                                                [(ngModel)]="Proveedor.observacion"></textarea>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="flex">
+
+                                        <button type="submit" class="btn btn-primary" (click)="Agregar()"
+                                            [disabled]="!CForm.valid">Guardar</button>
+                                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                                    </div>
+
+                                </fieldset>
+                            </form>
+                        </div>
+
+
+
+                    </section>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <section class="widget">
+                        <header style="background-color: #555555">
+                            <h4 style="color: white;">
+                                <strong>Mis proveedores</strong>
+                            </h4>
+                        </header>
+
+                        <div class="widget-body">
+                            <fieldset>
+                                <legend></legend>
+
+                                <div class="filtro">
+                                    <div class="row labelHeder">
+                                        <div class="col-2">
+                                            RUT
+                                        </div>
+                                        <div class="col-2">
+                                            Nombre
+                                        </div>
+                                        <div class="col-3">
+                                            Palabra clave
+                                        </div>
+                                        <div class="col-3">
+                                            Categoria
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <input class="form-control rut" name="txtBuscarRut" type="text"
+                                                placeholder="Rut Proveedor" [(ngModel)]="buscador.rut">
+                                        </div>
+                                        <div class="col-2">
+                                            <input class="form-control" name="txtBuscarNombre" type="text"
+                                                placeholder="Nombre Proveedor" [(ngModel)]="buscador.nombre">
+                                        </div>
+                                        <div class="col-3">
+                                            <input class="form-control" name="txtDescrip" type="text"
+                                                placeholder="Palabra clave" [(ngModel)]="buscador.clave">
+                                        </div>
+                                        <div class="col-3">
+                                            <select id="drdBusCategoria"
+                                                class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                                [(ngModel)]="buscador.categoria" name="drdBusCategoria">
+                                                <option value=0>--- Seleccione una opcion --- </option>
+                                                <option value=1>Producto</option>
+                                                <option value=2>Servicio</option>
+                                                <option value=3>Subcontrato</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-secondary" (click)="buscar()">Buscar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul *ngIf="proveedores | async as proveedores$ else NoData">
+                                            <li>
+                                                <div class="ulflex">
+                                                    <div>RUT</div>
+                                                    <div>Nombre Proveedor</div>
+                                                    <div>Categoria</div>
+                                                    <div>Telefono</div>
+                                                    <div>Dirección</div>
+                                                    <div>Contacto</div>
+                                                    <div>Mail</div>
+                                                    <div>Evaluación</div>
+                                                </div>
+                                            </li>
+                                            <!--  -->
+                                            <li *ngFor="let proveedor of proveedores$ | paginate: { itemsPerPage: 30, currentPage: p }; let i = index"
+                                                >
+                                                <div class="ulflex">
+                                                    <div (click)="popUp(proveedor.idProveedor)">{{proveedor.rutProveedor}}</div>
+                                                    <div (click)="popUp(proveedor.idProveedor)">{{proveedor.nombre}}</div>
+                                                    <div (click)="popUp(proveedor.idProveedor)">
+                                                        <span *ngIf="proveedor.categoria == 1">Producto</span>
+                                                        <span *ngIf="proveedor.categoria == 2">Servicio</span>
+                                                        <span *ngIf="proveedor.categoria == 3">Subcontrato</span>
+                                                    </div>
+                                                    <div (click)="popUp(proveedor.idProveedor)">{{proveedor.telefono}}</div>
+                                                    <div (click)="popUp(proveedor.idProveedor)">{{proveedor.direccion}}</div>
+                                                    <div (click)="popUp(proveedor.idProveedor)">{{proveedor.contacto}}</div>
+                                                    <div (click)="popUp(proveedor.idProveedor)">{{proveedor.mail}}</div>
+                                                    <div (click)="evaluar(proveedor.rutProveedor)">
+                                                        <!-- <span class="fa fa-star-o" *ngIf="proveedor.evaluacion == 0"></span> -->
+                                                        <!-- <span class="fa fa-star" *ngIf="proveedor.evaluacion > 0" [ngStyle]="{'color':getColor(proveedor.evaluacion)}"></span> -->
+                                                        <span 
+                                                            class="text-warning fa fa-star-o"></span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                        <!-- <table class="table table-bordered table-striped table-hover no-footer">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>RUT</td>
+                                                            <td>Nombre Proveedor</td>
+                                                            <td>Categoria</td>
+                                                            <td>Teléfono</td>
+                                                            <td>Dirección</td>
+                                                            <td>Contacto</td>
+                                                            <td>Mail</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let proveedor of proveedores; let i = index" (click)="popUp(i)">
+                                                            <td>{{proveedor.rutProveedor}}</td>
+                                                            <td>{{proveedor.nombre}}</td>
+                                                            <td>
+                                                                <span *ngIf="proveedor.categoria == 1">Producto</span>
+                                                                <span *ngIf="proveedor.categoria == 2">Servicio</span>
+                                                                <span *ngIf="proveedor.categoria == 3">Subcontrato</span>
+                                                            </td>
+                                                            <td>{{proveedor.telefono}}</td>
+                                                            <td>{{proveedor.direccion}}</td>
+                                                            <td>{{proveedor.contacto}}</td>
+                                                            <td>{{proveedor.mail}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table> -->
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bkPopUp" *ngIf="eProveedor.rutProveedor || eProveedor.nombre">
+    <div class="popUp">
+        <div class="titlePopUp">
+            Editar Proveedor
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Rut
+            </div>
+
+
+            <div class="col-6">
+                Nombre Proveedor
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <input class="form-control rut" name="txtRutProv" type="text" placeholder="Rut Proveedor" required
+                    [(ngModel)]="eProveedor.rutProveedor"
+                    [class.Invalid]="CForm.controls.txtRutProv.touched && CForm.controls.txtRutProv.status=='INVALID'">
+            </div>
+            <div class="col-6">
+                <input class="form-control" name="txtNomProveedor" type="text" placeholder="Nombre Proveedor" required
+                    [(ngModel)]="eProveedor.nombre"
+                    [class.Invalid]="CForm.controls.txtNomProveedor.touched && CForm.controls.txtNomProveedor.status=='INVALID'">
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Categoria
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <select id="drdEdCategoria" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                    [(ngModel)]="eProveedor.categoria" name="drdEdCategoria">
+                    <option value=0 selected>--- Seleccione una opcion --- </option>
+                    <option value=1>Producto</option>
+                    <option value=2>Servicio</option>
+                    <option value=3>Subcontrato</option>
+                </select>
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Teléfono
+                <span class="opcional"></span>
+            </div>
+            <div class="col-6">
+                Dirección
+                <span class="opcional"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input class="form-control" type="text" placeholder="Teléfono" name="txtTelefono"
+                    [(ngModel)]="eProveedor.telefono">
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="text" placeholder="Dirección" name="txtDireccion"
+                    [(ngModel)]="eProveedor.direccion">
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Persona de contacto
+            </div>
+            <div class="col-6">
+                Mail
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input class="form-control" type="text" name="txtContato" placeholder="Contacto" required
+                    [(ngModel)]="eProveedor.contacto"
+                    [class.Invalid]="CForm.controls.txtContato.touched && CForm.controls.txtContato.status=='INVALID'">
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="text" name="txtCorreo" placeholder="Correo" required
+                    [(ngModel)]="eProveedor.mail"
+                    [class.Invalid]="CForm.controls.txtCorreo.touched && CForm.controls.txtCorreo.status=='INVALID'">
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-12">
+                Observación
+                <span class="opcional"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <textarea class="form-control" name="txtObservacion" rows="3"
+                    [(ngModel)]="eProveedor.observacion"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="flex">
+            <button class="btn btn-primary" (click)="Actualizar()">Actualizar</button>
+            <button class="btn btn-secondary" (click)="limpiar()">Cerrar</button>
+            <button class="btn btn-danger" (click)="Eliminar()">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+
+<app-evaluacion-masiva></app-evaluacion-masiva>

@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555" class="flex">
+                <h4 style="color: white;" class="capital">
+                    <strong>Consolidado Rentabilidad</strong>
+                </h4>
+                <!-- <div class="buscador">
+                    <mat-icon class="ml5" (click)="grafico=true" matTooltip="Gráficos consolidado" [matTooltipPosition]="'above'">donut_small</mat-icon>
+                </div> -->
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+                    <div class="row">
+                        <div class="col-2 col-md-offset-10 mb-10">
+                            <select id="drdBolsa" name="drdBolsa" class="dropdown-toggle select2-chosen-2 form-control">
+                                <option value="0" selected="selected">--- Seleccione una opcion ---
+                                </option>
+                                <option *ngFor="let item of consolidado" value="item.agno">{{item.agno}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <app-tabla-consolidado [consolidado]="consolidado" [operacional]="operacional"></app-tabla-consolidado>
+                            <!-- <app-tabla-consolidado-operacional  [consolidado]="consolidado" [operacional]="operacional"></app-tabla-consolidado-operacional> -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <app-grafico-consolidado-barras [ResumenAgno]="consolidado" (cerrar)="grafico=false"></app-grafico-consolidado-barras>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+<app-loading *ngIf="loading"></app-loading>
+<!-- <app-grafico-consolidado-barras *ngIf="grafico" [ResumenAgno]="consolidado" (cerrar)="grafico=false"></app-grafico-consolidado-barras> -->

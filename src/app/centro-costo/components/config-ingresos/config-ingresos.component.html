@@ -1,0 +1,92 @@
+<div class="bgAbs">
+    <div class="contenido">
+        <header [ngStyle]="{'background-color': centroCosto.fondo}">
+            <div class="row" [ngStyle]="{'color': centroCosto.letras}">
+                <div class="col-9">
+                    Configuración de Ingresos - {{centroCosto.nombreCentroCosto}}
+                </div>
+                <div class="col-3" *ngIf="total">
+                    $ {{total - sumaTotal() | number : '1.0-0' | comatopoint}}
+                </div>
+            </div>
+        </header>
+        <section>
+            <!-- {{centroCosto | json}} -->
+            <div class="row">
+                <div class="col-6">
+                    Contrato
+                </div>
+                <!-- <div class="col-6">
+                    Cantidad de ingresos
+                </div> -->
+            </div>
+            <div class="row mb10px">
+                <div class="col-6" *ngIf="contratos$ | async as contratos">
+                    <select class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="contrato"
+                        name="drdContrato" (change)="selectContrato(contratos,contrato)">
+                        <option value=0>--- Seleccione un contrato ---</option>
+                        <option *ngFor="let contrato of contratos; let i=index" [value]="contrato.idContrato">
+                            {{contrato.nombreContrato}}</option>
+                    </select>
+                </div>
+                <!-- <div class="col-6">
+                    <input class="form-control" min=1 max=10 type="number" placeholder="Cantidad Pagos"
+                        name="txtCantPagos" (change)="agregaPagos()" [(ngModel)]="cantPagos" />
+                </div> -->
+            </div>
+            <div class="row labelHeader text-center">
+                <div class="col-6">
+                    Fecha de ingreso
+                </div>
+                <div class="col-6">
+                    Monto de ingreso
+                </div>
+            </div>
+            <div class="row mb10px" *ngFor="let estadoPago of ingreso; let i = index">
+                <ng-container *ngIf="estadoPago.estado < 4">
+                    <div class="col-6">
+                        <div class="input-group date">
+                            <input id="{{'txtFecha' + i}}" name="{{'txtFecha' + i}}" type="text"
+                                (focusout)="asignaFechas(i)" class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" min=0 type="number" placeholder="Monto Asignado"
+                            name="{{'txtMonto' + i}}" [(ngModel)]="estadoPago.monto" (change)="sumaTotal()">
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="estadoPago.estado > 3">
+                    <div class="col-6">
+                        {{estadoPago.fechaPago | date:'dd/MM/yyyy'}}
+                    </div>
+                    <div class="col-6">
+                        ${{estadoPago.monto | number:'1.0-0' | comatopoint}}
+                    </div>
+                </ng-container>
+            </div>
+            <div class="row bold">
+                <div class="col-3">Total Facturado</div>
+                <div class="col-3">$ {{ sumaTotalFacturado() | number: '1.0-0' | comatopoint}}</div>
+                <div class="col-3">Total : </div>
+                <div class="col-3">$ {{ sumaTotal() | number: '1.0-0' | comatopoint}}</div>
+            </div>
+        </section>
+        <!-- {{movimiento| json}} -->
+        <!-- <br>---------------------------------<br> -->
+        <!-- {{ingreso | json}} -->
+        <footer>
+            <div class="row">
+                <div class="col-6 text-right">
+                    <button *ngIf="actualizar" f class="btn btn-primary" (click)="guardar()">Actualizar</button>
+                    <button *ngIf="!actualizar" class="btn btn-primary" (click)="guardar()">Guardar</button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-secondary" (click)="cancelar()">Salir</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

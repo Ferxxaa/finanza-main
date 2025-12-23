@@ -1,0 +1,53 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555" class="flex">
+                <h4 style="color: white;" class="capital">
+                    <strong>Rentabilidad Área de Negocio</strong>
+                </h4>
+                <h5>
+                    <select id="drdAreaNegocio" class="dropdown-toggle select2-chosen-2 requiered" [(ngModel)]="areaNegocio" name="drdAreaNegocio" appSelectValidator="appSelectValidator" (change)="getData()">
+                        <option value="0" selected="selected">--- Área Negocio ---
+                        </option>
+                        <option *ngFor="let centro of obsCentroCosto$ | async | removeOperacional; let i = index" value={{centro._id}}>
+                            {{centro.nombre}}</option>
+                    </select>
+                </h5>
+            </header>
+
+            <div class="widget-body" *ngIf="rentabilidad$ | async as rentabilidad else NoData">
+                <fieldset>
+                    <legend></legend>
+                    <div class="row">
+                        <div class="col-12">
+                            <app-tabla-rentabilidad [VentasAreaNegocio]="rentabilidad"></app-tabla-rentabilidad>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <app-graph-rentabilidad-area-negocio [data]="rentabilidad" *ngIf="rentabilidad"></app-graph-rentabilidad-area-negocio>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+<!-- <div class="bkp-popup" *ngIf="grafico && ventas">
+    <div class="contenido">
+        <app-graph-rentabilidad-area-negocio [data]="ventas"></app-graph-rentabilidad-area-negocio>
+        <br>
+        <div id="Acciones" class="flex Fcenter">
+            <button class="btn btn-secondary" (click)="grafico=false">Cerrar</button>
+        </div>
+    </div>
+</div> -->
+
+
+<app-loading *ngIf="loading"></app-loading>

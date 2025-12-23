@@ -1,0 +1,417 @@
+<app-loading *ngIf="loading"></app-loading>
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Lista Ordenes de compra</strong>
+                </h4>
+                <div class="acciones">
+                    <i style="top: 8px;" class="fa fa-refresh" (click)="cargaDatos()"></i>
+                    <i class="fa fa-search" (click)="TraeBuscador()"></i>
+                </div>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+
+                        <buscador [vista]="false" *ngIf="buscador" (event)="Filtrar($event)"></buscador>
+                        <legend></legend>
+
+                        <div class="col-lg-12">
+                            <div class="margin05">
+                                <div class="row">
+                                    <div class="col-12 click">
+                                        <!-- <table class="table table-bordered table-striped table-hover no-footer">
+                                            <thead>
+                                                <tr>
+                                                    <td>Fecha</td>
+                                                    <td>Orden de compra</td>
+                                                    <td>Proveedor</td>
+                                                    <td>Centro de Costo</td>
+                                                    <td class="descrip">Descripción</td>
+                                                    <td>Estado</td>
+                                                    <td>Tipo OC</td>
+                                                    <td>Responsable</td>
+                                                    <td>Monto con Iva</td>
+                                                    <td>Iva</td>
+                                                    <td>Boleta</td>
+                                                    <td>Monto Neto</td>
+                                                    <td>Mail</td>
+                                                    <td>Evaluar</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let flujo of Flujos; let i = index">
+                                                    <td (click)="PopUp(flujo)">
+                                                        {{flujo.fechaCreacion | date:'dd/MM/yy':'UTC'}}</td>
+                                                    <td (click)="PopUp(flujo)">
+                                                        <div class="cortar">{{flujo.folio}}</div>
+                                                    </td>
+                                                    <td (click)="PopUp(flujo)">
+                                                        <div class="cortar">{{flujo.proveedor.nombre}}</div>
+                                                    </td>
+                                                    <td class="text-center" (click)="PopUp(flujo)"
+                                                        [style.color]="flujo.subCentro.letras"
+                                                        [style.background-color]="flujo.subCentro.fondo">
+                                                        <div class="cortar">{{flujo.subCentro.nombre}}</div>
+                                                    </td>
+                                                    <td (click)="PopUp(flujo)" class="descrip">
+                                                        <div class="cortar">{{flujo.descripcion}}</div>
+                                                    </td>
+                                                    <td (click)="PopUp(flujo)">
+                                                        <mat-icon class="cheque" *ngIf="flujo.chequeEmitido">
+                                                            attach_money</mat-icon>
+                                                        <span *ngIf="flujo.Estado == 1">Pendiente</span>
+                                                        <span *ngIf="flujo.Estado == 2">Aprobada</span>
+                                                        <span *ngIf="flujo.Estado == 3"
+                                                            class="text-danger">Rechazada</span>
+                                                        <span *ngIf="flujo.Estado == 4">Pagada</span>
+                                                        <span *ngIf="flujo.Estado == 5"
+                                                            class="text-danger">Anulada</span>
+                                                        <span *ngIf="flujo.Estado == 6">Proyeccion</span>
+                                                    </td>
+                                                    <td (click)="PopUp(flujo)">
+                                                        <span *ngIf="flujo.proveedor.categoria == 1">Producto</span>
+                                                        <span *ngIf="flujo.proveedor.categoria == 2">Servicio</span>
+                                                        <span *ngIf="flujo.proveedor.categoria == 3">Subcontrato</span>
+                                                    </td>
+                                                    <td (click)="PopUp(flujo)">
+                                                        <span *ngIf="flujo.solicita && flujo.solicita.id">{{flujo.solicita.nombre}}</span>
+                                                        </td>
+                                                    <td (click)="PopUp(flujo)">$
+                                                        {{flujo.total | number : '1.0-0' | comatopoint}}</td>
+                                                    <td (click)="PopUp(flujo)">$
+                                                        {{flujo.iva | number : '1.0-0' | comatopoint}}</td>
+                                                    <td (click)="PopUp(flujo)">$
+                                                        {{flujo.boleta | number : '1.0-0' | comatopoint}}</td>
+                                                    <td (click)="PopUp(flujo)">$
+                                                        {{flujo.total - flujo.iva | number : '1.0-0' | comatopoint}}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div *ngIf="flujo.Estado == 2">
+                                                            <i *ngIf="!flujo.correo" (click)="sendMail(flujo._id,flujo)"
+                                                                class="fa fa-envelope"></i>
+                                                            <i *ngIf="flujo.correo" class="fa fa-check"></i>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+
+                                                        <span *ngIf="flujo.Estado == 2 && !flujo.evaluacion"
+                                                            (click)="evaluar(flujo._id,flujo.folio)"
+                                                            class="text-warning fa fa-star-o"></span>
+                                                        <span
+                                                            [style.color]="getColor(flujo.proveedor.categoria,flujo.evaluacion)"
+                                                            *ngIf="flujo.evaluacion" class="fa fa-star"></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table> -->
+                                        <app-get-movimientos></app-get-movimientos>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+<app-evaluacion *ngIf="ocEvaluar" [Orden]="ocEvaluar" (actualizar)="actualizaEvaluacion()" (cerrar)="Cerrar()">
+</app-evaluacion>
+<app-popup-oc [id]="idOC" *ngIf="idOC" (actualizar)="ngOnInit()" (cerrar)="cerrarOrden()"></app-popup-oc>
+<popUp-orden-pedido [id]="OP._id" *ngIf="OP" (actualizar)="ngOnInit()" (cerrar)="cerrarOrden()"></popUp-orden-pedido>
+
+<!-- <div class="bkPopUp" *ngIf="false">
+    <div class="popUp">
+        <div id="popUp">
+            <div class="row TzS">
+                <div class="col-2">
+                    <img src="http://www.trazas-nbi.com/assets/tzs.jpg" alt="TzS" style="max-width: 100%;">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-12 bold">
+                            TRAZAS GESTION DE PROYECTOS DE INFRAESTRUCTURA LTDA
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            RUT: 76.151.605-1
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Cirujano Guzman 24 Depto 83
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Comuna providencia
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            fono
+                        </div>
+                        <div class="col-11">
+                            2 2982 9588 - 2 2492 0809
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            Giro
+                        </div>
+                        <div class="col-11">
+                            Arquitectura - Construcción
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row gray Folio bold">
+                <div class="col-9 center fs">
+                    ORDEN DE COMPRA
+                </div>
+                <div class="col-3 ">
+                    <span class="FloatRight marginR fs">N° {{ordenCompra.folio}}</span>
+                </div>
+            </div>
+            <div class="Proveedor" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Señor (es)
+                    </div>
+                    <div class="col-7 bold linea lineatop">
+                        {{ordenCompra.proveedor.nombre}}
+                    </div>
+                    <div class="col-1 linea lineatop linealeft">
+                        Fecha
+                    </div>
+                    <div class="col-2 lineafull">
+                        {{ordenCompra.fechaCreacion | date : 'dd/MM/yy':'UTC'}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Dirección
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.direccion}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        RUT
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.rutProveedor}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Teléfono
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.telefono}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Contacto
+                    </div>
+                    <div class="col-5 linea">
+                        {{ordenCompra.proveedor.contacto}}
+                    </div>
+                    <div class="col-2 linea">
+                        E-Mail
+                    </div>
+                    <div class="col-3 linea">
+                        {{ordenCompra.proveedor.mail}}
+                    </div>
+                </div>
+            </div>
+            <div class="centroCosto caja">
+                <div class="row labelHeder">
+                    <div class="col-3 bold">
+                        <u>1.-CENTRO DE COSTO</u>
+                    </div>
+                    <div class="col-9 center">
+                        {{ordenCompra.centroCosto.nombre}} - {{ordenCompra.subCentroCosto}}
+                    </div>
+                </div>
+            </div>
+            <div class="Items caja">
+                <div class="row labelHeder">
+                    <div class="col-12 bold">
+                        <u>2.- DETALLE DE MATERIALES</u>
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-12">
+                        <table class="table table-bordered table-striped table-hover no-footer">
+                            <thead>
+                                <tr class="center">
+                                    <td>Item</td>
+                                    <td>Codigo</td>
+                                    <td>Detalle</td>
+                                    <td>Cantidad</td>
+                                    <td>Unitario</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ordenCompra.Items; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{item.codigo}}</td>
+                                    <td>{{item.detalle}}</td>
+                                    <td>{{item.cantidad | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.cantidad * item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Neto</td>
+                                    <td>$ {{totalOC - ordenCompra.boleta | number : '1.0-0' | comatopoint}}
+                                    </td>
+                                </tr>
+                                <tr class="bgWhite" *ngIf="ordenCompra.iva">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">IVA afecto</td>
+                                    <td>$ {{ordenCompra.iva | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite" *ngIf="ordenCompra.boleta">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Boletas</td>
+                                    <td>$ {{ordenCompra.boleta | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Bruto</td>
+                                    <td>$ {{totalOC + ordenCompra.iva | number : '1.0-0' | comatopoint}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="despacho caja" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>4.- DESPACHO (Dirección y Contacto)</u>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ordenCompra.despacho}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="firmas center" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="Firma">
+                            <li>Usuario actual</li>
+                            <li class="bold">Preparado por {{creador}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul class="Firma FloatRight">
+                            <li>Aprobador</li>
+                            <li class="bold">autorizado por</li>
+                        </ul>
+                        <img class="FirmaImg" *ngIf="ordenCompra.Estado == 2" src="assets/firmaJaime.png" alt="Firma">
+                    </div>
+                </div>
+            </div>
+            <div class="cheque" *ngIf="!emitido">
+                <div class="row">
+                    <div class="col-12">
+                        <mat-checkbox color='primary' [(ngModel)]="ordenCompra.chequeEmitido">Cheque emitido
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <div class="texto" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-12 justificado">
+                        <p>
+                            Nota 1.- Las empresas sub-contratista que ingresen a obras de Trazas Ltda., deben cumplir
+                            con lo estipulado ley 20.123 que regula el trabajo en régimen de Subcontratación, el
+                            funcionamiento de las Empresas de Servicios Transitorios, y el contrato de trabajo
+                            de servicios transitorios, exigiendo la entrega de lista del personal, contratos, registro
+                            entrega de RIOHS, obligacion de informar, entrega elementos de proteccion personal y
+                            certificacion de afiliacion de mutualidad con un
+                            minimo de 3 dias de anticipacion, o en su efecto comunicarse con Sr. Rodrigo Méndez, email:
+                            rmendez@trazas.cl
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 justificado">
+                        <p>
+                            Nota 2.- Las facturas emitidas a Trazas Ltda. se deberan entregar en la oficina central
+                            ubicada en Cirujano Guzman Nº 24 of. 83 Providencia, entre las 9:00 a 13:00 y 15:00 a 19:00
+                            horas, solo los días viernes.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 justificado">
+                        <p>
+                            Nota 3.- Se informa que nuestra politica de calidad, medio ambiente, seguridad y salud
+                            laboral se encuentra a disposicion en pagina web www.trazas.cl
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cotizacion" *ngIf="ordenCompra.cotizacion">
+            <a href="{{url+adjunto}}" target="_blank" *ngIf="adjunto">Cotizacion</a>
+        </div>
+        <br>
+        <div class="motivo" *ngIf="rechazarMotivo">
+            <div class="row">
+                <div class="col-12">
+                    <span class="cRed">*Debe Ingresar un motivo de rechazo</span>
+                </div>
+            </div>
+            <div class="row labelHeder">
+                <div class="col-12">
+                    Motivo rechazo
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <textarea name="txtMotivo" rows="3" class="form-control" [(ngModel)]="motivo"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="flex Fcenter">
+            <button *ngIf="!emitido" class="btn btn-primary" (click)="guardar()">Guardar</button>
+            <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+        </div>
+    </div>
+</div> -->
+
+<!-- <app-correcto [text]="mensaje.ok" *ngIf="mensaje.ok" (cerrarEvent)="cerrarCorrecto()"></app-correcto> -->
+
+<app-correcto [text]="mensaje.ok" *ngIf="mensaje.ok" (cerrarEvent)="cerrarCorrecto()"></app-correcto>

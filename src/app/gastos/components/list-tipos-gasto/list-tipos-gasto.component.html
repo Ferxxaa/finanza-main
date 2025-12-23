@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col-lg-12">
+    <section class="widget">
+      <header style="background-color: #555555">
+        <h4 style="color: white;">
+          <strong>Mis Gastos</strong>
+        </h4>
+      </header>
+
+      <div class="widget-body">
+        <fieldset>
+          <legend></legend>
+
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-bordered table-striped table-hover no-footer">
+                <thead>
+                  <tr>
+                    <td>Tipo gasto</td>
+                    <td>Sub tipo gasto</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let gasto of tiposGastos$ | async; let i = index" (click)="popUp(gasto.idTipoGasto)">
+                    <td>{{gasto.nombreTipoGasto}}</td>
+                    <td>
+                      <ul>
+                        <li *ngFor="let subGasto of gasto.subTipoGasto | filterSubTipoActive; let i = index">
+                          {{subGasto.nombreSubtipoGasto}}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </fieldset>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="bkPopUp" *ngIf="tipoGasto">
+  <div class="popUp">
+    <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="onTabChanged($event)">
+      <mat-tab label="Editar Tipo gastos">
+        <div class="row labelHeder">
+          <div class="col-12">
+            Nombre del tipo de gasto
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="text" placeholder="Nombre tipo de gasto" name="txtNombreGasto"
+              required="required" [(ngModel)]="tipoGasto.nombreTipoGasto">
+          </div>
+        </div>
+        <!--<div class="row labelHeder">
+          <div class="col-12">
+            Area de Negocio
+          </div>
+        </div>
+         <div class="row">
+                  <div class="col-12">
+                      <select id="drdAreaNegocioEdit" class="dropdown-toggle select2-chosen-2 form-control requiered"
+                          [(ngModel)]="idAreaNegocioEdit" name="drdAreaNegocioEdit"
+                          appSelectValidator="appSelectValidator" (change)="asignaAreaNegocioEdit(idAreaNegocioEdit)">
+                          <option value="0" selected="selected">--- Seleccione una opcion ---
+                          </option>
+                          <option *ngFor="let centro of centroCosto$ | async; let i = index" value={{centro._id}}>
+                              {{centro.nombre}}</option>
+                      </select>
+                  </div>
+              </div> -->
+        <div class="row labelHeder">
+          <div class="col-12">
+            Sub tipos de gasto
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <ul>
+              <li class="d-flex justify-content-between pointer" *ngFor="let subGasto of tipoGasto.subTipoGasto | filterSubTipoActive; let i = index"
+                (click)="editSubTipo(subGasto.idSubTipoGasto)">
+                <span>{{subGasto.nombreSubtipoGasto}}</span>
+                <button mat-icon-button="mat-icon-button" color="warn" (click)="EliminarSub()">
+                  <mat-icon aria-label="icon-button with a heart icon">close</mat-icon>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="flex"> <button class="btn btn-primary" (click)="ActualizarTipoGasto()">Actualizar Tipo Gasto</button>
+          <button class="btn btn-secondary" (click)="Limpiar()">Cerrar</button>
+          <button class="btn btn-danger" (click)="EliminarTipo()">Eliminar Tipo Gasto</button>
+        </div>
+      </mat-tab>
+      <mat-tab label="Editar SubTipo de gasto">
+        <div class="minh">
+          <ng-container *ngIf="subTipoGasto">
+            <div class="row labelHeder">
+              <div class="col-12">
+                Nombre del subtipo de gasto
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <input class="form-control" type="text" placeholder="Nombre subtipo de gasto" name="txtSubNombreGasto"
+                  [(ngModel)]="subTipoGasto.nombreSubtipoGasto" required="required" (change)="editSubTipo()">
+              </div>
+            </div>
+            <div class="row labelHeder">
+              <div class="col-6">Color Letras</div>
+              <div class="col-6">Color Fondo</div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <input class="form-control" type="color" name="txtColorLetras" [(ngModel)]="subTipoGasto.colorLetras">
+              </div>
+              <div class="col-6">
+                <input class="form-control" type="color" name="txtColorFondo" [(ngModel)]="subTipoGasto.colorFondo">
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="flex"> <button class="btn btn-primary" (click)="ActualizarSubTipoGasto()">Actualizar Sub Tipo Gasto</button>
+          <button class="btn btn-secondary" (click)="Limpiar()">Cerrar</button>
+          <button class="btn btn-danger" (click)="EliminarSub()">Eliminar Sub Tipo Gasto</button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

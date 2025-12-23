@@ -1,0 +1,19 @@
+<ul>
+  <li>
+    <!-- {{ proveedor$ | async | json}} -->
+    <div class="row">
+      <div class="col-4" *ngIf="proveedor$ | async as item">
+        <span class="d-block"><b>Nombre Comercial:</b> {{item.nombre}}</span>
+        <span class="d-block"><b>Contacto:</b> {{item.contacto}}</span> 
+        <span class="d-block"><b>Mail:</b> {{item.mail}}</span> 
+        <span class="d-block"><b>Dirección:</b> {{item.direccion}}</span> 
+        <span class="d-block"><b>Detalle:</b> {{item.observacion}}</span>
+        <span class="d-block"><b>Cantidad Ordenes:</b> {{cantidadOC | number: '1.0-0' | comatopoint}}</span>
+        <span class="d-block"><b>Monto Total Ordenes:</b> ${{totalOC | number: '1.0-0' | comatopoint}}</span>
+      </div>
+      <div class="col-8">
+        <app-detalle-evaluaciones [ordenesPorProveedor]="ordenesPorProveedor"></app-detalle-evaluaciones>
+      </div>
+    </div>
+  </li>
+</ul>

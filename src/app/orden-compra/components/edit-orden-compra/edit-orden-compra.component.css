@@ -1,0 +1,60 @@
+header{
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+}
+
+.margin05>div {
+    background: #fff;
+}
+
+.form-check-input {
+    margin-left: 0rem;
+}
+
+.form-check-label {
+    margin-left: 1.2rem;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.Fcenter {
+    justify-content: center;
+}
+
+.flex button {
+    margin: 0.3rem;
+}
+
+.Folio {
+    font-size: 2em;
+    font-weight: 600;
+    position: sticky;
+    top: 5px;
+    z-index: 2;
+    transition: all 0.5s;
+    background-color: transparent !important;
+}
+
+.Folio.white{
+    color: white;
+}
+
+.w15 {
+    width: 15%;
+}
+
+.proveedor,
+.solicitador,
+.centroCosto,
+.tipoGasto{
+    margin: 0rem;
+    padding: 0em;
+}

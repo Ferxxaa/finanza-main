@@ -1,0 +1,37 @@
+<div class="orden" *ngIf="centroCosto" (click)="clicked=true">
+  <!--  -->
+  <div class="Title bold" [ngClass]="{
+    'bBlack': whiteColor > 450,
+    'fBlack': whiteColor > 450
+  }" [ngStyle]="{
+    'border-color': centroCosto.fondo,
+    'background-color': centroCosto.fondo
+  }">
+    Folio: {{orden.folio}}
+  </div>
+  <div class="contentElement">
+    <div class="proveedor">
+      <b>Proveedor:</b> {{orden.proveedor.nombre}}
+    </div>
+    <div class="items">
+      <b>items:</b>
+      <div *ngFor="let item of orden.Items">
+        - {{item.detalle}}: ${{item.precioUnitario | number:'1.0-0'}}
+      </div>
+    </div>
+    <div class="iva">
+      <b>IVA:</b> ${{orden.iva + orden.boleta | number:'1.0-0'}}
+    </div>
+    <div class="totalPagar">
+      <b>Monto total:</b> ${{totalOC() | number:'1.0-0'}}
+    </div>
+  </div>
+  <!-- Estado: -->
+  <div class="statusColor" [ngClass]="{
+      'bg-danger': orden.Estado.toString() == '1' || orden.Estado.toString() == '5',
+      'bg-warning': orden.Estado.toString() == '2' || orden.Estado.toString() == '3',
+      'bg-success': orden.Estado.toString() == '4'
+    }"></div>
+</div>
+
+<app-popup-oc [id]="orden._id" *ngIf="clicked" (cerrar)="clicked=false"></app-popup-oc>

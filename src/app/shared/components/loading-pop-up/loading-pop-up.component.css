@@ -1,0 +1,29 @@
+.Loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: transparent;
+    display: flex;
+}
+
+.cargando {
+    height: 20vh;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    margin: auto;
+    font-size: 25px;
+    border-radius: 5px;
+}
+
+/************** Media Queries ************/
+@media (max-width: 800px) {
+    .cargando{
+        width: 45%;
+    }
+}

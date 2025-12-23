@@ -1,0 +1,53 @@
+<table class="table table-bordered table-striped table-hover no-footer principal">
+  <thead>
+    <tr>
+      <th>Periodo</th>
+      <th>Meses</th>
+      <th>Centro de Costo</th>
+      <th>Contratos</th>
+      <th>IVA</th>
+      <th>Total Contratos</th>
+      <th>Monto Gastado</th>
+      <th colspan="2">IVA Credito</th>
+      <th colspan="2">Utilidad</th>
+      <th colspan="2">Utilidad Mensual</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let item of desplegar$ | async | concatHistoricos | addView | filterReportAreaNegocio: areaNegocio">
+      <tr (click)="item.view=!item.view" class="pointer">
+        <td>{{item.antigua | date:'MM/yyyy'}} - {{item.nueva | date:'MM/yyyy'}}</td>
+        <td>{{item.duracion}}</td>
+        <td class="bold center"
+          [ngStyle]="{'color': item.centroCosto.letras, 'background-color': item.centroCosto.fondo}"><mat-icon
+            aria-hidden="false" aria-label="Desplegar" class="fleft">add_box</mat-icon>{{item.centroCosto.nombre}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos < 0}">$ {{item.ingresos / 1.19 | number : '1.0-0' |
+          comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos < 0}">$ {{(item.ingresos / 1.19) *.19 | number :
+          '1.0-0' | comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos < 0}">$ {{item.ingresos | number : '1.0-0' |
+          comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.totalOrden < 0}">$ {{item.totalOrden | number : '1.0-0' |
+          comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ivaCredito < 0}">$ {{item.ivaCredito | number :
+          '1.0-0' | comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ivaCredito < 0}">{{item.porcentajeIvaCredito | number :
+          '1.0-2' | comatopoint}}%</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos - item.totalOrden < 0}">$ {{item.ingresos -
+          item.totalOrden | number : '1.0-0' | comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos - item.totalOrden < 0}">{{(item.ingresos -
+          item.totalOrden) * 100 / item.ingresos | number : '1.0-2' | comatopoint}} %</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos - item.totalOrden < 0}">$ {{(item.ingresos -
+          item.totalOrden) / item.duracion | number : '1.0-0' | comatopoint}}</td>
+        <td class="right" [ngClass]="{'text-danger': item.ingresos - item.totalOrden < 0}">{{((item.ingresos -
+          item.totalOrden) / item.duracion) * 100 / item.ingresos | number : '1.0-2' | comatopoint}} %</td>
+      </tr>
+      <tr *ngIf="item.view">
+        <td colspan="13">
+          <!-- <app-detalle-orden [ordenesCentroCosto]=item.ordenes [totalOC]="item.totalOrden"></app-detalle-orden> -->
+          <app-detalle-orden [idCentroCosto]="item.idCentroCosto" [totalOC]="item.sumaEP"></app-detalle-orden>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

@@ -1,0 +1,49 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<!-- <ul>
+    <li class="pointer text-danger" (click)="graph=true">
+        <b>Distribución Compra/Venta:
+        </b>
+        <mat-icon matTooltip="Ingresos y Egresos" [matTooltipPosition]="'above'">show_chart</mat-icon>
+    </li>
+</ul> -->
+<table class="table table-bordered table-striped table-hover no-footer">
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Monto Gastado</th>
+            <th>Porcentaje</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="tiposGasto$ | async as tipoGasto else NoData">
+        <ng-container *ngFor="let item of tipoGasto | addView">
+            <ng-container>
+                <tr class="tipoGasto bold" (click)="item.view= !item.view">
+                    <td>
+                        <mat-icon aria-hidden="false" aria-label="Desplegar">add_box</mat-icon>
+                        {{item.nombreTipoGasto}}
+                    </td>
+                    <td class="right">$
+                        {{item.totalTipoGasto | number: '1.0-0' | comatopoint}}</td>
+                    <td class="right">{{item.totalTipoGasto * 100 / totalOC | number: '1.0-2' | comatopoint}}%</td>
+                </tr>
+                <ng-container *ngIf="item.view">
+                    <ng-container *ngFor="let subTipoGasto of item.detalleSubTipoGasto">
+                        <tr>
+                            <td>{{subTipoGasto.nombreSubTipoGasto}}</td>
+                            <td class="right">$
+                                {{subTipoGasto.totalSubTipoGasto | number: '1.0-0' | comatopoint}}</td>
+                            <td class="right">{{subTipoGasto.totalSubTipoGasto * 100 / item.totalTipoGasto
+                                | number: '1.0-2' | comatopoint}}%</td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </tbody>
+</table>
+
+<app-pop-up-ventas-compras-centro-costo *ngIf="graph" (cerrar)="graph=false"
+    [nombreCentro]="nombreCentroCosto"></app-pop-up-ventas-compras-centro-costo>

@@ -1,0 +1,111 @@
+<div class="MetodoPago">
+  <div class="row">
+    <div class="col-2">
+      <input class="form-check-input" type="radio" id="rdMetodo1" name="rdMetodo" value=1
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,1)">
+      <label class="form-check-label" for="rdMetodo1">
+        Contado
+      </label>
+    </div>
+    <div class="col-2">
+      <input class="form-check-input" id="rdMetodo2" type="radio" name="rdMetodo" value=2
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,2)">
+      <label class="form-check-label" for="rdMetodo2">
+        Credito 30 Dias
+      </label>
+    </div>
+    <div class="col-2">
+      <input class="form-check-input" id="rdMetodo3" type="radio" name="rdMetodo" value=3
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,3)">
+      <label class="form-check-label" for="rdMetodo3">
+        Credito 45 Dias
+      </label>
+    </div>
+    <div class="col-2">
+      <input class="form-check-input" id="rdMetodo4" type="radio" name="rdMetodo" value=4
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,4)">
+      <label class="form-check-label" for="rdMetodo4">
+        Credito 60 Dias
+      </label>
+    </div>
+    <div class="col-2">
+      <input class="form-check-input" id="rdMetodo5" type="radio" name="rdMetodo" value=5
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,5)">
+      <label class="form-check-label" for="rdMetodo5">
+        Credito 90 Dias
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <input class="form-check-input" id="rdMetodo6" type="radio" name="rdMetodo" value=6
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,6)">
+      <label class="form-check-label" for="rdMetodo6">
+        A Convenir
+      </label>
+    </div>
+    <div class="col-2">
+      <div id="Convenir" class="input-group date" [hidden]="!(opcion == 6)">
+        <input id="txtConvenir" name="txtConvenir" type="text"
+          (focusout)="AsignaFechaEstadosPago('txtConvenir')" class="form-control" />
+        <span class="input-group-addon">
+          <span class="fa fa-calendar"></span>
+        </span>
+      </div>
+    </div>
+    <div class="col-2">
+      <input class="form-check-input" id="rdMetodo7" type="radio" name="rdMetodo" value=7
+        [(ngModel)]="opcion" (click)="setFechaEstadosPago(0,7)">
+      <label class="form-check-label" for="rdMetodo7">
+        Estados de Pago
+      </label>
+    </div>
+    <div class="col-1">
+      <div class="input-group flex" [hidden]="!(opcion == 7)">
+        <div>
+          <input type="number" class="form-control" min="0" name="cantidadEstadosPago"
+            [(ngModel)]="cantidadEstadosPago" (change)="AgregarEstadosPago()">
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <div id="estadosPago" [hidden]="!(opcion == 7)">
+        <div class="input-group date" *ngFor="let estPag of estadoPago; let i = index">
+          <input id="{{'txtEstadoPago'+i}}" name="{{'txtEstadoPago'+i}}" type="text"
+            (focusout)="AsignaFechaEstadosPago('txtEstadoPago',i)" class="form-control" />
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <div id="estadosPagoMonto" [hidden]="!(opcion == 7)">
+        <input min="1" max="100" placeholder="% a pagar"
+          *ngFor="let estPag of estadoPago; let i = index" id="{{'txtEstadoPagoMonto'+i}}"
+          name="txtEstadoPagoMonto" type="number" class="form-control"
+          (change)="cambiaMonto(txtEstadoPagoMonto.value,i)" #txtEstadoPagoMonto />
+      </div>
+    </div>
+    <div class="col-1">
+      <div id="estadosPagoMonto" [hidden]="!(opcion == 7)">
+        <!-- <input placeholder="% a pagar" *ngFor="let estPag of estadosPagos; let i = index" id="{{'txtEPMonto'+i}}" name="txtEPMonto" type="number" class="form-control" (change)="cambiaMontoEP(txtEPMonto.value,i)" #txtEPMonto /> -->
+        <span class="form-control" style="display: block;"
+          *ngFor="let estPag of estadoPago; let i = index">$ {{estPag.monto | number : '1.0-0' |
+          comatopoint}}</span> <!-- [(ngModel)]="estPag.monto" -->
+      </div>
+    </div>
+    <!-- {{estadosPagos | json}} -->
+  </div>
+  <div class="row">
+    <div class="col-12">
+      Condicion de Pago
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <textarea class="form-control" rows="3" name="txtCondicion"
+        [(ngModel)]="condicionPago" (change)="setCondicion()"></textarea>
+    </div>
+  </div>
+</div>

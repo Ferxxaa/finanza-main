@@ -1,0 +1,68 @@
+.container {
+    margin: 0.5rem;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.flex button {
+    margin: 0.3rem;
+}
+
+.custom-control-input {
+    position: relative;
+    z-index: 1;
+}
+
+.table tbody tr ul {
+    list-style-type: none;
+    margin-bottom: 0;
+    padding-inline-start: 0;
+}
+
+.table tbody tr ul li {
+    border-bottom: 1px solid #dddddd;
+}
+
+.table tbody tr ul li:last-child {
+    border-bottom: 0px;
+}
+
+.table tbody tr td:nth-child(-n+2):hover {
+    cursor: pointer;
+    background: #0000000f;
+}
+
+.dvCircle {
+    min-width: 10px;
+    min-height: 10px;
+    /* width: 10%; */
+    /* height: 102%; */
+    border-radius: 5px;
+    text-align: center;
+    padding: 0px 1px;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+td:nth-child(3),
+td:nth-child(4) {
+    text-align: center;
+}
+
+.acciones button {
+    padding: 0px 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}

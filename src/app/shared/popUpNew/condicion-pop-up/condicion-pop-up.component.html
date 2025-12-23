@@ -1,0 +1,161 @@
+<div class="CondicionPago caja">
+    <div class="row">
+        <div class="col-8 bold">
+            <u>3.- CONDICIONES DE PAGO Y PLAZO</u>
+        </div>
+        <div class="col-4 bold" *ngIf="saldoDiponibleVal">
+            Saldo pendiente de pago: ${{saldoDiponibleVal | number:'1.0-0' | comatopoint}}
+        </div>
+    </div>
+    <mat-list class="lista">
+        <mat-list-item>
+            <div class="row w100 font-weight-bold border-bottom">
+                <div class="col-2">Fecha</div>
+                <div class="col-2">Monto</div>
+                <div class="col-2">MetodoPago</div>
+                <div class="col-3">Numero Pago</div>
+                <div class="col-2">Factura</div>
+                <div class="col-1"></div>
+            </div>
+        </mat-list-item>
+        <mat-list-item *ngFor="let estadoPago of estadoPagos; let i=index">
+            <div class="row w100 align-middle" *ngIf="estadoPago.estado < 4">
+                <div class="col-2">
+                    <div class="input-group date">
+                        <input id="{{'txtCompromiso'+i}}" name="txtCompromiso" type="text" class="form-control"
+                            (focusout)="setFechaEP(i)" />
+                        <span class="input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    <!-- {{estadoPago.fecha | date:'dd/MM/yy':'UTC'}} -->
+                </div>
+                <div class="col-2">
+                    <mat-form-field class="w100" *ngIf="!estadoPago.cheque">
+                        <input matInput type="number" placeholder="Monto $" [(ngModel)]="estadoPago.monto"
+                            [name]="'pago'+i" (change)="validaMonto(i)">
+                    </mat-form-field>
+                    <span *ngIf="estadoPago.cheque">${{estadoPago.monto | number :'1.0-0' | comatopoint}}</span>
+                </div>
+                <!-- [ngSwitch]="estadoPago.metodoPago" -->
+                <div class="col-2 d-flex">
+                    <mat-icon *ngIf="estadoPago.cheque" class="text-success">attach_money</mat-icon>
+                    <!-- <span *ngSwitchCase="2">Efectivo</span>
+                                                                              <span *ngSwitchCase="3">Cheque</span>
+                                                                              <span *ngSwitchCase="4">Transferencia</span> -->
+                    <!-- {{estadoPago.metodoPago}} -->
+                    <mat-select placeholder="Metodo de Pago" name="drdMetodoPago" [(ngModel)]="estadoPago.metodoPago">
+                        <mat-option>--- Seleccione una opcion ---</mat-option>
+                        <mat-option value=2>Efectivo</mat-option>
+                        <mat-option value=3>Cheque</mat-option>
+                        <mat-option value=4>Transferencia</mat-option>
+                    </mat-select>
+                </div>
+                <div class="col-3">
+                    <mat-form-field>
+                        <input matInput placeholder="Numero Pago" [(ngModel)]="estadoPago.numeroPago" [name]="'pago'+i">
+                    </mat-form-field>
+                </div>
+                <div class="col-2">
+                    <mat-form-field class="w100">
+                        <input matInput placeholder="Factura" [(ngModel)]="estadoPago.numeroFactura"
+                            [name]="'factura'+i">
+                    </mat-form-field>
+                </div>
+                <div class="col-1">
+                    <button mat-icon-button data-toggle="dropdown" class="opciones" (click)="display(i)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <div [id]="'display'+i" class="dropdown-menu super2" aria-labelledby="btnGroupDrop1"
+                        *ngIf="estadoPago.estado < 4">
+                        <button mat-button class="d-block"
+                            *ngIf="!estadoPago.cheque && GerenteAdmin && estadoPago.estado < 4" (click)="emitido(i)">
+                            <img src="/assets/Icon/cheque.PNG" alt="" class="icon">
+                            Cheque
+                        </button>
+                        <button mat-button class="d-block text-success" (click)="Pagar(i)"
+                            *ngIf="estadoPago.estado < 4">
+                            <mat-icon>attach_money</mat-icon>
+                            Pagar
+                        </button>
+                        <button mat-button class="d-block text-primary"
+                            *ngIf="!estadoPago.cheque && estadoPago.estado < 4"
+                            (click)="distribuir(i,estadoPago.monto)">
+                            <mat-icon>device_hub</mat-icon>
+                            Distribuir
+                        </button>
+                        <button mat-button class="d-block text-secondary"
+                            *ngIf="!estadoPago.cheque && estadoPago.estado < 4"
+                            (click)="fijarFlujo(i)">
+                            <mat-icon>rate_review</mat-icon>
+                            Fijar Fujo
+                        </button>
+                        <button mat-button class="d-block text-danger" (click)="rechazar(i)"
+                            *ngIf="estadoPago.estado < 4">
+                            <mat-icon>close</mat-icon>
+                            Anular
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row w100 align-middle pagada" *ngIf="estadoPago.estado == 4">
+                <div class="col-2">
+                    {{estadoPago.fechaPago | date:'dd/MM/yy':'UTC'}}
+                </div>
+                <div class="col-2">
+                    $
+                    {{estadoPago.monto | number:'1.0-0' | comatopoint}}
+                </div>
+                <div class="col-2" [ngSwitch]="estadoPago.metodoPago">
+                    <span *ngSwitchCase=2>Efectivo</span>
+                    <span *ngSwitchCase=3>Cheque</span>
+                    <span *ngSwitchCase=4>Transferencia</span>
+                </div>
+                <div class="col-3">
+                    {{estadoPago.numeroPago}}
+                </div>
+                <div class="col-2">
+                    <mat-form-field class="w100" *ngIf="!estadosPagosPrev[i].numeroFactura">
+                        <input matInput placeholder="Factura" [(ngModel)]="estadoPago.numeroFactura"
+                            [name]="'factura'+i">
+                    </mat-form-field>
+                    <span *ngIf="estadosPagosPrev[i].numeroFactura">{{estadoPago.numeroFactura}}</span>
+                </div>
+                <div class="col-1">
+                    <button mat-icon-button aria-label="Deshacer" *ngIf="GerenteAdmin" mattooltip="Deshacer"
+                        (click)="reiniciarEP(i)">
+                        <mat-icon>undo</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="row w100 align-middle anulada" *ngIf="estadoPago.estado == 5">
+                <div class="col-2">
+                    {{estadoPago.fechaPago | date:'dd/MM/yy':'UTC'}}
+                </div>
+                <div class="col-2">
+                    $
+                    {{estadoPago.monto | number:'1.0-0' | comatopoint}}
+                </div>
+                <div class="col-2 d-flex" [ngSwitch]="estadoPago.metodoPago">
+                    <mat-icon class="text-danger">close</mat-icon>
+                    <span *ngSwitchCase="2">Efectivo</span>
+                    <span *ngSwitchCase="3">Cheque</span>
+                    <span *ngSwitchCase="4">Transferencia</span>
+                </div>
+                <div class="col-3">
+                    {{estadoPago.numeroPago}}
+                </div>
+                <div class="col-2">
+                    {{estadoPago.numeroFactura}}
+                </div>
+                <div class="col-1">
+                    <button mat-icon-button aria-label="Deshacer" *ngIf="GerenteAdmin" mattooltip="Deshacer"
+                        (click)="reiniciarEP(i)">
+                        <mat-icon>undo</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </mat-list-item>
+    </mat-list>
+</div>

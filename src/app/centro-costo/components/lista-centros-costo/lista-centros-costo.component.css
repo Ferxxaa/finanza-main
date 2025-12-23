@@ -1,0 +1,27 @@
+.container {
+    margin: 0.5rem;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.flex button {
+    margin: 0.3rem;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+td:nth-child(3),
+td:nth-child(4) {
+    text-align: center;
+}

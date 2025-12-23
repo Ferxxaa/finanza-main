@@ -1,0 +1,34 @@
+th{
+    background-color: #0070c0 !important;
+    color: white;
+    text-transform: capitalize !important;
+    font-weight: bold;
+}
+
+.right{
+    text-align: right;
+}
+
+.red{
+    color: red;
+}
+
+.fix{
+    table-layout: fixed;
+}
+
+.divisor{
+    border-top: 3px solid #ddd;
+}
+
+.divisorl{
+    border-bottom: 3px solid #ddd;
+}
+
+.valign{
+    vertical-align : middle
+}
+
+.rojo{
+    color: red;
+}

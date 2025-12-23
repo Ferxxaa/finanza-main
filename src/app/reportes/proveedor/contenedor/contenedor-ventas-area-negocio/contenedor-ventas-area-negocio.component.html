@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555" class="flex">
+                <h4 style="color: white;" class="capital">
+                    <strong>Detalle de Resultado Área de Negocio</strong>
+                </h4>
+                <h5>
+                    <select id="drdAreaNegocio" class="dropdown-toggle select2-chosen-2 requiered black" [(ngModel)]="areaNegocio" name="drdAreaNegocio" appSelectValidator="appSelectValidator" (change)="getData()">
+                        <option value="0" selected="selected">--- Área Negocio ---
+                        </option>
+                        <option *ngFor="let areaNegocio of areaNegocioList | removeOperacional; let i = index" value={{areaNegocio.idAreaNegocio}}>
+                            {{areaNegocio.nombreAreaNegocio}}</option>
+                    </select>
+                </h5>
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+                    <div class="row">
+                        <div
+                            class="col-12">
+                            <!-- <table class="table table-bordered table-striped table-hover no-footer principal">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Meses</th>
+                                                        <th>Nombre del Proyecto</th>
+                                                        <th>Contratos Montos Netos</th>
+                                                        <th>IVA</th>
+                                                        <th>Montos Brutos</th>
+                                                        <th>Total con IVA</th>
+                                                        <th colspan="2">$ Utilidad (AI)</th>
+                                                        <th>Impuestos</th>
+                                                        <th>Utilidad (DI)</th>
+                                                        <th>Utilidad</th>
+                                                        <th colspan="2">% Acumulada Anual</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody> -->
+                            <app-item-ventas-area-negocio [VentasAreaNegocio]="resultadoAreaNegocio$ | async"></app-item-ventas-area-negocio>
+                            <!-- </tbody>
+                                                  </table> -->
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </section>
+    </div>
+</div>
+
+<app-loading *ngIf="loading"></app-loading>

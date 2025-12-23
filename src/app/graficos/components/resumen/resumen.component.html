@@ -1,0 +1,44 @@
+<!-- <div class="row">
+  <div class="col-12">
+    Calificación Histórica Proveedores
+  </div>
+</div> -->
+<table class="table table-bordered table-striped table-hover no-footer principal">
+    <thead>
+        <tr>
+            <th>Año</th>
+            <!-- <th>Calificación por categoria</th> -->
+            <th>Tipo de Proveedor</th>
+            <th class="wx">Cant. Proveedores</th>
+            <th>Cantidad Ordenes</th>
+            <th>Calificación</th>
+            <th>Categoria</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let grafico of data">
+            <td>{{grafico.year}}</td>
+            <!-- <td>{{grafico.calificacionCategoria}}</td> -->
+            <td>{{grafico.tipoProveedor}}</td>
+            <td class="wx">{{grafico.cantidadProveedores}}</td>
+            <td>{{grafico.cantidadEvaluaciones}}</td>
+            <td>
+                {{grafico.notaPromedio | number:'1.2-2'}}
+                <span class="fa fa-star" [ngClass]="{
+                              'text-success': grafico.notaPromedio > 2.55,
+                              'text-warning': grafico.notaPromedio <= 2.55 && grafico.notaPromedio > 1.8,
+                              'text-danger': grafico.notaPromedio <= 1.8
+                            }"></span>
+            </td>
+            <td class="center bold text-white" [ngClass]="{
+                            'bg-success': grafico.notaPromedio > 2.55,
+                            'bg-warning': grafico.notaPromedio <= 2.55 && grafico.notaPromedio > 1.8,
+                            'bg-danger': grafico.notaPromedio <= 1.8
+                          }">
+                <span *ngIf="grafico.notaPromedio > 2.54">A</span>
+                <span *ngIf="grafico.notaPromedio > 1.80 && grafico.notaPromedio < 2.55">B</span>
+                <span *ngIf="grafico.notaPromedio < 1.81">C</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,276 @@
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Parametros de Inicio</strong>
+                </h4>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+                        <legend></legend>
+
+                        <div class="col-lg-12">
+                            <div class="margin05">
+                                <div class="row labelHeder">
+                                    <div class="col-6">
+                                        Nombre cuenta
+                                    </div>
+                                    <div class="col-6">
+                                        RUT
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-control" type="text" placeholder="Nombre cuenta"
+                                            name="txtNombre" required [(ngModel)]="cuenta.nombre"
+                                            [class.Invalid]="CForm.controls.txtNombre.touched && CForm.controls.txtNombre.status=='INVALID'">
+                                    </div>
+                                    <div class="col-6">
+                                        <input class="form-control rut" type="text" placeholder="RUT" name="txtRut"
+                                            required [(ngModel)]="cuenta.rut"
+                                            [class.Invalid]="CForm.controls.txtRut.touched && CForm.controls.txtRut.status=='INVALID'">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-6">
+                                        N° de Cuenta / Tarjeta
+                                    </div>
+                                    <div class="col-6">
+                                        Monto disponible
+                                        <span class="opcional"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-control" type="text" placeholder="N° de Cuenta / Tarjeta"
+                                            name="txtRazonSocial" required [(ngModel)]="cuenta.razonSocial"
+                                            [class.Invalid]="CForm.controls.txtRazonSocial.touched && CForm.controls.txtRazonSocial.status=='INVALID'">
+                                    </div>
+                                    <div class="col-6">
+                                        <input class="form-control" type="number" placeholder="Monto disponible" min="0"
+                                            name="txtMonto" [(ngModel)]="cuenta.montoDisponible"
+                                            (keyup)="muestraTotal()">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-6">
+                                        Monto Utilizado
+                                        <span class="opcional"></span>
+                                    </div>
+                                    <div class="col-6">
+                                        Saldo
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-control" type="number" placeholder="Monto Utilizado"
+                                            name="txtUtilizado" [(ngModel)]="cuenta.montoUtilizado"
+                                            (keyup)="muestraTotal()">
+                                    </div>
+                                    <div class="col-6">
+                                        <input class="form-control" type="number" placeholder="Saldo" min="0"
+                                            name="txtSaldo" [(ngModel)]="cuenta.saldo" (keyup)="muestraTotal()">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-6">
+                                        Saldo Final
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        $ {{ total | number : '1.0-0' | comatopoint}}
+                                    </div>
+                                </div>
+                                <!-- {{cuenta | json}} -->
+                                <div class="flex">
+                                    <button class="btn btn-primary" (click)="Agregar()"
+                                        [disabled]="!CForm.valid">Guardar</button>
+                                    <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Mis Cuentas</strong>
+                    <div class="fr">
+                        <strong>Saldo Total: <span
+                                [ngStyle]="{'color':retTotalCuentas(cuentas) >= 0 ? 'white' : '#ff4b4b'}">{{retTotalCuentas(cuentas)
+                                | number : '1.0-0' | comatopoint}}</span></strong>
+                    </div>
+                </h4>
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table table-bordered table-striped table-hover no-footer">
+                                <thead>
+                                    <tr>
+                                        <td>Nombre cuenta</td>
+                                        <td>RUT</td>
+                                        <td>N° de Cuenta / Tarjeta</td>
+                                        <td>CREDITO DISPONIBLE</td>
+                                        <td>Monto Utilizado</td>
+                                        <td>Saldo</td>
+                                        <td>Saldo Final Disponible</td>
+                                        <td>Saldo Final</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let cuenta of cuentas; let i = index" (click)="popUp(i)">
+                                        <td>{{cuenta.nombre}}</td>
+                                        <td>{{cuenta.rut}}</td>
+                                        <td>{{cuenta.razonSocial}}</td>
+                                        <td>$ {{cuenta.montoDisponible | number : '1.0-0' | comatopoint}}</td>
+                                        <td>$ {{cuenta.montoUtilizado | number : '1.0-0' | comatopoint}}</td>
+                                        <td>$ {{cuenta.saldo | number : '1.0-0' | comatopoint}}</td>
+                                        <td
+                                            [ngStyle]="{'color':cuenta.saldo + cuenta.montoDisponible - cuenta.montoUtilizado >= 0 ? 'black' : 'red'}">
+                                            $ {{cuenta.saldo + cuenta.montoDisponible - cuenta.montoUtilizado | number :
+                                            '1.0-0' | comatopoint }}
+                                        </td>
+                                        <td
+                                            [ngStyle]="{'color':cuenta.saldo - cuenta.montoUtilizado >= 0 ? 'black' : 'red'}">
+                                            $ {{cuenta.saldo - cuenta.montoUtilizado | number : '1.0-0' | comatopoint }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            $ {{totalDisponible | number : '1.0-0' | comatopoint}}
+                                        </td>
+                                        <td>
+                                            $ {{totalUtilizado | number : '1.0-0' | comatopoint}}
+                                        </td>
+                                        <td>
+                                            $ {{totalSaldo | number : '1.0-0' | comatopoint}}
+                                        </td>
+                                        <td>
+                                            <span
+                                                    [ngStyle]="{'color':retTotalMontos(cuentas) >= 0 ? '#555555' : '#ff4b4b'}">
+                                                    $ {{retTotalMontos(cuentas) | number : '1.0-0' | comatopoint}}
+                                                </span>
+                                        </td>
+                                        <td>
+                                            <!-- <strong>
+                                                Monto Disponible:
+                                                
+                                            </strong> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="bkPopUp" *ngIf="eCuenta.nombre || eCuenta.rut">
+    <div class="popUp">
+        <div class="titlePopUp">
+            Editar cuentas
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Nombre cuenta
+            </div>
+            <div class="col-6">
+                RUT
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input class="form-control" type="text" placeholder="Nombre cuenta" name="txtNombre" required
+                    [(ngModel)]="eCuenta.nombre"
+                    [class.Invalid]="CForm.controls.txtNombre.touched && CForm.controls.txtNombre.status=='INVALID'">
+            </div>
+            <div class="col-6">
+                <input class="form-control rut" type="text" placeholder="RUT" name="txtRut" required
+                    [(ngModel)]="eCuenta.rut"
+                    [class.Invalid]="CForm.controls.txtRut.touched && CForm.controls.txtRut.status=='INVALID'">
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                N° de Cuenta / Tarjeta
+            </div>
+            <div class="col-6">
+                Monto disponible
+                <span class="opcional"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input class="form-control" type="text" placeholder="Razón social" name="txtRazonSocial" required
+                    [(ngModel)]="eCuenta.razonSocial"
+                    [class.Invalid]="CForm.controls.txtRazonSocial.touched && CForm.controls.txtRazonSocial.status=='INVALID'">
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="number" placeholder="Monto disponible" min="0" name="txtMonto"
+                    [(ngModel)]="eCuenta.montoDisponible">
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Monto Utilizado
+                <span class="opcional"></span>
+            </div>
+            <div class="col-6">
+                Saldo
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input class="form-control" type="number" placeholder="Monto Utilizado" name="txtUtilizado"
+                    [(ngModel)]="eCuenta.montoUtilizado">
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="number" placeholder="Saldo" min="0" name="txtSaldo"
+                    [(ngModel)]="eCuenta.saldo">
+            </div>
+        </div>
+        <div class="row labelHeder">
+            <div class="col-6">
+                Saldo Final
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>$ {{retTotal(eCuenta.saldo,eCuenta.montoUtilizado) | number : '1.0-0' | comatopoint}}</label>
+            </div>
+        </div>
+        <!-- {{cuenta | json}} -->
+        <div class="flex">
+            <button class="btn btn-primary" (click)="Actualizar()">Actualizar</button>
+            <button class="btn btn-secondary" (click)="Limpiar()">Cerrar</button>
+            <button class="btn btn-danger" (click)="Eliminar()">Eliminar</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-offset-6 col-6 bold">
+    Seleccione un año:
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-6 col-6">
+    <select id="drdFiltro" class="dropdown-toggle select2-chosen-2 form-control requiered" name="drdFiltro"
+      [(ngModel)]="agno" (change)="emitagno()">
+      <option value=0 selected>--- Seleccione una opcion ---</option>
+      <option *ngFor="let year of years$ | async" value={{year}}>
+        {{year}}</option>
+      <!-- <option value=2019>2019</option>
+      <option value=2020>2020</option>
+      <option value=2021>2021</option> -->
+    </select>
+  </div>
+</div>

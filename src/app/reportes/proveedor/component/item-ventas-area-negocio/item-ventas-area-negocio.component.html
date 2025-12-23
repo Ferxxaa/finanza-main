@@ -1,0 +1,44 @@
+<table class="table table-bordered table-striped table-hover no-footer principal">
+    <thead>
+        <tr>
+            <th>Periodo</th>
+            <th>Meses</th>
+            <th>Nombre del Proyecto</th>
+            <th>Contratos Montos Netos</th>
+            <th>IVA</th>
+            <th>Montos Total Contratos</th>
+            <th>Montos Gastado</th>
+            <!-- <th>Saldo</th> -->
+            <th colspan="2">IVA Credito</th>
+            <th colspan="2">$ Utilidad</th>
+            <th colspan="2">Utilidad Promedio Mensual</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let item of VentasAreaNegocio">
+            <tr class="agno" (click)="toggleMes(item)">
+                <td><mat-icon aria-hidden="false" aria-label="Desplegar">add_box</mat-icon></td>
+                <td colspan="9">{{item.year}}</td>
+                <td>Total</td>
+                <td>$ {{item.utilidadTotal | number:'1.0-0' | comatopoint}}</td>
+                <td>{{item.ponderadoTotal | number:'1.0-2' | comatopoint}}%</td>
+            </tr>
+            <tr *ngFor="let centroCosto of item.detalle" class="myCollapse" [attr.name]="'tr-' + item.year">
+                <td>{{centroCosto.periodo}}</td>
+                <td class="center">{{centroCosto.countMonth}}</td>
+                <td [ngStyle]="{'color': centroCosto.letras, 'background-color': centroCosto.fondo}" class="bold center">{{centroCosto.nombreCentroCosto}}</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.netoContrato < 0}">$ {{centroCosto.netoContrato | number:'1.0-0' | comatopoint}}</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.ivaContrato < 0}">$ {{centroCosto.ivaContrato | number:'1.0-0' | comatopoint}}</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.montoContratos < 0}">$ {{centroCosto.montoContratos | number:'1.0-0' | comatopoint}}</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.gastado < 0}">$ {{centroCosto.gastado | number:'1.0-0' | comatopoint}}</td>
+                <!-- <td class="monto">$ {{centroCosto.saldo | number:'1.0-0' | comatopoint}}</td> -->
+                <td class="monto" [ngClass]="{'text-danger': 0 < 0}">$ {{0 | number:'1.0-0' | comatopoint}}</td>
+                <td class="monto" [ngClass]="{'text-danger': 0 < 0}">{{0 | number:'1.0-2' | comatopoint}}%</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.utilidad < 0}">$ {{centroCosto.utilidad | number:'1.0-0' | comatopoint}}</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.porcentajeUtilidad < 0}">{{centroCosto.porcentajeUtilidad | number:'1.0-2' | comatopoint}}%</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.utilidadMensual < 0}">$ {{centroCosto.utilidadMensual | number:'1.0-0' | comatopoint}}</td>
+                <td class="monto" [ngClass]="{'text-danger': centroCosto.utilidadMensualPromedio < 0}">{{centroCosto.utilidadMensualPromedio | number:'1.0-2' | comatopoint}}%</td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>

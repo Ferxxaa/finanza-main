@@ -1,0 +1,459 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Aprobación OC</strong>
+                </h4>
+                <div class="acciones">
+                    <i class="fa fa-search" (click)="buscador = !buscador"></i>
+                </div>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+
+                        <buscador [vista]="false" *ngIf="buscador" (event)="Filtrar($event)"></buscador>
+                        <legend></legend>
+
+                        <div class="col-lg-12">
+                            <div class="margin05">
+                                <!-- <div class="row cuenta" >
+                                            <div class="col-11 right">
+                                                <span>Saldo inicial cuenta corriente</span>
+                                            </div>
+                                            <div class="col-1">
+                                                {{total | number : '1.0-0'}}
+                                            </div>
+                                        </div> -->
+                                <div class="row" *ngIf="!celular">
+                                    <div class="col-12 click">
+                                        <table class="table table-bordered table-striped table-hover no-footer principal">
+                                            <thead>
+                                                <tr>
+                                                    <td>Fecha</td>
+                                                    <td>Orden de compra</td>
+                                                    <td>Proveedor</td>
+                                                    <td>Prioridad</td>
+                                                    <td class="descrip">Descripción</td>
+                                                    <td>Centro de Costo</td>
+                                                    <td>Estado</td>
+                                                    <td>Metodo de pago</td>
+                                                    <!-- <td>N°</td> -->
+                                                    <td>Monto</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="movimientos$ | async as aprobar else NoData">
+                                                <tr *ngFor="let flujo of aprobar; let i = index" (click)="viewOc(flujo)">
+                                                    <td>{{flujo.fechaCreacion | date:'dd/MM/yy':'UTC'}}</td>
+                                                    <td>
+                                                        {{flujo.folio | folio}}
+                                                        <span *ngIf="flujo.tipo==tiposMovimiento.ordenPedido">OP </span>
+                                                        <span *ngIf="flujo.correlativo">{{flujo.correlativo | correlativo}}</span>
+                                                    </td>
+                                                    <td>{{flujo.proveedor.nombre}}</td>
+                                                    <td>
+                                                        <i class="fa fa-circle" [ngClass]="{
+                                                                    'text-success':flujo.prioridad == '1',
+                                                                    'text-warning':flujo.prioridad == '2',
+                                                                    'text-danger':flujo.prioridad == '3'
+                                                                  }"></i>
+                                                    </td>
+                                                    <td class="descrip">{{flujo.descripcion}}</td>
+                                                    <td class="text-center" [style.color]="flujo.centroCosto.letras" [style.background-color]="flujo.centroCosto.fondo">
+                                                        {{flujo.centroCosto.nombreCentroCosto}}</td>
+                                                    <td>
+                                                        Pendiente
+                                                    </td>
+                                                    <td>
+                                                        <span *ngIf="flujo.estadoPago[0].metodoPago == 2">Efectivo</span>
+                                                        <span *ngIf="flujo.estadoPago[0].metodoPago == 3">Cheque</span>
+                                                        <span *ngIf="flujo.estadoPago[0].metodoPago == 4">Transferencia</span>
+                                                    </td>
+                                                    <td class="total">$ {{retTotal(flujo.estadoPago) | number : '1.0-0' | comatopoint}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="grid" *ngIf="celular">
+                                    <div class="celular" *ngFor="let flujo of Flujos; let i = index">
+                                        <app-card-oc [ordenCompra]="flujo" (click)="PopUp(flujo._id, flujo.indice)"></app-card-oc>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- <app-popup-oc [id]="idOC" *ngIf="idOC" (cerrar)="cerrarPopUp()"></app-popup-oc> -->
+
+<app-oc-pop-up *ngIf="idMovimiento" [idMovimiento]="idMovimiento" (close)="clean()"></app-oc-pop-up>
+<app-op-pop-up [idMovimiento]="idOP" *ngIf="idOP" (close)="idOP=null" (update)="clean()"></app-op-pop-up>
+
+<div class="bkPopUp" *ngIf="ordenCompra">
+    <div class="popUp">
+        <div id="popUp">
+            <div class="row TzS">
+                <div class="col-2">
+                    <img src="assets/Images/tzs.jpg" alt="TzS" style="max-width: 100%;">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-12 bold">
+                            TRAZAS GESTION DE PROYECTOS DE INFRAESTRUCTURA LTDA
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            RUT: 76.151.605-1
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Cirujano Guzman 24 Depto 83
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Comuna providencia
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            fono
+                        </div>
+                        <div class="col-11">
+                            2 2982 9588 - 2 2492 0809
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            Giro
+                        </div>
+                        <div class="col-11">
+                            Arquitectura - Construcción
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row gray Folio bold">
+                <div class="col-8 center fs">
+                    <span *ngIf="tipo">ORDEN DE COMPRA</span>
+                    <span *ngIf="!tipo">ORDEN DE PEDIDO N° {{ordenPedido.correlativo}}</span>
+                </div>
+                <div class="col-4">
+                    <span *ngIf="tipo" class="FloatRight marginR fs">N° {{ordenCompra.folio}}</span>
+                    <span *ngIf="!tipo && OcOriginal" class="FloatRight marginR fs"><a [href]="urlVerFull" target="_blank">OC N° {{OcOriginal.folio}}</a></span>
+                </div>
+            </div>
+            <div class="Proveedor" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Señor (es)
+                    </div>
+                    <div class="col-7 bold linea lineatop">
+                        {{ordenCompra.proveedor.nombre}}
+                    </div>
+                    <div class="col-1 linea lineatop linealeft ocultar">
+                        Fecha
+                    </div>
+                    <div class="col-2 lineafull">
+                        {{ordenCompra.fechaCreacion | date:'dd/MM/yyyy':'UTC'}}
+                        <!-- <div class="input-group date" *ngFor="let estPag of estadosPagos; let i = index" *ngIf="!imprimir">
+                            <input id="txtFechaPago" name="txtFechaPago" type="text"
+                                (focusout)="AsignaFecha()" class="form-control" [(ngModel)]="ordenCompra.fechaCreacion"/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Dirección
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.direccion}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        RUT
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.rutProveedor}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Teléfono
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.telefono}}
+                    </div>
+                </div>
+                <div class="row labelHeder contacto">
+                    <div class="col-2">
+                        Contacto
+                    </div>
+                    <div class="col-5 linea">
+                        {{ordenCompra.proveedor.contacto}}
+                    </div>
+                    <div class="col-2 linea ocultar">
+                        E-Mail
+                    </div>
+                    <div class="col-3 linea email">
+                        {{ordenCompra.proveedor.mail}}
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="recursos">
+            <div class="row labelHeder">
+                <div class="col-6">
+                    Solicita
+                </div>
+                <div class="col-6">
+                    Metodo de pago
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ordenCompra.solicita}}
+                </div>
+                <div class="col-6">
+                    <span *ngIf="ordenCompra.metodoPago == 2">Efectivo</span>
+                    <span *ngIf="ordenCompra.metodoPago == 3">Cheque</span>
+                    <span *ngIf="ordenCompra.metodoPago == 4">Transferencia</span>
+                </div>
+            </div>
+        </div> -->
+
+        <app-pop-up-tipo-gasto [tipoGasto]="ordenCompra.tipoGasto" [subTipoGasto]="ordenCompra.subTipoGasto" (cambiaTipoGasto)="cambiarTipo($event)" (cambiaSubTipoGasto)="cambiarSubTipo($event)"></app-pop-up-tipo-gasto>
+
+            <div class="centroCosto caja">
+                <div class="row labelHeder">
+                    <div class="col-3 bold">
+                        <u>1.-CENTRO DE COSTO</u>
+                    </div>
+                    <div class="col-9 center">
+                        {{ordenCompra.centroCosto.nombre}} - {{ordenCompra.subCentroCosto}}
+                    </div>
+                </div>
+            </div>
+            <div class="Items caja">
+                <div class="row labelHeder">
+                    <div class="col-12 bold">
+                        <u>2.- DETALLE DE MATERIALES</u>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!tipo">
+                    <div class="col-8">
+                    </div>
+                    <div class="col-4 text-right">
+                        <span class="h5 bold">Saldo OC: ${{retSaldoOC() | number:'1.0-0' | comatopoint}}</span>
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-12">
+                        <table class="table table-bordered table-striped table-hover no-footer interna">
+                            <thead>
+                                <tr class="center">
+                                    <td>Item</td>
+                                    <td>Codigo</td>
+                                    <td>Detalle</td>
+                                    <td>Cantidad</td>
+                                    <td>Unitario</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ordenCompra.Items; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{item.codigo}}</td>
+                                    <td>{{item.detalle}}</td>
+                                    <td>{{item.cantidad | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.cantidad * item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Neto</td>
+                                    <td>$ {{retTotal(ordenCompra.estadosPagos) - ordenCompra.iva - ordenCompra.boleta | number : '1.0-0' | comatopoint}}
+                                    </td>
+                                </tr>
+                                <tr class="bgWhite" *ngIf="ordenCompra.iva">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">IVA afecto</td>
+                                    <td>$ {{ordenCompra.iva | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite" *ngIf="ordenCompra.boleta">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Boletas</td>
+                                    <td>$ {{ordenCompra.boleta | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Bruto</td>
+                                    <td>$ {{retTotal(ordenCompra.estadosPagos) | number : '1.0-0' | comatopoint}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="CondicionPago caja">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>3.- CONDICIONES DE PAGO Y PLAZO</u>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let estadoPago of ordenCompra.estadosPagos; let i = index">
+                    <div class="col-4 fechaCompromiso">
+                        Fecha compromiso de pago
+                    </div>
+                    <div class="col-4">
+                        {{estadoPago.fecha | date:'dd/MM/yyyy':'UTC'}}
+                    </div>
+                    <div class="col-4">
+                        $ {{estadoPago.monto | number: '1.0-0' | comatopoint}}
+                    </div>
+                </div>
+                <div class="row bold">
+                    <div class="col-3">
+                        Condicion de Pago:
+                    </div>
+                    <div class="col-9">
+                        {{ordenCompra.condicionPago}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="despacho caja" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>4.- DESPACHO (Dirección y Contacto)</u>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ordenCompra.despacho}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="firmas center" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="Firma">
+                            <li>Usuario actual</li>
+                            <li class="bold">Preparado por</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul class="Firma FloatRight">
+                            <li>Aprobador</li>
+                            <li class="bold">autorizado por</li>
+                        </ul>
+                        <img class="FirmaImg" *ngIf="firmar" src="assets/firmaJaime.png" alt="Firma">
+                    </div>
+                </div>
+            </div>
+
+            <div class="texto" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-12 justificado">
+                        <p>
+                            Nota 1.- Las empresas sub-contratista que ingresen a obras de Trazas Ltda., deben cumplir con lo estipulado ley 20.123 que regula el trabajo en régimen de Subcontratación, el funcionamiento de las Empresas de Servicios Transitorios, y el contrato de trabajo
+                            de servicios transitorios, exigiendo la entrega de lista del personal, contratos, registro entrega de RIOHS, obligacion de informar, entrega elementos de proteccion personal y certificacion de afiliacion de mutualidad con un
+                            minimo de 3 dias de anticipacion, o en su efecto comunicarse con Sr. Rodrigo Méndez, email: rmendez@trazas.cl
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 justificado">
+                        <p>
+                            Nota 2.- Las facturas emitidas a Trazas Ltda. se deberan entregar en la oficina central ubicada en Cirujano Guzman Nº 24 of. 83 Providencia, entre las 9:00 a 13:00 y 15:00 a 19:00 horas, solo los días viernes.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 justificado">
+                        <p>
+                            Nota 3.- Se informa que nuestra politica de calidad, medio ambiente, seguridad y salud laboral se encuentra a disposicion en pagina web www.trazas.cl
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="TipoGasto">
+            <div class="row labelHeder">
+                <div class="col-6">
+                    Tipo Gasto
+                </div>
+                <div class="col-6">
+                    Sub Tipo Gasto
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ordenCompra.tipoGasto.nombre}}
+                </div>
+                <div class="col-6">
+                    {{ordenCompra.subTipoGasto}}
+                </div>
+            </div>
+        </div> -->
+        </div>
+        <div class="cotizacion" *ngIf="ordenCompra.cotizacion">
+            <a href="{{url+adjunto}}" target="_blank" *ngIf="adjunto">Cotizacion</a>
+        </div>
+        <br>
+        <div class="motivo" *ngIf="rechazarMotivo">
+            <div class="row">
+                <div class="col-12">
+                    <span class="cRed">*Debe Ingresar un motivo de rechazo</span>
+                </div>
+            </div>
+            <div class="row labelHeder">
+                <div class="col-12">
+                    Motivo rechazo
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <textarea name="txtMotivo" rows="3" class="form-control" [(ngModel)]="motivo"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="flex Fcenter">
+            <button class="btn btn-primary" (click)="Guardar()">Firmar</button>
+            <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+            <button class="btn btn-inverse" (click)="imprSelec()">Imprimir</button>
+            <button class="btn btn-danger" (click)="rechazar()">Rechazar</button>
+        </div>
+    </div>
+</div>

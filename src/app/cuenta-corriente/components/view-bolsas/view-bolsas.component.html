@@ -1,0 +1,65 @@
+<div class="bgAbs">
+    <div class="contenido">
+        <header>
+            <div class="row">
+                <div class="col-12">
+                    Bolsas por Centro de costo
+                </div>
+            </div>
+        </header>
+        <section class="cuerpo">
+            <div class="tblLine ">
+                <div>Centro de Costo</div>
+                <div>Gastos generales</div>
+                <div>Mano de obra</div>
+                <div>Materiales</div>
+                <div>Imposiciones</div>
+                <div>IVA</div>
+                <div>Total</div>
+            </div>
+            <div class="tblLine" *ngFor="let bolsas of centroCostoBolsas">
+                <div [style.color]="bolsas.letras" [style.background-color]="bolsas.fondo">
+                    {{bolsas.nombre}}
+                </div>
+                <div class="text-right">$
+                    <span *ngIf="!bolsas.generales">0</span>
+                    <span *ngIf="bolsas.generales">{{bolsas.generales | number : '1.0-0' | comatopoint}}</span>
+                </div>
+                <div class="text-right">$
+                    <span *ngIf="!bolsas.manoObra">0</span>
+                    <span *ngIf="bolsas.manoObra">{{bolsas.manoObra | number : '1.0-0' | comatopoint}}</span>
+                </div>
+                <div class="text-right">$
+                    <span *ngIf="!bolsas.materiales">0</span>
+                    <span *ngIf="bolsas.materiales">{{bolsas.materiales | number : '1.0-0' | comatopoint}}</span>
+                </div>
+                <div class="text-right">$
+                    <span *ngIf="!bolsas.imposiciones">0</span>
+                    <span *ngIf="bolsas.imposiciones">{{bolsas.imposiciones | number : '1.0-0' | comatopoint}}</span>
+                </div>
+                <div class="text-right">$
+                    <span *ngIf="!bolsas.iva">0</span>
+                    <span *ngIf="bolsas.iva">{{bolsas.iva | number : '1.0-0' | comatopoint}}</span>
+                </div>
+                <div class="text-right">$
+                    <span *ngIf="!bolsas.generales && !bolsas.manoObra && !bolsas.materiales && !bolsas.imposiciones && !bolsas.iva">0</span>
+                    <span *ngIf="bolsas.generales || bolsas.manoObra || bolsas.materiales || bolsas.imposiciones || bolsas.iva">
+                        {{bolsas.generales +bolsas.manoObra +bolsas.materiales +bolsas.imposiciones + bolsas.iva | number : '1.0-0' | comatopoint}}
+                    </span>
+                </div>
+            </div>
+        </section>
+        <section class="botones">
+            <div class="row">
+                <div class="col-12 center">
+                    <button class="btn btn-secondary" (click)="cancelar()">Cerrar</button>
+                </div>
+            </div>
+        </section>
+        <div class="Loading" *ngIf="loading">
+            <span class="spinner">
+              <i class="fa fa-spinner fa-spin"></i>
+            </span>
+        </div>
+    </div>
+</div>

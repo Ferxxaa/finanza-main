@@ -1,0 +1,21 @@
+thead tr,
+th {
+    background-color: #1a9702;
+    color: white;
+    text-align: center;
+}
+
+.tipoGasto{
+    background-color: #3b4447 !important;
+    color: white;
+    cursor: pointer;
+}
+
+.tipoGasto:hover{
+    color: white;
+    background-color: #495152 !important;
+}
+
+.right{
+    text-align: right;
+}

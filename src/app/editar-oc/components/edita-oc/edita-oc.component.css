@@ -1,0 +1,18 @@
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+.click {
+    cursor: pointer;
+}
+
+.acciones {
+    position: absolute;
+    right: 25px;
+    top: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}

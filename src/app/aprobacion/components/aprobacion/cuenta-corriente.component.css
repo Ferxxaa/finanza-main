@@ -1,0 +1,313 @@
+/* *********************************** Buscador *********************************** */
+
+.acciones {
+    position: absolute;
+    right: 25px;
+    top: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+/* Otros */
+
+table {
+    font-size: 12px;
+}
+
+.table td {
+    line-height: 1;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+    border-bottom-width: 1px;
+}
+
+.descrip {
+    min-width: 45%;
+}
+
+.right {
+    text-align: right;
+}
+
+.cuenta {
+    margin-bottom: 1em;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.Folio {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.Fcenter {
+    justify-content: center;
+}
+
+.Fcenter .btn {
+    margin: 0px 4px;
+}
+
+.Proveedor {
+    padding: 0.5em 2px;
+}
+
+.linea {
+    border-bottom: 1px solid rgb(95, 95, 95);
+}
+
+.lineatop {
+    border-top: 1px solid rgb(95, 95, 95);
+}
+
+.linealeft {
+    border-left: 1px solid rgb(95, 95, 95);
+}
+
+.lineafull {
+    border: 1px solid rgb(95, 95, 95);
+}
+
+.gray {
+    background-color: rgb(202, 202, 202);
+}
+
+.center {
+    text-align: center;
+}
+
+.fs {
+    font-size: 16px;
+}
+
+.popUp {
+    font-size: 12px;
+    overflow: hidden;
+    max-height: 85%;
+    overflow-y: auto;
+}
+
+.popUp::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.popUp::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.popUp::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}
+
+.TzS .row {
+    margin-bottom: 1px;
+}
+
+.caja {
+    margin-top: 1em;
+    border: 1px solid gray;
+    padding: 0.4em 0px;
+}
+
+.click .table tbody tr:hover {
+    cursor: pointer;
+}
+
+.labelHeder {
+    font-weight: 100;
+    margin-bottom: 0px;
+}
+
+.bgWhite {
+    background-color: white !important;
+}
+
+.bgWhite td {
+    border: 1px solid white;
+}
+
+.bgWhite:hover {
+    background-color: white !important;
+}
+
+.brRigt {
+    border-right: 1px solid rgb(232, 232, 232) !important;
+}
+
+.firmas {
+    margin-top: 7em;
+}
+
+.Firma {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.FloatRight {
+    float: right;
+}
+
+.Firma li {
+    border: 1px solid rgb(99, 99, 99);
+    width: 200px;
+}
+
+.texto {
+    margin-top: 3em;
+}
+
+.marginR {
+    margin-right: 2em;
+}
+
+.fechaCompromiso {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.cotizacion {
+    font-size: 14px;
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cotizacion a {
+    text-decoration: none;
+    background-image: linear-gradient(blue, blue);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+.cotizacion a:hover,
+.cotizacion a:focus {
+    background-size: 100% 2px;
+}
+
+.FirmaImg {
+    top: 0;
+    right: 10%;
+    position: absolute;
+    max-width: 50%;
+    transform: translatey(-45%);
+}
+
+.cRed {
+    color: red;
+    font-size: 11px;
+}
+
+tr td:nth-child(4),
+tr td:nth-child(6) {
+    text-align: center;
+}
+
+tbody tr td:nth-child(4) {
+    font-size: 15px;
+}
+
+.total{
+    text-align: right;
+    min-width: 120px;
+}
+
+/************** Media Queries ************/
+@media (max-width: 800px) {
+    .principal tr td:nth-child(1),
+    .principal tr td:nth-child(4),
+    .principal tr td:nth-child(5),
+    .principal tr td:nth-child(7),
+    .principal tr td:nth-child(8),
+    .principal tr td:nth-child(9){
+        display: none;
+    }
+
+    .popUp{
+        margin-top: 6%;
+        max-height: 89%;
+        width: 100%;
+        max-width: 100%;
+    }
+    .fs {
+        font-size: 14px;
+    }
+    .interna tr td:nth-child(1),
+    .interna tr td:nth-child(2),
+    .ocultar{
+        display: none;
+    }
+    .TzS .col-2{
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+    .TzS .col-10{
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    .Folio  .col-8{
+        flex: 0 0 60%;
+        max-width: 60%;
+    }
+    .Folio  .col-4{
+        flex: 0 0 40%;
+        max-width: 40%;
+    }
+    .Proveedor .col-2.lineafull{
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+    .contacto .col-3.linea.email{
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%;
+    }
+    .centroCosto .col-3{
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .centroCosto .col-9{
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .Firma li{
+        width: 140px;
+    }
+
+    .grid{
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 800px) and (orientation: landscape){
+    .grid{
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+    }
+}

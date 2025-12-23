@@ -1,0 +1,69 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget Max">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Listado y evaluación de proveedores</strong>
+                </h4>
+                <div class="buscador">
+                    <mat-icon class="ml5" (click)="resumen=true" matTooltip="Resumen" [matTooltipPosition]="'above'">
+                        reduce_capacity</mat-icon>
+                    <mat-icon class="ml5" (click)="estrategico=true" matTooltip="Proveedores por OC"
+                        [matTooltipPosition]="'above'">how_to_reg</mat-icon>
+                    <mat-icon (click)="costo=true" matTooltip="Proveedores por monto" [matTooltipPosition]="'above'">
+                        engineering</mat-icon>
+                </div>
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+                    <div class="row">
+                        <div class="col-4">
+                            <app-colores-evaluacion></app-colores-evaluacion>
+                        </div>
+                        <div class="col-8">
+                            <app-filtro (emitAgno)="changeYear($event)"></app-filtro>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="tblDatos">
+                                <app-cabecera class="cabecera"></app-cabecera>
+                                <ng-container *ngIf="reportEvalProv$ | async as reportEvalProv else NoData">
+                                    <app-items [filtro]="[1]" [titulo]="'Productos'" [agno]="agno"
+                                        [reportEvalProv]="reportEvalProv"></app-items>
+                                    <app-items [filtro]="[2]" [titulo]="'Servicios'" [agno]="agno"
+                                        [reportEvalProv]="reportEvalProv"></app-items>
+                                    <app-items [filtro]="[3]" [titulo]="'Subcontratos'" [agno]="agno"
+                                        [reportEvalProv]="reportEvalProv"></app-items>
+                                        <app-totales-items [reportEvalProv]="reportEvalProv"></app-totales-items>
+                                </ng-container>
+                                <!-- <app-items [agno]="agno" [filtro]="['1']" [titulo]="'Productos'"
+                                    (loading)="load($event,0)"></app-items>
+                                <app-items [agno]="agno" [filtro]="['2']" [titulo]="'Servicios'"
+                                    (loading)="load($event,1)"></app-items>
+                                <app-items [agno]="agno" [filtro]="['3']" [titulo]="'Subcontratos'"
+                                    (loading)="load($event,2)"></app-items>
+                                <app-totales-items [agno]="agno"></app-totales-items> -->
+                            </ul>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </section>
+    </div>
+</div>
+
+<app-resumen-anual *ngIf="resumen" [agno]="agno" (cerrar)="resumen=false"></app-resumen-anual>
+<app-proveedores-estrategicos *ngIf="estrategico" [agno]="agno" (cerrar)="estrategico=false">
+</app-proveedores-estrategicos>
+<app-proveedores-estrategicos-costo *ngIf="costo" [agno]="agno" (cerrar)="costo=false">
+</app-proveedores-estrategicos-costo>
+
+<!-- <app-loading *ngIf="cargando()"></app-loading> -->

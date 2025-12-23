@@ -1,0 +1,34 @@
+thead tr th{
+    position: sticky;
+    top: 0;
+}
+
+th,
+.totales,
+.totales:hover{
+    background-color: #0070c0 !important;
+    color: white;
+    text-transform: capitalize !important;
+    font-weight: bold;
+}
+
+.mes,
+.mes:hover{
+    background-color: #797979 !important;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.right{
+    text-align: right;
+}
+
+.center{
+    text-align: center;
+}
+
+.myCollapse {
+    visibility: collapse;
+}

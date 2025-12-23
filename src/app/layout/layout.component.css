@@ -1,0 +1,39 @@
+app-header {
+    width: 100%;
+}
+
+.navbar-dashboard {
+    max-height: 56px;
+}
+
+main {
+    overflow: hidden;
+}
+
+.content {
+    height: 100%;
+    overflow-x: visible;
+    overflow-y: scroll;
+    padding-bottom: 0px;
+    padding: 87px 27px 0px;
+}
+
+
+/* ********************************** scroll max page ********************************** */
+
+.content::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.content::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.content::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}

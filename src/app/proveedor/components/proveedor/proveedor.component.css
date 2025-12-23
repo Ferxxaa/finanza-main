@@ -1,0 +1,131 @@
+.margin05 {
+    margin: 0.5rem;
+}
+
+.row {
+    margin-bottom: 0.7rem;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.flex button {
+    margin: 0.3rem;
+}
+
+
+/* .MaxProveedor {
+    max-width: 700px;
+    margin: auto;
+} */
+
+.table tbody tr:hover {
+    cursor: pointer;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+.widget-controls,
+.widget-controls * {
+    color: white;
+    font-size: 18px;
+}
+
+.colapse {
+    max-height: 100vh;
+    overflow: hidden;
+    transition: 0.5s all;
+}
+
+.comprimido {
+    max-height: 0vh;
+}
+
+
+/****** Tabla Ul *******/
+
+ul {
+    list-style: none;
+    padding: 0px;
+    /* font-size: 14px; */
+    color: black;
+}
+
+.col-12>ul>li {
+    cursor: pointer;
+    border-bottom: 1px solid #cccccc;
+}
+
+.col-12>ul>li:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+.col-12>ul>li:nth-child(1) {
+    background-color: #1a9702;
+    color: white;
+    border-bottom: 1px solid #cccccc;
+}
+
+.ulflex {
+    display: flex;
+}
+
+.ulflex div {
+    border-right: 1px solid #cccccc;
+    padding: 3px 8px;
+}
+
+.ulflex div:nth-child(1) {
+    width: 9%;
+    border-left: 1px solid #cccccc;
+}
+
+.ulflex div:nth-child(2) {
+    width: 20%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ulflex div:nth-child(3) {
+    width: 8%;
+}
+
+.ulflex div:nth-child(4) {
+    width: 12%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ulflex div:nth-child(5) {
+    width: 20%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ulflex div:nth-child(6) {
+    width: 10%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ulflex div:nth-child(7) {
+    width: 15%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ulflex div:nth-child(8) {
+    width: 6%;
+    text-align: center;
+}

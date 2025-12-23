@@ -1,0 +1,103 @@
+<li class="subtitulos padTitle pointer" (click)="view=!view">
+    <mat-icon aria-hidden="false" aria-label="Desplegar" class="fleft">add_box</mat-icon> {{titulo}}
+</li>
+<ng-container *ngIf="view">
+    <li *ngFor="let item of reportEvalProv | filtroItem:filtro; let i = index" class="contenido_tabla" (click)="clicked[i] = !clicked[i]">
+        <div class="numero">
+            {{i + 1}}
+        </div>
+        <div class="nombre">
+            {{item.nombre}}
+        </div>
+        <div>
+            {{item.rutProveedor}}
+        </div>
+        <div>
+            <span [ngSwitch]="item.categoria">
+                <span *ngSwitchCase="0">Sin asignar</span>
+                <span *ngSwitchCase="1">Producto</span>
+                <span *ngSwitchCase="2">Servicio</span>
+                <span *ngSwitchCase="3">Subcontrato</span>
+            </span>
+        </div>
+        <div [ngClass]="{
+                                'bg-success': item.calificacion > 2.55,
+                                'bg-warning': item.calificacion <= 2.55 && item.calificacion > 1.8,
+                                'bg-danger': item.calificacion <= 1.8
+                              }">
+            <span class="bold text-white">
+                {{item.calificacion | number : '1.2-2'}}
+            </span>
+        </div>
+        <div>
+            <span *ngIf="item.ssoMa && !filtro.includes(1)">
+                {{item.ssoMa | number : '1.2-2'}}
+                <span class="fa fa-star" [ngClass]="{
+                                'text-success': item.ssoMa > 2.55,
+                                'text-warning': item.ssoMa <= 2.55 && item.ssoMa > 1.8,
+                                'text-danger': item.ssoMa <= 1.8
+                              }"></span>
+            </span>
+            <span *ngIf="!item.ssoMa && !filtro.includes(1)">0</span>
+            <span *ngIf="filtro.includes(1)">N/A</span>
+        </div>
+        <div>
+            <span *ngIf="item.disponibilidad">
+                {{item.disponibilidad | number : '1.2-2'}}
+                <span class="fa fa-star" [ngClass]="{
+                    'text-success': item.disponibilidad > 2.55,
+                    'text-warning': item.disponibilidad <= 2.55 && item.disponibilidad > 1.8,
+                    'text-danger': item.disponibilidad <= 1.8
+                  }"></span>
+            </span>
+            <span *ngIf="!item.disponibilidad">0</span>
+        </div>
+        <div>
+            <span *ngIf="item.precio">
+                {{item.precio | number : '1.2-2'}}
+                <span class="fa fa-star" [ngClass]="{
+                    'text-success': item.precio > 2.55,
+                    'text-warning': item.precio <= 2.55 && item.precio > 1.8,
+                    'text-danger': item.precio <= 1.8
+                  }"></span>
+            </span>
+            <span *ngIf="!item.precio">0</span>
+        </div>
+        <div>
+            <span *ngIf="item.tiempo">
+                {{item.tiempo | number : '1.2-2'}}
+                <span class="fa fa-star" [ngClass]="{
+                    'text-success': item.tiempo > 2.55,
+                    'text-warning': item.tiempo <= 2.55 && item.tiempo > 1.8,
+                    'text-danger': item.tiempo <= 1.8
+                  }"></span>
+            </span>
+            <span *ngIf="!item.tiempo">0</span>
+        </div>
+        <div>
+            <span *ngIf="item.calidad">
+                {{item.calidad | number : '1.2-2'}}
+                <span class="fa fa-star" [ngClass]="{
+                    'text-success': item.calidad > 2.55,
+                    'text-warning': item.calidad <= 2.55 && item.calidad > 1.8,
+                    'text-danger': item.calidad <= 1.8
+                  }"></span>
+            </span>
+            <span *ngIf="!item.calidad">0</span>
+        </div>
+        <div>
+            {{item.cantidadEval}}
+        </div>
+        <div class="limit">
+            <span>
+                {{item.cantidadEval / totalEvaluaciones | number : '1.5-5'}}
+            </span>
+        </div>
+        <div>
+            <span>
+                {{ item.calificacion * item.cantidadEval / totalEvaluaciones | number : '1.5-5'}}
+            </span>
+        </div>
+        <app-detalle-proveedor class="detalle" [idProveedor]="item.idProveedor" [agno]="agno" *ngIf="clicked[i]"></app-detalle-proveedor>
+    </li>
+</ng-container>

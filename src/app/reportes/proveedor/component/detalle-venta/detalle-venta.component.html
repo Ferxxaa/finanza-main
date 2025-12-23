@@ -1,0 +1,60 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div class="row hb bb1">
+            <div class="col-12 h4">
+                Detalle de venta anual
+            </div>
+        </div>
+        <div class="row p10">
+            <table class="table table-bordered table-striped table-hover no-footer principal">
+                <thead>
+                    <tr>
+                        <th>Tipo de Factura</th>
+                        <th>N° Facturas</th>
+                        <th>Monto Neto</th>
+                        <th>IVA</th>
+                        <th>Monto Bruto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let resumen of data">
+                        <td>{{resumen.tipo}}</td>
+                        <td>{{resumen.facturas}}</td>
+                        <td>$
+                            {{resumen.montoNeto | number:'1.0-0' | comatopoint}}</td>
+                        <td>
+                            $
+                            <span *ngIf="resumen.tipo == 'Facturas Afectas'">
+                                {{resumen.montoNeto * .19 | number:'1.0-0' | comatopoint}}
+                            </span>
+                            <span *ngIf="resumen.tipo != 'Facturas Afectas'">
+                                {{0}}
+                            </span>
+                        </td>
+                        <td>
+                            $
+                            <span *ngIf="resumen.tipo == 'Facturas Afectas'">
+                                {{resumen.montoNeto + (resumen.montoNeto * .19) | number:'1.0-0' | comatopoint}}
+                            </span>
+                            <span *ngIf="resumen.tipo != 'Facturas Afectas'">
+                                {{resumen.montoNeto | number:'1.0-0' | comatopoint}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="bold">
+                        <td>Total Ventas</td>
+                        <td></td>
+                        <td>$ {{totalNeto() | number:'1.0-0' | comatopoint}}</td>
+                        <td>$ {{totalIVA() | number:'1.0-0' | comatopoint}}</td>
+                        <td>$ {{totalBruto() | number:'1.0-0' | comatopoint}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-6 col-6">
+                <button class="btn btn-secondary" (click)="Cerrar()">Salir</button>
+            </div>
+        </div>
+    </div>
+</div>

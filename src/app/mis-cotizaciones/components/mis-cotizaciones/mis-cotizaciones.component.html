@@ -1,0 +1,77 @@
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Cotizaciones pendientes</strong>
+                </h4>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+                        <legend></legend>
+
+                        <div class="col-lg-12">
+                            <div class="margin05">
+                                <!-- <div class="row cuenta" >
+                                            <div class="col-11 right">
+                                                <span>Saldo inicial cuenta corriente</span>
+                                            </div>
+                                            <div class="col-1">
+                                                {{total | number : '1.0-0'}}
+                                            </div>
+                                        </div> -->
+                                <div class="row">
+                                    <div class="col-12 click">
+                                        <table class="table table-bordered table-striped table-hover no-footer">
+                                            <thead>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Fecha</td>
+                                                    <td>Solicitador</td>
+                                                    <td>Centro de costo</td>
+                                                    <td>Prioridad</td>
+                                                    <td>Descripción</td>
+                                                    <td><span class="glyphicon glyphicon-glyph-paperclip"></span></td>
+                                                    <td>Eliminar</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let cotizacion of cotizaciones$ | async; let i = index">
+                                                    <td (click)="Detalle(cotizacion)">{{cotizacion.idCotizacion}}</td>
+                                                    <td (click)="Detalle(cotizacion)">{{cotizacion.fechaCreacion |
+                                                        date:'dd/MM/yyyy':'UTC'}}</td>
+                                                    <td (click)="Detalle(cotizacion)">
+                                                        <span *ngIf="cotizacion.solicitador">
+                                                            {{cotizacion.usuarioSolicitador.nombreUsuario}}
+                                                        </span>
+                                                    </td>
+                                                    <td (click)="Detalle(cotizacion)">
+                                                        {{cotizacion.centroCosto.nombreCentroCosto}}</td>
+                                                    <td (click)="Detalle(cotizacion)">
+                                                        <span *ngIf="cotizacion.prioridad==1">Baja</span>
+                                                        <span *ngIf="cotizacion.prioridad==2">Media</span>
+                                                        <span *ngIf="cotizacion.prioridad==3">Alta</span>
+                                                    </td>
+                                                    <td (click)="Detalle(cotizacion)">{{cotizacion.observacion}}</td>
+                                                    <td><a [href]="url.concat(cotizacion.nombreAdjunto)"
+                                                            *ngIf="cotizacion.nombreAdjunto" target="_blank"><span
+                                                                class="glyphicon glyphicon-glyph-paperclip"></span></a>
+                                                    </td>
+                                                    <td (dblclick)="eliminar(cotizacion)"><i class="fa fa-times"
+                                                            style="color: red;"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>

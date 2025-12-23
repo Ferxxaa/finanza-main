@@ -1,0 +1,69 @@
+<div class="bkPopUp">
+  <div class="popUp">
+      <div id="popUp" *ngIf="ordenCompra">
+          <app-heder-trazas></app-heder-trazas>
+          <div class="row">
+              <div class="col-12 text-right mb-1">
+                  <div class="fr10 btn-group" *ngIf="ordenCompra.folio">
+                      <a class="btn btn-secondary" [routerLink]="['/OrdenPedido',ordenCompra._id]">Orden de Pedido</a>
+                      <button class="btn btn-secondary" data-toggle="dropdown" data-original-title="" title="">
+                          <i class="fa fa-caret-down"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                          <li *ngFor="let ordenPedido of ordenesPedido, let i = index"> OP: {{ordenCompra.folio}} {{i +1}}/{{ordenesPedido.length}}</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="row gray Folio bold">
+              <div class="col-9 center barTitle">
+                  ORDEN DE COMPRA
+              </div>
+              <div class="col-3 ">
+                <span class="FloatRight marginR fs">N° {{ordenCompra.folio}}</span>
+            </div>
+          </div>
+          <app-pop-up-proveedor [proveedor]="ordenCompra.proveedor" [fechaCreacion]="ordenCompra.fechaCreacion"></app-pop-up-proveedor>
+          <app-pop-up-tipo-gasto [tipoGasto]="ordenCompra.tipoGasto" [subTipoGasto]="ordenCompra.subTipoGasto" (cambiaTipoGasto)="cambiarTipo($event)" (cambiaSubTipoGasto)="cambiarSubTipo($event)"></app-pop-up-tipo-gasto>
+          <div class="centroCosto caja">
+              <div class="row labelHeder">
+                  <div class="col-3 bold">
+                      <u>1.-CENTRO DE COSTO</u>
+                  </div>
+                  <div class="col-9 center">
+                      {{ordenCompra.centroCosto.nombre}} - {{ordenCompra.subCentroCosto}}
+                  </div>
+              </div>
+          </div>
+          <app-pop-up-items [items]="ordenCompra.Items" [iva]="ordenCompra.iva" [boleta]="ordenCompra.boleta" [idOC]="id" [cotizacion]="ordenCompra.cotizacion"></app-pop-up-items>
+          <app-pop-up-condicion [estadosPagos]="ordenCompra.estadosPagos" [metodoPago]="ordenCompra.metodoPago" [indice]="0" [sobregiro]="ordenCompra.sobregiro" (sobregirar)="OcSobregirar($event)" (anular)="sumaSaldaoBolsa($event)"></app-pop-up-condicion>
+          <app-pop-up-despacho [despacho]="ordenCompra.despacho"></app-pop-up-despacho>
+          <app-popup-evaluacion [idMovimiento]="ordenCompra._id" [solicitante]="ordenCompra.solicita"></app-popup-evaluacion>
+          <app-pop-up-firma [usuarioCreador]="ordenCompra.usuarioCreador" [Estado]="ordenCompra.Estado"></app-pop-up-firma>
+          <br>
+          <div class="motivo" *ngIf="rechazarMotivo">
+              <div class="row">
+                  <div class="col-12">
+                      <span class="cRed">*Debe Ingresar un motivo de rechazo</span>
+                  </div>
+              </div>
+              <div class="row labelHeder">
+                  <div class="col-12">
+                      Motivo rechazo
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-12">
+                      <textarea name="txtMotivo" rows="3" class="form-control" [(ngModel)]="motivo"></textarea>
+                  </div>
+              </div>
+          </div>
+          <div id="Acciones" class="flex Fcenter">
+              <button class="btn btn-primary" (click)="guardar()">Guardar</button>
+              <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+              <button class="btn btn-danger" (click)="anular()" *ngIf="bolAnular">Anular</button>
+              <button class="btn btn-secondary" (click)="genPDF(ordenCompra)">Generar PDF en red</button>
+          </div>
+      </div>
+  </div>
+</div>

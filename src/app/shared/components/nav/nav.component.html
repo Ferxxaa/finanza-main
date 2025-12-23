@@ -1,0 +1,281 @@
+<nav id="sidebar" class="sidebar" role="navigation" style="background-color: #1a9702;">
+    <!-- need this .js class to initiate slimscroll -->
+    <div class="js-sidebar-content">
+        <header class="logo hidden-sm-down">
+            <a href="Home">
+                <img src="http://trazas-nbi.com/Imagenes/NBILOGO.png">
+            </a>
+        </header>
+        <!-- main notification links are placed inside of .sidebar-nav -->
+        <h5 class="sidebar-nav-title">Menu </h5>
+        <ul id="ulMenuPrincipal" class="sidebar-nav">
+            <li>
+                <a [routerLink]="['/Home']" routerLinkActive="router-link-active">Home
+                    <span class="icon">
+                        <i class="fa fa-desktop"></i>
+                    </span>
+                </a>
+            </li>
+        </ul>
+
+        <div *ngIf="Sistema">
+            <h5 class="sidebar-nav-title">Administración de Usuarios</h5>
+            <ul id="ulMenuPrincipal" class="sidebar-nav">
+                <li>
+                    <a href="#sidebar-Usuarios" data-toggle="collapse" data-parent="#sidebar">
+                        Administración
+                        <span class="icon">
+                            <i class="glyphicon glyphicon-align-right"></i>
+                        </span>
+                    </a>
+                    <ul class="collapse" id="sidebar-Usuarios">
+                        <li>
+                            <a href="http://proyectos.trazas-nbi.com/Usuarios">Administración de Usuarios</a>
+                        </li>
+                        <li>
+                            <a href="http://proyectos.trazas-nbi.com/Perfiles">Perfiles de Usuarios</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h5 class="sidebar-nav-title">Finanzas </h5>
+        <ul id="ulMenuPrincipal" class="sidebar-nav" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">
+            <li>
+                <a href="#sidebar-Finanzas" data-toggle="collapse" data-parent="#sidebar">
+                    Configuración
+                    <span class="icon">
+                        <i class="fa fa-bank"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Finanzas">
+                    <li>
+                        <a [routerLink]="['/Proveedor']">Proveedores</a>
+                    </li>
+                    <li *ngIf="JefeAdministracion || GerenteAdmin">
+                        <a [routerLink]="['/Cuentas']">Cuentas de banco</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/Gastos']">Tipos de Gastos</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/CentroCosto']">Centro costo</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/Monto']" *ngIf="SubGerenteProy">Parametros de Inicio</a>
+                    </li>
+                    <li><a [routerLink]="['/Cierre']">Cierre Financiero</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#sidebar-Compra" data-toggle="collapse" data-parent="#sidebar">
+                    Compra
+                    <span class="icon">
+                        <i class="fa fa-cubes"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Compra">
+                    <li><a [routerLink]="['/Cotizacion']">Cargar cotización</a></li>
+                    <li><a [routerLink]="['/MisCotizaciones']">Mis Cotizaciones</a></li>
+                    <li><a [routerLink]="['/Cotizaciones']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">Cotizaciones pendientes</a></li>
+                    <li><a [routerLink]="['/OrdenCompra']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">Orden de compra</a></li>
+                    <li><a [routerLink]="['/MisOrdenCompra']">Mis Ordenes de compra</a></li>
+                    <li *ngIf="SubGerenteProy"><a [routerLink]="['/Aprobacion']">Aprobación OC</a></li>
+                    <li><a [routerLink]="['/EditaOC']">Ordenes rechazadas</a></li>
+                    <li><a [routerLink]="['/Ordenes']">Lista Ordenes de compra</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#sidebar-Vistas" data-toggle="collapse" data-parent="#sidebar">
+                    Flujo caja
+                    <span class="icon">
+                        <i class="fa fa-file-excel-o"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Vistas">
+                    <li><a [routerLink]="['/Cuenta']" *ngIf="JefeAdministracion || GerenteAdmin">Cuenta corriente</a></li>
+                    <li><a [routerLink]="['/ViewCentroCosto']">Centro de costo</a></li>
+                    <li><a [routerLink]="['/IngresoEgreso']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">Ingreso y Egreso</a></li>
+                    <li><a [routerLink]="['/CajaChica']">Caja chica</a></li>
+                </ul>
+            </li>
+            <li *ngIf="JefeAdministracion || GerenteAdmin">
+                <a href="#sidebar-Reporte" data-toggle="collapse" data-parent="#sidebar">
+                    Reportes Opera...
+                    <span class="icon">
+                        <i class="fa fa-cogs"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Reporte">
+                    <li><a [routerLink]="['/ReporteProveedor']">Evaluacion Proveedores</a></li>
+                    <li><a [routerLink]="['/GraficoProveedor']">Evaluacion anual Proveedores</a></li>
+                    <li><a [routerLink]="['/ConsolidadoCentroCosto']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">Consolidado Centro de Costo</a></li>
+                </ul>
+            </li>
+            <li *ngIf="JefeAdministracion || GerenteAdmin">
+                <a href="#sidebar-ReporteFinanciero" data-toggle="collapse" data-parent="#sidebar">
+                    Reportes Financiero
+                    <span class="icon">
+                        <i class="fa fa-cogs"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-ReporteFinanciero">
+                    <li><a [routerLink]="['/GraficoOperacional']">Resumen anual Operacional</a></li>
+                    <li><a [routerLink]="['/FacturasEmitidas']">Ventas anual</a></li>
+                    <li><a [routerLink]="['/VentasporAreaNegocio']">Resultado por Area Negocio</a></li>
+                    <li><a [routerLink]="['/RentabilidadAreaNegocio']">Rentabilidad por Area Negocio</a></li>
+                    <li><a [routerLink]="['/Consolidado']">Consolidado Rentabilidad</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h5 class="sidebar-nav-title">Gerenciamiento de Proyectos </h5>
+        <ul id="ulMenuPrincipal" class="sidebar-nav">
+            <li>
+                <a href="#sidebar-Proyectos" data-toggle="collapse" data-parent="#sidebar">
+                    Proyectos
+                    <span class="icon">
+                        <i class="glyphicon glyphicon-align-right"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Proyectos">
+                    <li *ngIf="SubGerenteProy">
+                        <a href="http://proyectos.trazas-nbi.com/Proyectos-ProyectoMatriz">Crear / Editar proyecto
+                            matriz</a>
+                    </li>
+                    <li *ngIf="DirectorProy || SubGerenteProy">
+                        <a href="http://proyectos.trazas-nbi.com/Proyectos-Proyecto">Crear / Editar
+                            proyecto</a>
+                    </li>
+                    <li *ngIf="SubGerenteProy">
+                        <a href="http://proyectos.trazas-nbi.com/Proyectos-ValidarProyecto">Validar Proyecto</a>
+                    </li>
+                    <li>
+                        <a href="http://proyectos.trazas-nbi.com/Proyectos-SubProyecto">Crear / Editar Sub - Proyecto</a>
+                    </li>
+                    <li *ngIf="DirectorProy || SubGerenteProy">
+                        <a href="http://proyectos.trazas-nbi.com/Proyectos-ValidarSubProyectos">Validar
+                            Sub-Proyecto</a>
+                    </li>
+                    <li>
+                        <a href="http://proyectos.trazas-nbi.com/Proyectos-MisProyectos">Mis Proyectos/Sub Proyectos</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#sidebar-Configuración" data-toggle="collapse" data-parent="#sidebar">
+                    Configuración
+                    <span class="icon">
+                        <i class="fa fa-tasks"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Configuración" aria-expanded="false" style="height: 0px;">
+                    <li>
+                        <a href="http://proyectos.trazas-nbi.com/Configuracion-SubProyecto">Crear / Editar ritmo, ponderado y
+                            presupuesto</a>
+                    </li>
+                    <li *ngIf="DirectorProy || SubGerenteProy">
+                        <a href="http://proyectos.trazas-nbi.com/Configuracion-ValidacionSubProyecto">Validar
+                            ritmo, ponderado y
+                            presupuesto</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="http://proyectos.trazas-nbi.com/Proyectos-MisProyectos">
+                    <span class="icon">
+                        <i class="fa fa-archive"></i>
+                    </span>Mis Proyectos</a>
+            </li>
+            <li>
+                <a href="#sidebar-Tareas" data-toggle="collapse" data-parent="#sidebar">
+                    Tareas
+                    <span class="icon">
+                        <i class="fa fa-tasks"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Tareas" aria-expanded="false" style="height: 0px;">
+                    <li>
+                        <a href="http://proyectos.trazas-nbi.com/Ver-Tareas">
+                            Mis Tareas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://proyectos.trazas-nbi.com/Calendario-Tareas">
+                            Calendario
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+
+        <!-- <h5 class="sidebar-nav-title">Tareas </h5>
+        <ul class="sidebar-nav">
+
+            <li>
+                <a href="http://proyectos.trazas-nbi.com/Ver-Tareas">
+                    <span class="icon">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                    </span> Mis Tareas
+                </a>
+            </li>
+            <li>
+                <a href="http://proyectos.trazas-nbi.com/Calendario-Tareas">
+                    <span class="icon">
+                        <i class="fa fa-calendar"></i>
+                    </span> Calendario
+                </a>
+            </li>
+        </ul> -->
+
+        <h5 class="sidebar-nav-title">Licitaciones</h5>
+        <ul class="sidebar-nav">
+            <li *ngIf="DirectorLic">
+                <a href="#sidebar-Licitaciones" data-toggle="collapse" data-parent="#sidebar">
+                    Administración
+                    <span class="icon">
+                        <i class="fa fa-briefcase"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-Licitaciones">
+                    <li>
+                        <a href="http://licitaciones.trazas-nbi.com/Licitacion-Areas">Areas</a>
+                    </li>
+                    <li>
+                        <a href="http://licitaciones.trazas-nbi.com/Licitacion-Mandantes">Mandantes</a>
+                    </li>
+                    <li>
+                        <a href="http://licitaciones.trazas-nbi.com/Licitacion-Ejecutivos">Ejecutivos</a>
+                    </li>
+                    <li>
+                        <a href="http://licitaciones.trazas-nbi.com/Licitacion-Hitos">Hitos</a>
+                    </li>
+                    <li>
+                        <a href="http://licitaciones.trazas-nbi.com/Licitacion-Licitaciones">Licitaciones</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="http://licitaciones.trazas-nbi.com/Licitacion-MisLicitaciones">
+                    <span class="icon">
+                        <i class="fa fa-archive"></i>
+                    </span>Mis Licitaciones</a>
+            </li>
+            <li>
+                <a href="http://licitaciones.trazas-nbi.com/Licitacion-CalendarioLic">
+                    <span class="icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>Calendario</a>
+            </li>
+            <li *ngIf="DirectorLic">
+                <a href="http://licitaciones.trazas-nbi.com/Reporte-Licitaciones">
+                    <span class="icon">
+                        <i class="fa fa-bar-chart-o"></i>
+                    </span>Gráficos</a>
+            </li>
+        </ul>
+    </div>
+</nav>

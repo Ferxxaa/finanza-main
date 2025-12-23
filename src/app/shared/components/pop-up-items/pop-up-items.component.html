@@ -1,0 +1,70 @@
+<div class="Items caja">
+    <div class="row labelHeder">
+        <div class="col-9 bold">
+            <u>2.- DETALLE DE MATERIALES</u>
+        </div>
+        <div class="col-3 text-right cotizacion" *ngIf="cotizacion">
+                <a href="{{url+adjunto}}" target="_blank" *ngIf="adjunto">Cotización</a>
+        </div>
+    </div>
+    <div class="row labelHeder">
+        <div class="col-12">
+            <table class="table table-bordered table-striped table-hover no-footer">
+                <thead>
+                    <tr class="center">
+                        <td>Item</td>
+                        <td>Codigo</td>
+                        <td>Detalle</td>
+                        <td>Cantidad</td>
+                        <td>Unitario</td>
+                        <td>Total</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{item.codigo}}</td>
+                        <td>{{item.detalle}}</td>
+                        <td>{{item.cantidad | number : '1.0-0' | comatopoint}}</td>
+                        <td>$ {{item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                        <td>$ {{item.cantidad * item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                    </tr>
+                    <tr class="bgWhite">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="brRigt">Total Neto</td>
+                        <td>$ {{totalOC - BoletaCalculado | number : '1.0-0' | comatopoint}}
+                        </td>
+                    </tr>
+                    <tr class="bgWhite" *ngIf="IVACalculado">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="brRigt">IVA afecto</td>
+                        <td>$ {{IVACalculado | number : '1.0-0' | comatopoint}}</td>
+                    </tr>
+                    <tr class="bgWhite" *ngIf="BoletaCalculado">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="brRigt">Boletas</td>
+                        <td>$ {{BoletaCalculado | number : '1.0-0' | comatopoint}}</td>
+                    </tr>
+                    <tr class="bgWhite">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="brRigt">Total Bruto</td>
+                        <td>$ {{totalOC + IVACalculado + BoletaCalculado | number : '1.0-0' | comatopoint}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

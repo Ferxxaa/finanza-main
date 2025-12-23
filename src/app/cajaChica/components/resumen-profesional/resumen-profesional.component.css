@@ -1,0 +1,25 @@
+ul{
+    list-style: none;
+    max-height: 27vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+ul li:nth-child(1){
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+li:nth-child(even){
+    background-color: #f3f3f3;
+}
+mat-icon{
+    cursor: pointer;
+}
+
+.cursor{
+    cursor: default;
+    position: absolute;
+    right: 0;
+}

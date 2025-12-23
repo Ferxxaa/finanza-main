@@ -1,0 +1,41 @@
+.mt10 {
+    margin-top: 10px;
+}
+
+
+.w100 {
+    width: 100%;
+    align-items: center;
+}
+
+.lista {
+    font-size: 0.5rem;
+}
+
+.icon {
+    width: 24px;
+}
+
+.pagada {
+    background-color: #f2f2f2;
+}
+
+.anulada {
+    background-color: rgb(255, 223, 223)
+}
+
+.cheque {
+    background-color: green;
+}
+
+.super {
+    z-index: 1;
+}
+
+.super2 {
+    z-index: 2;
+}
+
+.block {
+    display: block;
+}

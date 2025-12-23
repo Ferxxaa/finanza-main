@@ -1,0 +1,55 @@
+<div class="container" *ngIf="tipoGasto$ | async as tiposGastos">
+  <div class="row">
+    <div class="col-8">
+      <div class="row labelHeder">
+        <div class="col-12">
+          Sub tipo gasto
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <select id="drdTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+            [(ngModel)]="subTipoGasto.tipoGasto" name="drdTipoGasto" appSelectValidator="appSelectValidator" (change)="getSubTipos()">
+            <option value="0" selected="selected">--- Seleccione una opcion ---
+            </option>
+            <option *ngFor="let gasto of tiposGastos; let i = index" value={{gasto.idTipoGasto}}>
+              {{gasto.nombreTipoGasto}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row labelHeder">
+        <div class="col-12">
+          Nombre Sub tipo gasto
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <input id="txtSubTipo" class="form-control" type="text" placeholder="Nombre Sub tipo gasto" [(ngModel)]="subTipoGasto.nombreSubtipoGasto">
+        </div>
+      </div>
+      <div class="row labelHeder">
+        <div class="col-6">Color Letras</div>
+        <div class="col-6">Color Fondo</div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <input class="form-control" type="color" name="txtColorLetras" [(ngModel)]="subTipoGasto.colorLetras">
+        </div>
+        <div class="col-6">
+          <input class="form-control" type="color" name="txtColorFondo" [(ngModel)]="subTipoGasto.colorFondo">
+        </div>
+      </div>
+    </div>
+    <div class="col-4" style="border: 1px solid gainsboro;">
+      <ul>
+        <li *ngFor="let subGasto of subTiposGastos$ | async | filterSubTipoActive; let i = index">
+          {{subGasto.nombreSubtipoGasto}}</li>
+      </ul>
+    </div>
+  </div>
+  <!-- {{subTipoGasto | json}} -->
+  <div class="flex">
+    <button class="btn btn-primary" (click)="AgregarSub()">Guardar</button>
+    <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div class="row hb bb1">
+            <div class="col-12 h4">
+                Proveedores Estrategicos
+            </div>
+        </div>
+        <div class="row">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+          </div>
+        <div class="row p10">
+            <table class="table table-bordered table-striped table-hover no-footer principal">
+                <thead>
+                    <tr>
+                        <th>Nombre o razón social</th>
+                        <th>RUT</th>
+                        <th>Categoría</th>
+                        <th>Calificación</th>
+                        <th>Compras acumuladas año</th>
+                        <th>N° de compras por año</th>
+                        <th>Condición de pago</th>
+                        <th>Rubro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let producto of arrProducto">
+                        <td>{{producto.nombre}}</td>
+                        <td>{{producto.rutProveedor}}</td>
+                        <td>
+                            <span [ngSwitch]="producto.categoria">
+                                <span *ngSwitchCase="0">Sin asignar</span>
+                                <span *ngSwitchCase="1">Producto</span>
+                                <span *ngSwitchCase="2">Servicio</span>
+                                <span *ngSwitchCase="3">Subcontrato</span>
+                            </span>
+                        </td>
+                        <td>{{producto.evaluacion | number:'1.0-2'}}
+                            <span class="fa fa-star" [ngClass]="{
+                                'text-success': producto.evaluacion > 2.55,
+                                'text-warning': producto.evaluacion <= 2.55 && producto.evaluacion > 1.8,
+                                'text-danger': producto.evaluacion <= 1.8
+                              }"></span>
+                        </td>
+                        <td>${{producto.totalOrden | number:'1.0-0' | comatopoint}}</td>
+                        <td>{{producto.OcEvaluadas}}</td>
+                        <td>{{producto.condicion | cortarTextos}}</td>
+                        <td>{{producto.observacion}}</td>
+                    </tr>
+                    <tr *ngFor="let servicio of arrServicio">
+                        <td>{{servicio.nombre}}</td>
+                        <td>{{servicio.rutProveedor}}</td>
+                        <td>
+                            <span [ngSwitch]="servicio.categoria">
+                                <span *ngSwitchCase="0">Sin asignar</span>
+                                <span *ngSwitchCase="1">Producto</span>
+                                <span *ngSwitchCase="2">Servicio</span>
+                                <span *ngSwitchCase="3">Subcontrato</span>
+                            </span>
+                        </td>
+                        <td>{{servicio.evaluacion | number:'1.0-2'}}
+                            <span class="fa fa-star" [ngClass]="{
+                                'text-success': servicio.evaluacion > 2.55,
+                                'text-warning': servicio.evaluacion <= 2.55 && servicio.evaluacion > 1.8,
+                                'text-danger': servicio.evaluacion <= 1.8
+                              }"></span>
+                        </td>
+                        <td>${{servicio.totalOrden | number:'1.0-0' | comatopoint}}</td>
+                        <td>{{servicio.OcEvaluadas}}</td>
+                        <td>{{servicio.condicion | cortarTextos}}</td>
+                        <td>{{servicio.observacion}}</td>
+                    </tr>
+                    <tr *ngFor="let subContrato of arrSubcontrato">
+                        <td>{{subContrato.nombre}}</td>
+                        <td>{{subContrato.rutProveedor}}</td>
+                        <td>
+                            <span [ngSwitch]="subContrato.categoria">
+                                <span *ngSwitchCase="0">Sin asignar</span>
+                                <span *ngSwitchCase="1">Producto</span>
+                                <span *ngSwitchCase="2">Servicio</span>
+                                <span *ngSwitchCase="3">Subcontrato</span>
+                            </span>
+                        </td>
+                        <td>{{subContrato.evaluacion | number:'1.0-2'}}
+                            <span class="fa fa-star" [ngClass]="{
+                                'text-success': subContrato.evaluacion > 2.55,
+                                'text-warning': subContrato.evaluacion <= 2.55 && subContrato.evaluacion > 1.8,
+                                'text-danger': subContrato.evaluacion <= 1.8
+                              }"></span>
+                        </td>
+                        <td>${{subContrato.totalOrden | number:'1.0-0' | comatopoint}}</td>
+                        <td>{{subContrato.OcEvaluadas}}</td>
+                        <td>{{subContrato.condicion | cortarTextos}}</td>
+                        <td>{{subContrato.observacion}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-6 col-6">
+                <button class="btn btn-secondary" (click)="Cerrar()">Salir</button>
+            </div>
+        </div>
+    </div>
+</div>

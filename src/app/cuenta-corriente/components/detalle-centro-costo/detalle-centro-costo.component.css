@@ -1,0 +1,69 @@
+.col-12>ul>li:nth-child(1) {
+    background-color: #1a9702;
+    color: white;
+}
+
+.col-12>ul>li:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+ul>ul {
+    transition: height 0.5s;
+    overflow: hidden;
+    padding-left: 5px;
+}
+
+ul>li {
+    list-style-type: none;
+    margin: 3px 0px;
+}
+
+.TiposGastos {
+    margin-bottom: 1px;
+}
+
+.popUp {
+    font-size: 14px;
+    overflow: hidden;
+    max-height: 85%;
+    overflow-y: auto;
+    min-width: 60%;
+}
+
+.popUp::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+.popUp::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.popUp::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}
+
+.row {
+    margin-bottom: 3px;
+}
+
+.texto {
+    margin-top: 3em;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.Fcenter {
+    justify-content: center;
+}
+
+.Fcenter .btn {
+    margin: 0px 4px;
+}

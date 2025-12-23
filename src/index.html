@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NBI Finanzas</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"> -->
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="http://www.cloudformatter.com/Resources/Pages/CSS2Pdf/Script/xepOnline.jqPlugin.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    
+    <!-- Select2 CSS --> 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body>
+    <app-root></app-root>
+    <!-- common app js -->
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/jquery-pjax/jquery.pjax.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/tether/dist/js/tether.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/bootstrap/js/dist/util.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/bootstrap/js/dist/collapse.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/bootstrap/js/dist/dropdown.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/bootstrap/js/dist/button.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/bootstrap/js/dist/tooltip.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/bootstrap/js/dist/alert.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/widgster/widgster.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/pace.js/pace.js" data-pace-options='{ "target": ".content-wrap", "ghostTime": 1000 }'></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/jquery-touchswipe/jquery.touchSwipe.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/js/bootstrap-fix/button.js"></script>
+
+    <!-- common app js -->
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/js/settings.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/js/app.js"></script>
+
+    <!-- Datepicket -->
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/moment/min/moment.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- Calendario -->
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/fullcalendar/fullcalendar.js"></script>
+
+    <!-- Colorpicker -->
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/js/jquery.minicolors.js"></script>
+    <link href="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/css/jquery.minicolors.css" rel="stylesheet" type="text/css" />
+
+    <!--Graficos -->
+    <!-- page specific libs -->
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/jquery.sparkline/index.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/d3/d3.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/rickshaw/rickshaw.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/raphael/raphael-min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/flot.animator/jquery.flot.animator.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/flot/jquery.flot.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/flot-orderBars/js/jquery.flot.orderBars.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/flot/jquery.flot.selection.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/flot/jquery.flot.time.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/nvd3/build/nv.d3.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/morris.js/morris.min.js"></script>
+    <script src="http://trazas-nbi.com/Bootstrap/ajax-bootstrap4/vendor/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <!-- Reportes -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</body>
+
+</html>

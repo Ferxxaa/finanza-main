@@ -1,0 +1,170 @@
+<ng-template #NoData>
+  <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+
+<div class="bkPopUp" *ngIf="eCentroCosto">
+  <div class="popUp">
+    <div class="col-lg-12">
+
+      <div class="container">
+        <div class="titlePopUp">
+          Editar centro de costo
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Area de negocio
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <!-- <input class="form-control" name="drdCentroCosto" type="text" placeholder="--- Seleccione una opción ---" list="CentroCosto" required [(ngModel)]="subCentroCosto.centroCosto" [class.Invalid]="SCForm.controls.drdCentroCosto.touched && SCForm.controls.drdCentroCosto.status=='INVALID'"> -->
+            <select id="drdCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+              [(ngModel)]="eCentroCosto.areaNegocio.idAreaNegocio" name="drdCentroCosto" (change)="findAreaNegocio()">
+              <option value=0 selected>--- Seleccione una opcion ---
+              </option>
+              <option *ngFor="let areaNegocio of areasNegocios$ | async; let i = index"
+                value={{areaNegocio.idAreaNegocio}}>
+                {{areaNegocio.nombreAreaNegocio}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Centro de costo
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="text" placeholder="Centro de costo" name="txtSubccNombre" required
+              [(ngModel)]="eCentroCosto.nombreCentroCosto">
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Monto proyectado
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="number" placeholder="Monto proyectado" name="txtMontoProyectado" required
+              [(ngModel)]="eCentroCosto.montoProgramado">
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Color de fondo
+            <span class="opcional"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="color" name="txtColorFondo" [(ngModel)]="eCentroCosto.fondo">
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Color de letras
+            <span class="opcional"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="color" name="txtColorLetras" [(ngModel)]="eCentroCosto.letras">
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Demo
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Fecha Inicio
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="Inicio" class="input-group date">
+              <input id="txtInicio" name="txtInicio" type="text" (focusout)="asignaFechaInicio()"
+                class="form-control" />
+              <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Fecha Termino
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="Ter,ino" class="input-group date">
+              <input id="txtTermino" name="txtTermino" type="text" (focusout)="asignaFechaTermino()"
+                class="form-control" />
+              <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Responsable
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" type="text" placeholder="--- Seleccione una opción ---" list="Responsables"
+              name="txtResponsable" required [(ngModel)]="eCentroCosto.responsable">
+            <!-- [(ngModel)]="Proveedor.categoria"
+                      [class.Invalid]="CForm.controls.txtCategoria.touched && CForm.controls.txtCategoria.status=='INVALID'" -->
+            <datalist id="Responsables">
+              <option value="Jaime Olivares"></option>
+              <option value="Oscar Gómez"></option>
+              <option value="Orlando Cubillos"></option>
+            </datalist>
+          </div>
+        </div>
+        <div class="row labelHeder">
+          <div class="col-12">
+            Activo
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-slide-toggle [color]="'primary'" [(ngModel)]="eCentroCosto.isActive"></mat-slide-toggle>
+          </div>
+        </div>
+        <ng-container *ngIf="!eCentroCostoStatus && (eCentroCostoStatus != eCentroCosto.isActive)">
+
+          <div class="row labelHeder">
+            <div class="col-12">
+              Desplazamiento en dias
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <input class="form-control" type="number" placeholder="Dias desplazamiento" name="txtDiasDesplazamiento"
+                required [(ngModel)]="desplazaminetoDias">
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="flex">
+          <button class="btn btn-primary" (click)="Actualizar()">Actualizar</button>
+          <button class="btn btn-secondary" (click)="cerrar()">Cerrar</button>
+          <!-- <button class="btn btn-danger" (dblclick)="Eliminar()">Eliminar</button> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

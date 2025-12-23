@@ -1,0 +1,121 @@
+<div class="col-lg-12">
+
+  <div class="container">
+    <div class="row labelHeder">
+      <div class="col-12">
+        Area de negocio
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- <input class="form-control" name="drdCentroCosto" type="text" placeholder="--- Seleccione una opción ---" list="CentroCosto" required [(ngModel)]="subCentroCosto.centroCosto" [class.Invalid]="SCForm.controls.drdCentroCosto.touched && SCForm.controls.drdCentroCosto.status=='INVALID'"> -->
+        <select id="drdCentroCosto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+          [(ngModel)]="centroCosto.areaNegocio" name="drdCentroCosto">
+          <option value=0 selected>--- Seleccione una opcion ---
+          </option>
+          <option *ngFor="let areaNegocio of areasNegocio$ | async; let i = index" value={{areaNegocio.idAreaNegocio}}>
+            {{areaNegocio.nombreAreaNegocio}}</option>
+        </select>
+      </div>
+      <!-- <div class="col-2">
+        <input id="chkSubCentroEstado" name="chkSubCentroEstado" type="checkbox" class="custom-control-input"
+          [(ngModel)]="subCentroCostoDatos.activo">
+        <label class="custom-control-label" for="chkSubCentroEstado">Activo</label>
+      </div> -->
+    </div>
+    <div class="row labelHeder">
+      <div class="col-12">
+        Centro de costo
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="form-control" type="text" placeholder="Centro de costo" name="txtSubccNombre" required
+          [(ngModel)]="centroCosto.nombreCentroCosto">
+      </div>
+    </div>
+    <div class="row labelHeder">
+      <div class="col-12">
+        Monto proyectado
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="form-control" type="number" placeholder="Monto proyectado" name="txtMontoProyectado" required
+          [(ngModel)]="centroCosto.montoProgramado">
+      </div>
+    </div>
+    <div class="row labelHeder">
+      <div class="col-12">
+        Color de fondo
+        <span class="opcional"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- <input class="form-control" type="text" placeholder="Color fondo" name="txtColorFondo" [(ngModel)]="subCentroCosto.fondo"> -->
+        <input class="form-control" type="color" name="txtColorFondo" [(ngModel)]="centroCosto.fondo">
+      </div>
+    </div>
+    <div class="row labelHeder">
+      <div class="col-12">
+        Color de letras
+        <span class="opcional"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- <input class="form-control" type="text" placeholder="Color de letras" name="txtColorLetras" [(ngModel)]="subCentroCosto.letras"> -->
+        <input class="form-control" type="color" name="txtColorLetras" [(ngModel)]="centroCosto.letras">
+      </div>
+    </div>
+    <div class="row labelHeder">
+      <div class="col-12">
+        Demo
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="dvCircle" [ngStyle]="{'background-color':centroCosto.fondo, 'color':centroCosto.letras}">
+          aAbBcCdD
+        </div>
+      </div>
+    </div>
+    <div class="row labelHeder">
+      <div class="col-12">
+        Responsable
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <input class="form-control" type="text" placeholder="--- Seleccione una opción ---" list="Responsables"
+          name="txtResponsable" required [(ngModel)]="centroCosto.responsable">
+        <!-- [(ngModel)]="Proveedor.categoria"
+                      [class.Invalid]="CForm.controls.txtCategoria.touched && CForm.controls.txtCategoria.status=='INVALID'" -->
+        <datalist id="Responsables">
+          <option value="Jaime Olivares"></option>
+          <option value="Oscar Gómez"></option>
+          <option value="Orlando Cubillos"></option>
+        </datalist>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-12">
+        <mat-form-field>
+          <mat-label>Cliente</mat-label>
+          <mat-select placeholder="Cliente" name="drdCliente" [(ngModel)]="cliente" (change)="cambiaCliente(cliente)">
+            <mat-option>--- Seleccione una opcion ---</mat-option>
+            <mat-option *ngFor="let cliente of mandantes$ | async" [value]="cliente.IdMandante">
+              {{ cliente.NombreMandante }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div> -->
+    <!-- {{subCentroCosto | json}} {{subCentroCostoDatos | json}} -->
+    <div class="flex">
+      <button class="btn btn-primary" (click)="addCentroCosto()">Guardar</button>
+      <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+    </div>
+  </div>
+</div>

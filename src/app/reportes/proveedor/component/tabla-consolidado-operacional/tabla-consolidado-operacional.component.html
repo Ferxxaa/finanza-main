@@ -1,0 +1,21 @@
+<!-- <table class="table table-bordered table-striped table-hover no-footer principal fix"> -->
+    <!-- <thead>
+        <tr>
+            <th>Movimiento Operacional</th>
+            <th *ngFor="let item of consolidado">{{item.agno}}</th>
+        </tr>
+    </thead> -->
+    <!-- <tbody> -->
+        <!-- <tr *ngFor="let item of tabla">
+                                      <td>{{item.campo}}</td>
+                                      <td class="right">$ {{item.valor | number:'1.0-0' | comatopoint}}</td>
+                                    </tr> -->
+        <tr *ngFor="let ope of operacional">
+            <td></td>
+            <td>{{ope.nombre}}</td>
+            <td *ngFor="let item of consolidado" class="right">
+                ${{retItem(ope,item) | number:'1.0-0' | comatopoint}}
+            </td>
+        </tr>
+    <!-- </tbody>
+</table> -->

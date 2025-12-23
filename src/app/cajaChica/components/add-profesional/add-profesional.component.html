@@ -1,0 +1,58 @@
+<section class="widget">
+    <header style="background-color: #555555">
+        <h4 style="color: #ffffff;">
+            <strong>Personal</strong>
+        </h4>
+    </header>
+    <div class="widget-body">
+
+        <form #CForm="ngForm">
+            <fieldset>
+                <legend></legend>
+
+                <div class="row bold">
+                    <div class="col-6">
+                        Personal
+                    </div>
+                    <div class="col-6">
+                        Saldo inicial
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Personal</mat-label>
+                            <input matInput placeholder="Nombre profesional" type="text"
+                                [(ngModel)]="profesional.nombreProfesional" required name="txtnombres">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Saldo inicial</mat-label>
+                            <input matInput placeholder="Saldo inicial" type="number"
+                                [(ngModel)]="profesional.saldo" min=0 required name="txtSaldo">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- {{profesional | json}} -->
+                <section class="Acciones">
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <button mat-raised-button color="primary" (click)="agregarProfesional()"
+                                [disabled]="!CForm.valid">
+                                Agregar
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button mat-raised-button (click)="limpiar()">
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </fieldset>
+        </form>
+
+    </div>
+</section>

@@ -1,0 +1,33 @@
+.row {
+    margin: 0;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.flex button {
+    margin: 0.3rem;
+}
+
+.table tbody tr:hover,
+.pointer,
+mat-tab ul li {
+    cursor: pointer;
+}
+
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+.mat-icon-button{
+    width: 30px;
+    height: 30px;
+}
+
+.minh{
+    min-height: 200px;
+}

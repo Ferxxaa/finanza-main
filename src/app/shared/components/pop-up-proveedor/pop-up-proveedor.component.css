@@ -1,0 +1,25 @@
+.row {
+    max-width: 100%;
+    margin: 0px;
+    margin-bottom: 2px;
+}
+
+.Proveedor {
+    padding: 0.5em 2px;
+}
+
+.linea {
+    border-bottom: 1px solid rgb(95, 95, 95);
+}
+
+.lineatop {
+    border-top: 1px solid rgb(95, 95, 95);
+}
+
+.linealeft {
+    border-left: 1px solid rgb(95, 95, 95);
+}
+
+.lineafull {
+    border: 1px solid rgb(95, 95, 95);
+}

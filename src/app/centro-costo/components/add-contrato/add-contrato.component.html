@@ -1,0 +1,50 @@
+<div class="bgAbs">
+    <div class="contenido">
+        <header *ngIf="centroCosto" [ngStyle]="{'background-color': centroCosto.fondo}">
+            <div class="row" [ngStyle]="{'color': centroCosto.letras}">
+                <div class="col-12">
+                    Configuración de Contratos - <span *ngIf="contrato">{{centroCosto.nombreCentroCosto}} </span>
+                </div>
+            </div>
+        </header>
+        <section>
+            <div class="row">
+                <div class="col-6">
+                    Contrato
+                </div>
+                <div class="col-6">
+                    Monto de contrato
+                </div>
+            </div>
+            <div class="row mb10px">
+                <div class="col-6">
+                    <input class="form-control" type="text" placeholder="Nombre contrato" name="txtNombre"
+                        [(ngModel)]="contrato.nombreContrato" />
+                </div>
+                <div class="col-6">
+                    <input class="form-control" min=1 max=10 type="number" placeholder="Monto de contrato"
+                        name="txtMontoContrato" [(ngModel)]="contrato.monto" />
+                </div>
+            </div>
+            <ul>
+                <li *ngFor="let contrato of contratos$ | async; let i = index" (click)="cargaContrato(contrato)"
+                    role="button" [ngClass]="{'active': i == indiceEditar}">
+                    {{contrato.nombreContrato}} - $ {{contrato.monto | number: '1.0-0' | comatopoint}}
+                </li>
+            </ul>
+        </section>
+        <footer>
+            <div class="row">
+                <div class="col-6 text-right">
+                    <button mat-raised-button color="primary" (click)="crearContrato()"
+                        [disabled]="contrato.monto <= 0 && indiceEditar < 0">
+                        <span *ngIf="indiceEditar < 0">Crear</span><span *ngIf="indiceEditar>=0">Editar</span> Contrato
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button mat-raised-button class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

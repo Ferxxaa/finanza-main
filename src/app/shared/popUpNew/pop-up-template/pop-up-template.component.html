@@ -1,0 +1,22 @@
+<div class="bkPopUp" (click)="closeEvent()">
+  <div class="popUp" (click)="prevProg($event)">
+    <div id="popUp">
+      <app-heder-trazas></app-heder-trazas>
+      <ng-content select=".OP"></ng-content>
+      <ng-content select=".title"></ng-content>
+      <ng-content select="app-proveedor-pop-up"></ng-content>
+      <ng-content select="app-tipo-gasto-pop-up"></ng-content>
+      <ng-content select="app-centro-costopop-up"></ng-content>
+      <ng-content select=".Descripcion"></ng-content>
+      <ng-content select="app-item-pop-up"></ng-content>
+      <ng-content select="app-condicion-pop-up"></ng-content>
+      <ng-content select="app-pop-up-despacho"></ng-content>
+      <ng-content select="app-popup-evaluacion"></ng-content>
+      <ng-content select="app-pop-up-firma"></ng-content>
+      <ng-content select="app-pop-up-motivo"></ng-content>
+      <ng-content select=".acciones"></ng-content>
+    </div>
+  </div>
+</div>
+
+<app-fijar-flujo></app-fijar-flujo>

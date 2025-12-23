@@ -1,0 +1,27 @@
+<ng-template #NoData>
+  <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<app-pop-up-template (close)="closeEvent()" *ngIf="movimiento$ | async as movimiento else NoData;">
+  <div class="title">
+    <div class="row gray Folio bold">
+      <div class="col-12 center barTitle">
+        Egreso directo
+      </div>
+    </div>
+  </div>
+  <app-tipo-gasto-pop-up [tipoGasto]="movimiento.tipoGasto" [subTipoGasto]="movimiento.subTipoGasto" (emitSubTipoGasto)="movimiento.subTipoGasto=$event">
+  </app-tipo-gasto-pop-up>
+  <app-centro-costopop-up [areaNegocio]="movimiento.areaNegocio" [centroCosto]="movimiento.centroCosto">
+  </app-centro-costopop-up>
+  <div class="Descripcion caja">
+    <mat-form-field class="w100 padLeftRight">
+      <input matInput type="text" placeholder="Descripcion" [(ngModel)]="movimiento.descripcion" name="txtDescripcion">
+    </mat-form-field>
+  </div>
+  <app-condicion-pop-up [estadoPagos]="movimiento.estadoPago" (update)="updateEmit()"></app-condicion-pop-up>
+  <div class="acciones flex Fcenter">
+    <button class="btn btn-primary" (click)="guardar(movimiento)">Guardar</button>
+    <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+  </div>
+</app-pop-up-template>

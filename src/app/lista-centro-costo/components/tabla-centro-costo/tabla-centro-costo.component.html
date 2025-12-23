@@ -1,0 +1,79 @@
+<table class="table table-bordered table-striped table-hover no-footer">
+    <thead *ngIf="header">
+        <tr>
+            <td>Fecha</td>
+            <td>Numero OC</td>
+            <td>Proveedor</td>
+            <td class="descrip">Descripción</td>
+            <td>Estado</td>
+            <td>TipoGasto</td>
+            <td>Sub TipoGasto</td>
+            <!-- <td>Centro de Costo</td> -->
+            <td>Metodo de pago</td>
+            <td>Factura</td>
+            <td>N°</td>
+            <td>Monto</td>
+        </tr>
+    </thead>
+    <tbody >
+        <tr *ngFor="let contenido of contenidos; let i = index" (click)="PopUp(contenido._id, contenido.indice, contenido.ordenCompra)" [ngClass]="{
+            'ingreso':contenido.ingresoEgreso==2,
+            'bolsaGenerales': contenido.descripcion == 'Gastos Generales',
+            'bolsaMatSub': contenido.descripcion == 'Materiales - Sub Contrato',
+            'bolsaSueldos': contenido.descripcion == 'Mano de Obra Sueldos',
+            'bolsaImpuesto': contenido.descripcion == 'Impuesto',
+            'bolsaImposiciones': contenido.descripcion == 'Mano de Obra Imposiciones',
+            'iva': contenido.tipoGasto && contenido.tipoGasto.nombre=='IMPUESTOS',
+            'manoObra': contenido.tipoGasto && contenido.tipoGasto.nombre =='MANO DE OBRA',
+            'imposiciones': contenido.tipoGasto && contenido.tipoGasto.nombre =='IMPOSICIONES',
+            'financiero': contenido.subTipoGasto && contenido.subTipoGasto =='GASTOS FINANCIEROS'
+        }">
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">{{contenido.fecha | date:'dd/MM/yy':'UTC'}}</td>
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <span *ngIf="contenido.estado != 6 && contenido.estado != -1">{{contenido.ordenCompra}} <span *ngIf="contenido.maxIndice > 1">{{contenido.indice}}/{{contenido.maxIndice}}</span></span></td>
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <div class="cortar">{{contenido.proveedor.nombre}}</div>
+            </td>
+            <td class="descrip" [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <div class="cortar">
+                    {{contenido.descripcion}}
+                </div>
+            </td>
+            <td [class.centroCostoComprometido]="contenido.estadoPago == 2 || contenido.estadoPago == 3" [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <div class="cortar">
+                    <span *ngIf="contenido.ordenCompra && contenido.estadoPago == 1" class="centroCostoPendiente">Orden de compra</span>
+                    <span *ngIf="contenido.ordenCompra && contenido.estadoPago == 2">Comprometido</span>
+                    <span *ngIf="contenido.ordenCompra && contenido.estadoPago == 3">Facturado</span>
+                    <span *ngIf="contenido.ordenCompra && contenido.estadoPago == 4">Pagado</span>
+                    <span *ngIf="contenido.ordenCompra && contenido.estadoPago == 5">Anulado</span>
+                    <span *ngIf="contenido.estado == -1 || !contenido.ordenCompra">Proyección Egresos</span>
+
+                </div>
+            </td>
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <span *ngIf="contenido.tipoGasto">
+                    {{contenido.tipoGasto.nombre}}
+                </span>
+            </td>
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <div class="cortar">{{contenido.subTipoGasto}}</div>
+            </td>
+            <!-- <td [style.color]="contenido.subCentro.letras" [style.background-color]="contenido.subCentro.fondo">
+                {{contenido.subCentro.nombre}}</td> -->
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <div class="cortar">
+                    <span *ngIf="contenido.metodoPago == 2">Efectivo</span>
+                    <span *ngIf="contenido.metodoPago == 3">Cheque</span>
+                    <span *ngIf="contenido.metodoPago == 4">Transferencia</span>
+                </div>
+            </td>
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">
+                <div class="cortar">
+                    {{contenido.factura}}
+                </div>
+            </td>
+            <td [ngStyle]="{'color': contenido.colorLetra, 'background-color': contenido.colorFondo}">{{contenido.numero}}</td>
+            <td style="background-color: transparent; color: black;">$ {{contenido.costo | number : '1.0-0' | comatopoint}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,70 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div id="popUp">
+
+            <div class="row">
+                <div class="col-12">
+                    <h3>Resumen por centro de costo</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <ul class="TiposGastos">
+                        <li>
+                            <div class="row bold">
+                                <div class="col-3">
+                                    Centro de Costo
+                                </div>
+                                <div class="col-3">Pago Confirmado</div>
+                                <div class="col-3">Pago Proyectado</div>
+                                <div class="col-3">Pago Total</div>
+                            </div>
+                        </li>
+                        <li *ngFor="let centroCosto of CentrosCosto; let i = index">
+                            <div class="row">
+                                <div class="col-3 bold">
+                                    {{centroCosto.nombre}}
+                                </div>
+                                <div class="col-3">
+                                    $ {{centroCosto.real | number : '1.0-0' | comatopoint }}
+                                </div>
+                                <div class="col-3">
+                                    $ {{centroCosto.programado | number : '1.0-0' | comatopoint }}
+                                </div>
+                                <div class="col-3">
+                                    $ {{centroCosto.real + centroCosto.programado | number : '1.0-0' | comatopoint }}
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row bold">
+                                <div class="col-3">
+                                    Total
+                                </div>
+                                <div class="col-3">
+                                    $ {{sumaTotalReal | number : '1.0-0' | comatopoint }}
+                                </div>
+                                <div class="col-3">
+                                    $ {{ sumaTotalProgramado | number : '1.0-0' | comatopoint }}
+                                </div>
+                                <div class="col-3">
+                                    $ {{sumaTotalReal + sumaTotalProgramado | number : '1.0-0' | comatopoint }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul class="TiposGastos">
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex Fcenter">
+                <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>

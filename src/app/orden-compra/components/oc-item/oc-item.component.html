@@ -1,0 +1,49 @@
+<div class="Items">
+  <a *ngIf="url" class="cotizacion" href="{{url}}" target="_blank" >Adjunto</a>
+  <table class="table table-bordered table-striped table-hover no-footer">
+      <thead>
+          <tr>
+              <th scope="col">#</th>
+              <th scope="col">Codigo</th>
+              <th scope="col">Detalle</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Impuesto</th>
+              <th scope="col">Moneda</th>
+              <th scope="col">Unitario</th>
+              <th scope="col">Total</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let elementos of item; let i = index">
+              <td>{{i + 1}}</td>
+              <td><input class="form-control" type="text" placeholder="Centro de costo" name="{{'txtCodigo'+i}}" [(ngModel)]="elementos.codigo" (keydown)="addItem(i)" maxlength="10">
+              </td>
+              <td><input class="form-control" type="text" placeholder="Detalle" name="{{'txtDetalle'+i}}" [(ngModel)]="elementos.detalle" (keydown)="addItem(i)" maxlength="25">
+              </td>
+              <td><input class="form-control" type="number" placeholder="Cantidad" name="{{'txtCantidad'+i}}" [(ngModel)]="elementos.cantidad" (change)="AsignaTotal()"></td>
+              <td>
+                  <select id="{{'drdIva'+i}}" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="elementos.tipoDeclaracion" name="{{'drdIva'+i}}" (change)="AsignaTotal()">
+                              <option value=0 >--- Seleccione una opcion ---</option>
+                              <option value=1 >Exento</option>
+                              <option value=2 >Afecto ({{env.iva}}%)</option>
+                              <option value=3 >Boleta ({{env.boleta}}%)</option>
+                          </select>
+              </td>
+              <td><input class="form-control" type="text" placeholder="Moneda" name="{{'txtMoneda'+i}}" [(ngModel)]="elementos.moneda"></td>
+              <td><input class="form-control" type="number" placeholder="Precio" name="{{'txtPrecioUnitario'+i}}" [(ngModel)]="elementos.precioUnitario" (change)="AsignaTotal()"></td>
+              <td>$ {{elementos.precioUnitario * elementos.cantidad | number}}
+              </td>
+          </tr>
+          <tr class="bold">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Monto Final (con IVA):</td>
+              <td>$ {{total | number : '1.0-0' | comatopoint}}</td>
+          </tr>
+      </tbody>
+  </table>
+</div>

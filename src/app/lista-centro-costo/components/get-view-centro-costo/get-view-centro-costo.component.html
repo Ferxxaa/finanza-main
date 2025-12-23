@@ -1,0 +1,97 @@
+<table class="table table-bordered table-striped table-hover no-footer">
+  <thead *ngIf="tipo==1">
+    <tr>
+      <td>Fecha</td>
+      <td>Numero OC</td>
+      <td>Proveedor</td>
+      <td class="descrip">Descripción</td>
+      <td>Estado</td>
+      <td>TipoGasto</td>
+      <td>Sub TipoGasto</td>
+      <td>Metodo de pago</td>
+      <td>Factura</td>
+      <td>N°</td>
+      <td>Monto</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let contenido of flujos; let i = index" (click)="PopUp(contenido)" [ngClass]="{
+        'iva': contenido.nombreTipoGasto=='IMPUESTOS',
+        'manoObra': contenido.nombreTipoGasto =='MANO DE OBRA',
+        'imposiciones': contenido.nombreTipoGasto =='IMPOSICIONES',
+        'financiero': contenido.nombreTipoGasto =='GASTOS FINANCIEROS'
+      }">
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        {{contenido.fechaPago |
+        date:'dd/MM/yy':'UTC'}}</td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <span *ngIf="contenido.tipoOC==tiposMovimiento.ordenPedido">OP </span>
+        {{contenido.folio}}
+      </td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <div class="cortar">{{contenido.nombreProveedor}}</div>
+      </td>
+      <td class="descrip" [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <div class="cortar">
+          {{contenido.descripcion}}
+        </div>
+      </td>
+      <td [class.centroCostoComprometido]="contenido.estado == 2 || contenido.estado == 3"
+        [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <div class="cortar">
+          <ng-container *ngIf="contenido.tipoOC == tiposMovimiento.ordenCompra">
+            <span *ngIf="contenido.estado == estadosEP.ordenCompra" class="centroCostoPendiente">Orden de
+              Compra</span>
+            <span *ngIf="contenido.estado == estadosEP.Comprometido">Comprometido</span>
+            <span *ngIf="contenido.estado == estadosEP.Facturado">Facturado</span>
+            <span *ngIf="contenido.estado == estadosEP.Pagado">Pagado</span>
+            <span *ngIf="contenido.estado == estadosEP.Anulado">Anulado</span>
+          </ng-container>
+          <ng-container *ngIf="contenido.tipoOC == tiposMovimiento.egreso">
+            <span *ngIf="contenido.estado==estadosEP.ordenCompra">Proyección Egresos</span>
+            <span *ngIf="contenido.estado == estadosEP.Pagado">Pagado</span>
+          </ng-container>
+          <ng-container *ngIf="contenido.tipoOC ==tiposMovimiento.ingreso">
+            <span *ngIf="contenido.estado == estadosEP.Pagado">Cobrado</span>
+            <span *ngIf="contenido.estado != estadosEP.Pagado">Proyección Ingreso</span>
+          </ng-container>
+          <span *ngIf="contenido.tipoOC == tiposMovimiento.ordenPedido">Orden de pedido</span>
+          <ng-container *ngIf="contenido.tipoOC == tiposMovimiento.contrato">
+            <span *ngIf="contenido.estado==4">Cobrado</span>
+            <span *ngIf="contenido.estado!=4">Pendiente</span>
+          </ng-container>
+
+        </div>
+      </td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        {{contenido.nombreTipoGasto}}
+      </td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <div class="cortar">{{contenido.nombreSubtipoGasto}}</div>
+      </td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <div class="cortar">
+          <span *ngIf="contenido.metodoPago == 2">Efectivo</span>
+          <span *ngIf="contenido.metodoPago == 3">Cheque</span>
+          <span *ngIf="contenido.metodoPago == 4">Transferencia</span>
+        </div>
+      </td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        <div class="cortar">
+          {{contenido.numeroFactura}}
+        </div>
+      </td>
+      <td [ngStyle]="{'color': contenido.colorLetrasSTP, 'background-color': contenido.colorFondoSTP}">
+        {{contenido.numeroPago}}
+      </td>
+      <td style="background-color: transparent; color: black;">$ {{contenido.monto | number : '1.0-0' | comatopoint}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<app-oc-pop-up [idMovimiento]="idMovimiento" *ngIf="idMovimiento" (close)="idMovimiento=null" (update)="update()"></app-oc-pop-up>
+<app-op-pop-up [idMovimiento]="idMovimientoEP" *ngIf="idMovimientoEP" (close)="idMovimientoEP=null" (update)="update()"></app-op-pop-up>
+<app-directo-pop-up [idMovimiento]="egreso" *ngIf="egreso" (close)="egreso=null" (update)="update()"></app-directo-pop-up>
+<app-directo-ingreso-pop-up [idMovimiento]="ingreso" *ngIf="ingreso" (close)="ingreso=null" (update)="update()"></app-directo-ingreso-pop-up>

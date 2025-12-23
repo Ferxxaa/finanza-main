@@ -1,0 +1,19 @@
+.subir{
+    margin-top: -6px;
+}
+
+.blue{
+    color: rgb(64, 64, 255);
+}
+
+.amarillo{
+    color:rgb(255, 216, 0);
+}
+
+.promedio{
+    font-size: 1.2rem;
+}
+
+.b1px{
+    border: 1px solid #ccc;
+}

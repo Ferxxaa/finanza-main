@@ -1,0 +1,90 @@
+<div class="bkPopUp">
+    <div class="popUp">
+        <div class="row hb bb1">
+            <div class="col-12 h4">
+                Resumen de Proveedores
+            </div>
+        </div>
+        <div class="row">
+          <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        </div>
+        <div class="row p10">
+            <table class="table table-bordered table-striped table-hover no-footer principal">
+                <thead>
+                    <tr>
+                        <th>Criterio</th>
+                        <th>Categoría</th>
+                        <th>Calificación General Ponderada</th>
+                        <th>Calificación Promedio</th>
+                        <th>N° De Proveedores Evaluados</th>
+                        <th>Cantidad OC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Productos</td>
+                        <td></td>
+                        <td>{{reporteProductos.general | number:'1.2-2'}}</td>
+                        <td>{{reporteProductos.promedio | number:'1.2-2'}}</td>
+                        <td>{{reporteProductos.cantidadProveedores}}</td>
+                        <td>{{reporteProductos.cantidadOC}}</td>
+                    </tr>
+                    <tr>
+                      <td>Servicio</td>
+                        <td></td>
+                        <td>{{reporteServicios.general | number:'1.2-2'}}</td>
+                        <td>{{reporteServicios.promedio | number:'1.2-2'}}</td>
+                        <td>{{reporteServicios.cantidadProveedores}}</td>
+                        <td>{{reporteServicios.cantidadOC}}</td>
+                    </tr>
+                    <tr>
+                      <td>SubContrato</td>
+                        <td></td>
+                        <td>{{reporteSubcontrato.general | number:'1.2-2'}}</td>
+                        <td>{{reporteSubcontrato.promedio | number:'1.2-2'}}</td>
+                        <td>{{reporteSubcontrato.cantidadProveedores}}</td>
+                        <td>{{reporteSubcontrato.cantidadOC}}</td>
+                    </tr>
+                    <tr>
+                      <th>Resultado general</th>
+                      <th class="center text-white" [ngClass]="{
+                        'bg-success': reporteProductos.general + reporteServicios.general + reporteSubcontrato.general > 2.55,
+                        'bg-warning': reporteProductos.general + reporteServicios.general + reporteSubcontrato.general <= 2.55 && reporteProductos.general + reporteServicios.general > 1.8,
+                        'bg-danger': reporteProductos.general + reporteServicios.general + reporteSubcontrato.general <= 1.8
+                      }">
+                        <span *ngIf="reporteProductos.general + reporteServicios.general + reporteSubcontrato.general > 2.54">A</span>
+                        <span *ngIf="reporteProductos.general + reporteServicios.general + reporteSubcontrato.general > 1.80 && reporteProductos.general + reporteServicios.general < 2.55">B</span>
+                        <span *ngIf="reporteProductos.general + reporteServicios.general + reporteSubcontrato.general < 1.81">C</span>
+                      </th>
+                      <th>{{reporteProductos.general + reporteServicios.general + reporteSubcontrato.general | number:'1.2-2'}}</th>
+                      <th></th>
+                      <th>{{reporteProductos.cantidadProveedores + reporteServicios.cantidadProveedores + reporteSubcontrato.cantidadProveedores}}</th>
+                      <th>{{reporteProductos.cantidadOC + reporteServicios.cantidadOC + reporteSubcontrato.cantidadOC}}</th>
+                    </tr>
+                    <tr>
+                      <td> Proveedores a sustituir</td>
+                      <td class="center" [ngClass]="{
+                        'text-success': reporteSustituir.general > 2.55,
+                        'text-warning': reporteSustituir.general <= 2.55 && reporteSustituir.general > 1.8,
+                        'text-danger': reporteSustituir.general <= 1.8
+                      }">
+                        <span *ngIf="reporteSustituir.general > 2.54">A</span>
+                        <span *ngIf="reporteSustituir.general > 1.80 && reporteSustituir.general < 2.55">B</span>
+                        <span *ngIf="reporteSustituir.general < 1.81">C</span>
+                      </td>
+                      <td>{{reporteSustituir.general}}</td>
+                      <td></td>
+                      <td>{{reporteSustituir.cantidadProveedores}}</td>
+                      <td>{{reporteSustituir.cantidadOC}}</td>
+                      <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+          <div class="col-md-offset-6 col-6">
+            <button class="btn btn-secondary" (click)="Cerrar()">Salir</button>
+          </div>
+        </div>
+    </div>
+</div>

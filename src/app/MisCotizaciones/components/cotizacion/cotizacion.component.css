@@ -1,0 +1,79 @@
+.cotizacion{
+    /* width: 100%;
+    max-width: 135px;
+    min-height: 150px; */
+    width: 135px;
+    height: 150px;
+    font-size: 10px;
+    position: relative;
+    border: 0.1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0 auto;
+    transition: all 0.5s;
+}
+
+.cotizacion:hover{
+    transform: scale(1.01);
+    box-shadow: 2px 2px 5px #5d5d5d;
+}
+
+.solictado,
+.cardContent{
+    padding: 0.5em;
+}
+
+.solictado{
+    margin:-1px;
+    padding: calc(0.5em + 1px);
+    font-weight: bold;
+    color: white;
+}
+
+.fBlack{
+    color: black;
+}
+
+.bBlack{
+    border-color: black !important;
+}
+
+.fecha{
+    float: right;
+}
+
+.cc{
+    margin-top: 5px;
+    width: 100%;
+    font-weight: bold;
+}
+
+.observacion{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.adjunto{
+    font-size: 10px;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: currentColor;
+}
+
+.mat-icon{
+    font-size: 15px;
+    width: 1em;
+    height: 1em;
+}
+
+.statusColor{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+}

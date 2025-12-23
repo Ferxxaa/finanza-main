@@ -1,0 +1,30 @@
+<div class="bkPopUp">
+  <div class="popUp">
+      <div class="row hb bb1">
+          <div class="col-8 h4">
+              Gráficos informe de ventas
+          </div>
+      </div>
+      <!-- <div class="row p10"> -->
+          <!-- <div class="col-6"> class="grid"-->
+            <div >
+
+              <app-facturacion-area-negocio [ResumenAgno]="ResumenAgno"></app-facturacion-area-negocio>
+              <app-facturacion-centro-costo [ResumenAgno]="ResumenAgno"></app-facturacion-centro-costo>
+              <app-compra-tipo-facturacion [ResumenAgno]="ResumenAgno"></app-compra-tipo-facturacion>
+            </div>
+          <!-- </div>
+          <div class="col-6"> -->
+          <!-- </div> -->
+        <!-- </div>
+        <div class="row"> -->
+          <!-- <div class="col-6 col-md-offset-3"> -->
+          <!-- </div> -->
+        <!-- </div> -->
+        <div class="row mtop">
+            <div class="col-md-offset-6 col-6">
+                <button class="btn btn-secondary" (click)="Cerrar()">Salir</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="bkPopUp" (click)="salir()">
+    <div class="popUp" (click)="noCerrar($event)">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="bold">Ventas por Centro de costo <span class="blue">{{nombreCentro}}</span></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-spinner *ngIf="Ventas"></mat-spinner>
+                <canvas id="myChartVentas"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h4 class="bold">Compras por Centro de costo <span class="blue">{{nombreCentro}}</span></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-spinner *ngIf="Compras"></mat-spinner>
+                <canvas id="myChartCompras"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

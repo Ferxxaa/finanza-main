@@ -1,0 +1,638 @@
+<ng-template #NoData>
+    <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<app-loading *ngIf="loading"></app-loading>
+<div class="row">
+
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555" class="ptb5">
+                <h4 style="color: white;">
+                    <strong>Cuenta Corriente</strong>
+                </h4>
+                <div class="buscador">
+                    <i class="fa fa-money" (click)="bolsas=true"></i>
+                    <i class="fa fa-bar-chart-o" (click)="graficar()"></i>
+                    <i class="fa fa-refresh" (click)="cargaDatosOrigen()"></i>
+                    <i class="fa fa-search" (click)="TraeBuscador()"></i>
+                </div>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+                        <buscador *ngIf="buscador" (event)="Filtrar($event)"></buscador>
+                        <legend></legend>
+
+                        <div class="col-lg-12 Confirmado">
+                            <div class="margin05">
+
+                                <div class="row mb5">
+                                    <div class="col-12">
+
+                                        <ul>
+                                            <li class="stickyHeader">
+                                                <div class="ulflex">
+                                                    <div>Fecha</div>
+                                                    <div>Numero OC</div>
+                                                    <div>Proveedor</div>
+                                                    <div>Descripción</div>
+                                                    <div>Estado</div>
+                                                    <div>Tipo Gasto</div>
+                                                    <div>Centro de Costo</div>
+                                                    <div>Metodo de pago</div>
+                                                    <div>Factura</div>
+                                                    <div>N° Pago</div>
+                                                    <div>Monto</div>
+                                                    <div>saldo</div>
+                                                </div>
+                                            </li>
+                                            <li class="subTitle">
+                                                <div class="ulflex desplegable" (click)="desplegar()">
+                                                    <div>
+                                                        <h6 class="mb1"><i id="iconCambiar"
+                                                                class="fa fa-plus-square"></i> Pagos confirmados</h6>
+                                                    </div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </li>
+                                            <ng-container
+                                                *ngIf="cuentaCorrienteConfirmados$ | async as confirmados else NoData">
+                                                <li>
+                                                    <!-- <app-item-cuenta-corriente [flujo]="flujo" [fechaPrevia]="Confirmados[i-1]"></app-item-cuenta-corriente> -->
+                                                    <!-- <ul class="desplegar limit" id="irAlFinal">
+                                                        <li *ngFor="let flujo of Confirmados; let i = index">
+                                                            <ul class="mes py-2" *ngIf="MesAprobadas(flujo.fecha, Confirmados,i)">
+                                                                <li>{{flujo.fecha | date:'MMMM' | mesEsp}} / {{flujo.fecha | date:'yyyy'}}</li>
+                                                            </ul>
+                                                            <div class="ulflex" (click)="PopUp(flujo._id, flujo.indice,flujo.ordenCompra)" [ngClass]="{
+                                                                        'ingreso':flujo.ingresoEgreso==2,
+                                                                        'bolsaGenerales': flujo.descripcion == 'Gastos Generales',
+                                                                        'bolsaMatSub': flujo.descripcion == 'Materiales - Sub Contrato',
+                                                                        'bolsaSueldos': flujo.descripcion == 'Mano de Obra Sueldos',
+                                                                        'bolsaImpuesto': flujo.descripcion == 'Impuesto',
+                                                                        'bolsaImposiciones': flujo.descripcion == 'Mano de Obra Imposiciones',
+                                                                        'iva': flujo.tipoGasto && flujo.tipoGasto.nombre=='IMPUESTOS',
+                                                                        'manoObra': flujo.tipoGasto && flujo.tipoGasto.nombre =='MANO DE OBRA',
+                                                                        'imposiciones': flujo.tipoGasto && flujo.tipoGasto.nombre =='IMPOSICIONES',
+                                                                        'financiero': flujo.subTipoGasto && flujo.subTipoGasto =='GASTOS FINANCIEROS'
+                                                                    }">
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    {{flujo.fecha | date:'dd/MM/yy':'UTC'}}</div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    <span *ngIf="flujo.estado != 6 && flujo.estado != -1">{{flujo.ordenCompra}} <span *ngIf="flujo.maxIndice > 1">{{flujo.indice}}/{{flujo.maxIndice}}</span></span>
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    {{flujo.proveedor.nombre}}
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    {{flujo.descripcion}}
+                                                                    <span *ngIf="flujo.estado == 6">{{flujo.ordenCompra}} Contrato: {{ getContrato(flujo) }}</span>
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    <span *ngIf="flujo.estadoPago == 4 && flujo.ingresoEgreso==1">Pagado</span>
+                                                                    <span *ngIf="flujo.estadoPago == 5 && flujo.ingresoEgreso==1">Anulado</span>
+                                                                    <span *ngIf="flujo.ingresoEgreso ==2">Cobrado</span>
+                                                                    <span *ngIf="flujo.ingresoEgreso ==3">Orden de pedido</span>
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    <span *ngIf="flujo.tipoGasto">
+                                                                                {{flujo.tipoGasto.nombre}}
+                                                                            </span>
+                                                                </div>
+                                                                <div [style.color]="flujo.subCentro.letras" [style.background-color]="flujo.subCentro.fondo">
+                                                                    <span *ngIf="flujo.subCentro.nombre">
+                                                                                {{flujo.subCentro.nombre}}
+                                                                            </span>
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    <span *ngIf="(flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) && flujo.metodoPago == 2">Efectivo</span>
+                                                                    <span *ngIf="(flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) && flujo.metodoPago == 3">Cheque</span>
+                                                                    <span *ngIf="(flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) && flujo.metodoPago == 4">Transferencia</span>
+                                                                    <span *ngIf="flujo.ingresoEgreso==2" class="bold" style="color: red;">ABONO</span>
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    {{flujo.factura}}
+                                                                    <i *ngIf="!flujo.factura && flujo.ordenCompra" class="text-warning fa fa-exclamation-triangle"></i>
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                    {{flujo.numero}}
+                                                                </div>
+                                                                <div [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">$ {{flujo.costo | number : '1.0-0' | comatopoint}}
+                                                                </div>
+                                                                <div class="bold" [ngStyle]="{'color':flujo.saldo >= 0 ? 'black' : 'red'}">
+                                                                    $ {{flujo.saldo | number : '1.0-0' | comatopoint}}
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul> -->
+                                                    <app-get-cuenta-corriente [flujos]="confirmados" [tipo]=1 (updateElement)="update()">
+                                                    </app-get-cuenta-corriente>
+                                                </li>
+                                                <li class="subTitle mt10">
+                                                    <div class="ulflex">
+                                                        <div>
+                                                            <h6 class="mb1">Pagos comprometidos</h6>
+                                                        </div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div>
+                                                            <a class="montoInicial text-right"
+                                                                [routerLink]="['/Monto']">
+                                                                <h6 class="mb1">Saldo Actual:</h6>
+                                                            </a>
+                                                        </div>
+                                                        <div>
+                                                            <a class="montoInicial text-right"
+                                                                [routerLink]="['/Monto']">
+                                                                <!-- *ngIf="cuentaCorrienteConfirmados$ | async as confirmados" -->
+                                                                <h6 class="mb1 mr-3">
+                                                                    ${{ (confirmados.length ?
+                                                                    confirmados[confirmados.length-1].valorCuentaCorriente
+                                                                    : 0) | number : '1.0-0' |
+                                                                    comatopoint
+                                                                    }}</h6>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ng-container>
+                                            <li *ngIf="cuentaCorrientePendientes$ | async as pendiente else NoData">
+                                                <!-- 'Proyeccion':flujo.estadoPago==-1, -->
+                                                <!-- <ul class="limit2">
+                                                    <li *ngFor="let flujo of Pendientes; let i = index">
+                                                        <ul class="mes py-2" *ngIf="Mes(flujo.fecha, Pendientes,i)">
+                                                            <li>{{flujo.fecha | date:'MMMM' | mesEsp}} / {{flujo.fecha |
+                                                                date:'yyyy'}}</li>
+                                                        </ul>
+                                                        <div class="ulflex"
+                                                            (click)="PopUp(flujo._id, flujo.indice,flujo.ordenCompra,flujo.estado,flujo)"
+                                                            [ngClass]="{
+                                                                    'ingreso':flujo.ingresoEgreso==2,
+                                                                    'bolsaGenerales': flujo.descripcion == 'Gastos Generales',
+                                                                    'bolsaMatSub': flujo.descripcion == 'Materiales - Sub Contrato',
+                                                                    'bolsaSueldos': flujo.descripcion == 'Mano de Obra Sueldos',
+                                                                    'bolsaImpuesto': flujo.descripcion == 'Impuesto',
+                                                                    'bolsaImposiciones': flujo.descripcion == 'Mano de Obra Imposiciones',
+                                                                    'iva': flujo.tipoGasto && flujo.tipoGasto.nombre=='IMPUESTOS',
+                                                                    'manoObra': flujo.tipoGasto && flujo.tipoGasto.nombre =='MANO DE OBRA',
+                                                                    'imposiciones': flujo.tipoGasto && flujo.tipoGasto.nombre =='IMPOSICIONES',
+                                                                    'financiero': flujo.subTipoGasto && flujo.subTipoGasto =='GASTOS FINANCIEROS'
+                                                                }">
+                                                            <div [ngClass]="{'text-danger': esPasado(flujo.fecha)}"
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                {{flujo.fecha | date:'dd/MM/yy':'UTC'}}</div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                <span
+                                                                    *ngIf="flujo.estado != 6 && flujo.estado != -1">{{flujo.ordenCompra}}
+                                                                    <span
+                                                                        *ngIf="flujo.maxIndice > 1">{{flujo.indice}}/{{flujo.maxIndice}}</span></span>
+
+                                                            </div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                {{flujo.proveedor.nombre}}
+                                                                <span
+                                                                    *ngIf="flujo.ingresoEgreso == 2 && flujo.items.length">{{flujo.items[0].detalle}}</span>
+                                                            </div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                {{flujo.descripcion}}
+                                                                <span *ngIf="flujo.estado == 6">Contrato: {{
+                                                                    getContrato(flujo) }}</span>
+                                                            </div>
+                                                            <div [class.centroCostoComprometido]=" flujo.estadoPago==2 || flujo.estadoPago==3 "
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                <span
+                                                                    *ngIf="flujo.estadoPago==1 && flujo.ingresoEgreso==1 && flujo.ordenCompra"
+                                                                    class="centroCostoPendiente">Orden de
+                                                                    compra</span>
+                                                                <span
+                                                                    *ngIf="flujo.estadoPago==2 && flujo.ingresoEgreso==1 && flujo.ordenCompra">Comprometido</span>
+                                                                <span
+                                                                    *ngIf="flujo.estadoPago==3 && flujo.ingresoEgreso==1 && flujo.ordenCompra">Facturado</span>
+                                                                <span
+                                                                    *ngIf="flujo.estadoPago==4 && flujo.ingresoEgreso==1 && flujo.ordenCompra">Pagado</span>
+                                                                <span
+                                                                    *ngIf="flujo.estadoPago==5 && flujo.ingresoEgreso==1 && flujo.ordenCompra">Anulado</span>
+
+                                                                <span
+                                                                    *ngIf="flujo.ingresoEgreso==1 && !flujo.ordenCompra">Proyección
+                                                                    Egresos</span>
+                                                                <span *ngIf="flujo.estado == -1">Proyección
+                                                                    Egresos</span>
+                                                                <span
+                                                                    *ngIf="flujo.estado == 6 || flujo.ingresoEgreso==2">Proyección Ingreso</span>
+                                                                <span *ngIf="flujo.ingresoEgreso==3 ">Orden de
+                                                                    pedido</span>
+                                                            </div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                <span *ngIf="flujo.tipoGasto ">
+                                                                    {{flujo.tipoGasto.nombre}} </span>
+
+                                                            </div>
+                                                            <div [style.color]="flujo.subCentro.letras "
+                                                                [style.background-color]="flujo.subCentro.fondo ">
+                                                                <span *ngIf="flujo.subCentro ">
+                                                                    {{flujo.subCentro.nombre}}
+                                                                </span>
+                                                            </div>
+                                                            <div [class.centroCostoComprometido]="flujo.estadoPago==2 || flujo.estadoPago==3 "
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                <mat-icon class="cheque text-danger"
+                                                                    *ngIf="flujo.chequeEmitido">attach_money</mat-icon>
+                                                                <span
+                                                                    *ngIf="flujo.metodoPago==2 && (flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) ">Efectivo</span>
+                                                                <span
+                                                                    *ngIf="flujo.metodoPago==3 && (flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) ">Cheque</span>
+                                                                <span
+                                                                    *ngIf="flujo.metodoPago==4 && (flujo.ingresoEgreso==1 || flujo.ingresoEgreso==3) ">Transferencia</span>
+                                                                <span *ngIf="flujo.ingresoEgreso==2 " class="bold "
+                                                                    style="color: red; ">ABONO</span>
+                                                            </div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                {{flujo.factura }}
+                                                            </div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                {{flujo.numero }}
+                                                            </div>
+                                                            <div
+                                                                [ngStyle]="{'color': flujo.colorLetra, 'background-color': flujo.colorFondo}">
+                                                                $ {{flujo.costo | number : '1.0-0' | comatopoint}}
+                                                            </div>
+                                                            <div class="bold "
+                                                                [ngStyle]="{ 'color':flujo.saldo>= 0 ? 'black' : 'red'}">
+                                                                $ {{flujo.saldo | number : '1.0-0' | comatopoint}}
+                                                            </div>
+                                                        </div> -->
+                                                <!-- <app-item-cuenta-corriente [flujo]="flujo" [fechaPrevia]="Pendientes[i-1]"></app-item-cuenta-corriente> -->
+                                                <!-- </li>
+                                                </ul> -->
+                                                <app-get-cuenta-corriente [flujos]="pendiente" [tipo]=2 (updateElement)="update()">
+                                                </app-get-cuenta-corriente>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- <app-loading-pop-up></app-loading-pop-up> -->
+
+<app-pop-up-directos [id]="idIngresoEgreso" *ngIf="idIngresoEgreso" (actualizar)="cargaDatos()"
+    (cerrar)="cerrarOrden()"></app-pop-up-directos>
+<app-popup-oc [id]="idOC" *ngIf="idOC" (actualizar)="cargaDatos()" (cerrar)="cerrarOrden()"></app-popup-oc>
+<popUp-orden-pedido [id]="idOP" *ngIf="idOP" (actualizar)="cargaDatos()" (cerrar)="cerrarOrden()"></popUp-orden-pedido>
+
+<!-- <div class="bkPopUp" *ngIf="ordenCompra">
+    <div class="popUp">
+        <div id="popUp">
+            <div class="row TzS">
+                <div class="col-2">
+                    <img src="http://www.trazas-nbi.com/assets/tzs.jpg" alt="TzS" style="max-width: 100%;">
+                </div>
+                <div class="col-10">
+                    <div class="fr10 btn-group" *ngIf="!imprimir && ordenCompra.folio">
+                        <a class="btn btn-secondary" [routerLink]="['/OrdenPedido',ordenCompra._id]">Orden de Pedido</a>
+                        <button class="btn btn-secondary" data-toggle="dropdown" data-original-title="" title="">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let ordenPedido of ordenesPedido, let i = index"> OP: {{ordenCompra.folio}} {{i +1}}/{{ordenesPedido.length}}</li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 bold">
+                            TRAZAS GESTION DE PROYECTOS DE INFRAESTRUCTURA LTDA
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            RUT: 76.151.605-1
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Cirujano Guzman 24 Depto 83
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            Comuna providencia
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            fono
+                        </div>
+                        <div class="col-11">
+                            2 2982 9588 - 2 2492 0809
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            Giro
+                        </div>
+                        <div class="col-11">
+                            Arquitectura - Construcción
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row gray Folio bold">
+                <div class="col-9 center fs">
+                    <span *ngIf="ordenCompra.folio">ORDEN DE COMPRA</span>
+                    <span *ngIf="!ordenCompra.folio">ORDEN DE PEDIDO</span>
+                </div>
+                <div class="col-3 ">
+                    <span *ngIf="ordenCompra.folio" class="FloatRight marginR fs">N° {{ordenCompra.folio}}</span>
+                </div>
+            </div>
+            <div class="Proveedor" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Señor (es)
+                    </div>
+                    <div class="col-7 bold linea lineatop">
+                        {{ordenCompra.proveedor.nombre}}
+                    </div>
+                    <div class="col-1 linea lineatop linealeft">
+                        Fecha
+                    </div>
+                    <div class="col-2 lineafull">
+                        {{ordenCompra.fechaCreacion | date:'dd/MM/yyyy':'UTC'}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Dirección
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.direccion}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        RUT
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.rutProveedor}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Teléfono
+                    </div>
+                    <div class="col-10 linea">
+                        {{ordenCompra.proveedor.telefono}}
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-2">
+                        Contacto
+                    </div>
+                    <div class="col-5 linea">
+                        {{ordenCompra.proveedor.contacto}}
+                    </div>
+                    <div class="col-2 linea">
+                        E-Mail
+                    </div>
+                    <div class="col-3 linea">
+                        {{ordenCompra.proveedor.mail}}
+                    </div>
+                </div>
+            </div>
+            <div class="centroCosto caja">
+                <div class="row labelHeder">
+                    <div class="col-3 bold">
+                        <u>1.-CENTRO DE COSTO</u>
+                    </div>
+                    <div class="col-9 center">
+                        {{ordenCompra.centroCosto.nombre}} - {{ordenCompra.subCentroCosto}}
+                    </div>
+                </div>
+            </div>
+            <div class="Items caja">
+                <div class="row labelHeder">
+                    <div class="col-12 bold">
+                        <u>2.- DETALLE DE MATERIALES</u>
+                    </div>
+                </div>
+                <div class="row labelHeder">
+                    <div class="col-12">
+                        <table class="table table-bordered table-striped table-hover no-footer">
+                            <thead>
+                                <tr class="center">
+                                    <td>Item</td>
+                                    <td>Codigo</td>
+                                    <td>Detalle</td>
+                                    <td>Cantidad</td>
+                                    <td>Unitario</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of ordenCompra.Items; let i = index">
+                                    <td>{{i+1}}</td>
+                                    <td>{{item.codigo}}</td>
+                                    <td>{{item.detalle}}</td>
+                                    <td>{{item.cantidad | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                    <td>$ {{item.cantidad * item.precioUnitario | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Neto</td>
+                                    <td>$ {{ordenCompra.estadosPagos[indice].monto - ordenCompra.iva - ordenCompra.boleta | number : '1.0-0' | comatopoint}}
+                                    </td>
+                                </tr>
+                                <tr class="bgWhite" *ngIf="ordenCompra.iva">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">IVA afecto</td>
+                                    <td>$ {{ordenCompra.iva | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite" *ngIf="ordenCompra.boleta">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Boletas</td>
+                                    <td>$ {{ordenCompra.boleta | number : '1.0-0' | comatopoint}}</td>
+                                </tr>
+                                <tr class="bgWhite">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="brRigt">Total Bruto</td>
+                                    <td>$ {{ordenCompra.estadosPagos[indice].monto | number : '1.0-0' | comatopoint}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!imprimir && ordenCompra.estadosPagos[indice].estado != 4 && ordenCompra.folio">
+                    <div class="col-3 offset-md-6">
+                        <span class="Pagar">Monto a pagar:</span>
+                    </div>
+                    <div class="col-3">
+                        <input class="form-control" name="txtMontoPago" type="number" placeholder="Monto a pagar" [(ngModel)]="pagar">
+                    </div>
+                </div>
+            </div>
+
+            <div class="CondicionPago caja">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>3.- CONDICIONES DE PAGO Y PLAZO</u>
+                    </div>
+                </div>
+                <div class="row" *ngIf="ordenCompra.estadosPagos[indice].estado != 4">
+                    <div class="col-6">
+                        <span *ngIf="ordenCompra.metodoPago == 2 && imprimir">Efectivo</span>
+                        <span *ngIf="ordenCompra.metodoPago == 3 && imprimir">Cheque</span>
+                        <span *ngIf="ordenCompra.metodoPago == 4 && imprimir">Transferencia Bancaria</span>
+                        <select id="drdMetodoPago" class="dropdown-toggle select2-chosen-2 form-control requiered" [(ngModel)]="ordenCompra.estadosPagos[indice].metodoPago" name="drdMetodoPago" appSelectValidator *ngIf="!imprimir">
+                            <option value=0 selected>--- Seleccione una opcion ---
+                            </option>
+                            <option value=2>Efectivo</option>
+                            <option value=3>Cheque</option>
+                            <option value=4>Transferencia</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <span *ngIf="imprimir">N° {{ordenCompra.estadosPagos[indice].numeroPago}}</span>
+                        <input class="form-control" name="txtNumPago" type="text" placeholder="N°" *ngIf="ordenCompra.estadosPagos[indice].metodoPago > 2 && !imprimir" [(ngModel)]="ordenCompra.estadosPagos[indice].numeroPago">
+                    </div>
+                </div>
+                <div class="row" *ngIf="!imprimir">
+                    <div class="col-6 fechaCompromiso">
+                        N° de Factura
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control" name="txtFactura" type="text" placeholder="N° Factura" [(ngModel)]="ordenCompra.estadosPagos[indice].factura">
+                    </div>
+                </div>
+                <div class="row" *ngIf="!imprimir && ordenCompra.estadosPagos[indice].estado != 4">
+                    <div class="col-6 fechaCompromiso">
+                        Fecha compromiso de pago
+                    </div>
+                    <div class="col-6">
+                        <div id="dvCompromiso" class="input-group date">
+                            <input id="txtCompromiso" name="txtCompromiso" type="text" (focusout)="AsignaFechaCompromiso()" class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="despacho caja" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-12 bold">
+                        <u>4.- DESPACHO (Dirección y Contacto)</u>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ordenCompra.despacho}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="firmas center" *ngIf="ordenCompra.proveedor.nombre">
+                <div class="row">
+                    <div class="col-6">
+                        <ul class="Firma">
+                            <li>Usuario actual</li>
+                            <li class="bold">Preparado por {{creador}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <ul class="Firma FloatRight">
+                            <li>Aprobador</li>
+                            <li class="bold">autorizado por</li>
+                        </ul>
+                        <img class="FirmaImg" src="assets/firmaJaime.png" alt="Firma">
+                    </div>
+                </div>
+            </div>
+
+            <div class="texto">
+                <div class="col-12 justificado">
+                    <p>
+                        Nota 1.- Las empresas sub-contratista que ingresen a obras de Trazas Ltda., deben cumplir con lo estipulado ley 20.123 que regula el trabajo en régimen de Subcontratación, el funcionamiento de las Empresas de Servicios Transitorios, y el contrato de trabajo
+                        de servicios transitorios, exigiendo la entrega de lista del personal, contratos, registro entrega de RIOHS, obligacion de informar, entrega elementos de proteccion personal y certificacion de afiliacion de mutualidad con un minimo
+                        de 3 dias de anticipacion, o en su efecto comunicarse con Sr. Rodrigo Méndez, email: rmendez@trazas.cl
+                    </p>
+                </div>
+                <div class="col-12 justificado">
+                    <p>
+                        Nota 2.- Las facturas emitidas a Trazas Ltda. se deberan entregar en la oficina central ubicada en Cirujano Guzman Nº 24 of. 83 Providencia, entre las 9:00 a 13:00 y 15:00 a 19:00 horas, solo los días viernes.
+                    </p>
+                </div>
+                <div class="col-12 justificado">
+                    <p>
+                        Nota 3.- Se informa que nuestra politica de calidad, medio ambiente, seguridad y salud laboral se encuentra a disposicion en pagina web www.trazas.cl
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="cotizacion" *ngIf="ordenCompra.cotizacion">
+            <a href="{{url+adjunto}}" target="_blank" *ngIf="adjunto">Cotizacion</a>
+        </div>
+        <br>
+        <div class="row" *ngIf="pagarSinFactura">
+            <div class="col-12">
+                <div class="Fcenter cRed">
+                    Esta tratando de pagar la orden de compra sin tener factura asociada. Si desea continuar presione nuevamente.
+                </div>
+            </div>
+        </div>
+        <div class="flex Fcenter">
+            <button class="btn btn-primary" (click)="Guardar()" *ngIf="ordenCompra.estadosPagos[indice].estado != 4 || !ordenCompra.estadosPagos[indice].factura">Guardar</button>
+            <button class="btn btn-secondary" (click)="Cerrar()">Cerrar</button>
+            <button class="btn btn-inverse" (click)="imprSelec()">Imprimir</button>
+            <button class="btn btn-success" (click)="ConfirmarPago()" *ngIf="(ordenCompra.estadosPagos[indice].estado != 4 ) || ordenCompra.ingresoEgreso == 2">Confirmar Pago</button>
+            <button class="btn btn-danger" (click)="AnularPago()" *ngIf="ordenCompra.estadosPagos[indice].estado != 4">Anular pago</button>
+        </div>
+    </div>
+</div> -->
+
+<app-detalle-centro-costo *ngIf="grafico" [cCosto]="Flujos" (cerrar)="cerrarReporte()"></app-detalle-centro-costo>
+<app-view-bolsas *ngIf="bolsas" (cerrar)="bolsas=false"></app-view-bolsas>

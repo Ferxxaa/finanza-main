@@ -1,0 +1,29 @@
+<div class="TipoGasto caja">
+  <div class="row labelHeder">
+    <div class="col-6 bold center">
+      Tipo Gasto
+    </div>
+    <div class="col-6 bold center">
+      Sub Tipo Gasto
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <select id="drdTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered" name="drdTipoGasto"
+        [(ngModel)]="tipoGasto.idTipoGasto" (change)="loadSubTipoGasto()">
+        <option value=0 selected>--- Seleccione una opcion ---
+        </option>
+        <option *ngFor="let tipoGasto of tipoGasto$ | async; let i = index" value={{tipoGasto.idTipoGasto}}>
+          {{tipoGasto.nombreTipoGasto}}</option>
+      </select>
+    </div>
+    <div class="col-6">
+      <select id="drdSubTipoGasto" class="dropdown-toggle select2-chosen-2 form-control requiered"
+        name="drdSubTipoGasto" [(ngModel)]="idsubTipoGasto" (change)="changeSubTipoGasto(idsubTipoGasto)">
+        <option value=0 selected>--- Seleccione una opcion --- </option>
+        <option *ngFor="let subTipoGasto of subTipoGasto$ | async; let i = index" value={{subTipoGasto.idSubTipoGasto}}>
+          {{subTipoGasto.nombreSubtipoGasto}}</option>
+      </select>
+    </div>
+  </div>
+</div>

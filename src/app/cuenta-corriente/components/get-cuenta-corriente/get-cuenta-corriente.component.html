@@ -1,0 +1,119 @@
+<ul class="limit" id="irAlFinal" [ngClass]="{'desplegar': tipo==1, 'limit2':tipo!=1}">
+    <li *ngFor="let flujo of flujos; let i = index">
+        <!-- <app-item-cuenta-corriente [flujo]="flujo" [fechaPrevia]="Confirmados[i-1]"></app-item-cuenta-corriente> -->
+        <ng-container *ngIf="tipo==1">
+            <ul class="mes" *ngIf="MesAprobadas(flujo.fechaPago,i)">
+                <li>{{flujo.fechaPago | date:'MMMM' | mesEsp}} / {{flujo.fechaPago | date:'yyyy'}}</li>
+            </ul>
+        </ng-container>
+        <ng-container *ngIf="tipo!=1">
+            <ul class="mes" *ngIf="Mes(flujo.fechaPago, flujos,i)">
+                <li>{{flujo.fechaPago | date:'MMMM' | mesEsp}} / {{flujo.fechaPago | date:'yyyy'}}</li>
+            </ul>
+        </ng-container>
+        <!-- 'bolsaGenerales': flujo.descripcion == 'Gastos Generales',
+            'bolsaMatSub': flujo.descripcion == 'Materiales - Sub Contrato',
+            'bolsaSueldos': flujo.descripcion == 'Mano de Obra Sueldos',
+            'bolsaImpuesto': flujo.descripcion == 'Impuesto',
+            'bolsaImposiciones': flujo.descripcion == 'Mano de Obra Imposiciones', -->
+        <div class="ulflex" (click)="PopUp(flujo)" [ngClass]="{
+            'ingreso':flujo.tipoOC==tiposMovimiento.ingreso || flujo.tipoOC==tiposMovimiento.contrato,
+            'iva': flujo.nombreTipoGasto=='IMPUESTOS',
+            'manoObra': flujo.nombreTipoGasto =='MANO DE OBRA',
+            'imposiciones': flujo.nombreTipoGasto =='IMPOSICIONES',
+            'financiero': flujo.nombreTipoGasto =='GASTOS FINANCIEROS'
+        }">
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}"
+                [ngClass]="{'text-danger': esPasado(flujo.fechaPago) && tipo!=1}">
+                {{flujo.fechaPago | date:'dd/MM/yy':'UTC'}}</div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                <span *ngIf="flujo.estado != 6 && flujo.estado != -1">
+                    {{flujo.folio | folio}}
+                    <span *ngIf="flujo.tipoOC==tiposMovimiento.ordenPedido">OP {{flujo.correlativo | correlativo}} </span>
+                </span>
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                {{flujo.nombreProveedor}}
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                {{flujo.descripcion}}
+                <!-- <span *ngIf="flujo.estado == 6">Contrato: {{ getContrato(flujo) }}</span> -->
+                <!-- <span *ngIf="flujo.descripcion == 'Caja chica'"> {{getCajaChica(flujo)}}</span> -->
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                <ng-container *ngIf="flujo.tipoOC == tiposMovimiento.ordenCompra">
+                    <span
+                        *ngIf="flujo.estado == estadosEP.ordenCompra && flujo.nombreSubTipoGasto != nombreSubTipoGasto.arriendo"
+                        class="centroCostoPendiente">Orden de
+                        Compra</span>
+                    <span
+                        *ngIf="flujo.estado == estadosEP.ordenCompra && flujo.nombreSubTipoGasto == nombreSubTipoGasto.arriendo"
+                        class="centroCostoPendiente">Orden de
+                        Compra -  <span class="Arriendo">Arriendo</span></span> 
+                    <span *ngIf="flujo.estado == estadosEP.Comprometido">Comprometido</span>
+                    <span *ngIf="flujo.estado == estadosEP.Facturado">Facturado</span>
+                    <span *ngIf="flujo.estado == estadosEP.Pagado">Pagado</span>
+                    <span *ngIf="flujo.estado == estadosEP.Anulado">Anulado</span>
+                </ng-container>
+                <ng-container *ngIf="flujo.tipoOC == tiposMovimiento.egreso">
+                    <span *ngIf="flujo.estado==estadosEP.ordenCompra">Proyección Egresos</span>
+                    <span *ngIf="flujo.estado == estadosEP.Pagado">Pagado</span>
+                </ng-container>
+                <ng-container *ngIf="flujo.tipoOC ==tiposMovimiento.ingreso">
+                    <span *ngIf="flujo.estado == estadosEP.Pagado">Cobrado</span>
+                    <span *ngIf="flujo.estado != estadosEP.Pagado">Proyección Ingreso</span>
+                </ng-container>
+                <span *ngIf="flujo.tipoOC == tiposMovimiento.ordenPedido">Orden de pedido</span>
+                <ng-container *ngIf="flujo.tipoOC == tiposMovimiento.contrato">
+                    <span *ngIf="flujo.estado==4">Cobrado</span>
+                    <span *ngIf="flujo.estado!=4">Pendiente</span>
+                </ng-container>
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                {{flujo.nombreTipoGasto}}
+            </div>
+            <div [style.color]="flujo.letras" [style.background-color]="flujo.fondo">
+                {{flujo.nombreCentroCosto}}
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                <span
+                    *ngIf="(flujo.tipoOC==tiposMovimiento.ordenCompra || flujo.tipoOC==tiposMovimiento.egreso) && flujo.metodoPago == 2">Efectivo</span>
+                <span
+                    *ngIf="(flujo.tipoOC==tiposMovimiento.ordenCompra || flujo.tipoOC==tiposMovimiento.egreso) && flujo.metodoPago == 3">
+                    Cheque
+                </span>
+                <span
+                    *ngIf="(flujo.tipoOC==tiposMovimiento.ordenCompra || flujo.tipoOC==tiposMovimiento.egreso) && flujo.metodoPago == 4">Transferencia</span>
+
+                <span class="Abono" *ngIf="flujo.tipoOC == tiposMovimiento.contrato">
+                    ABONO
+                </span>
+                <mat-icon *ngIf="flujo.cheque" class="text-success">attach_money</mat-icon>
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                {{flujo.numeroFactura}}
+                <i *ngIf="!flujo.numeroFactura && flujo && tipo==1 && (flujo.tipoOC == 1 || flujo.tipoOC==3)"
+                    class="text-warning fa fa-exclamation-triangle"></i>
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                {{flujo.numeroPago}}
+            </div>
+            <div [ngStyle]="{'color': flujo.colorLetrasSTP, 'background-color': flujo.colorFondoSTP}">
+                $ {{flujo.monto |number : '1.0-0' | comatopoint}}
+            </div>
+            <div class="bold" [ngStyle]="{'color':flujo.valorCuentaCorriente >= 0 ? 'black' : 'red'}">
+                $ {{flujo.valorCuentaCorriente | number : '1.0-0' | comatopoint}}
+            </div>
+        </div>
+    </li>
+</ul>
+
+<!-- <app-popup-oc [id]="idOC" *ngIf="idOC" (actualizar)="cargaDatos()" (cerrar)="idOC=null"></app-popup-oc> -->
+<app-oc-pop-up [idMovimiento]="idMovimiento" *ngIf="idMovimiento" (close)="idMovimiento=null" (update)="update()">
+</app-oc-pop-up>
+<app-op-pop-up [idMovimiento]="idMovimientoEP" *ngIf="idMovimientoEP" (close)="idMovimientoEP=null" (update)="update()">
+</app-op-pop-up>
+<app-directo-pop-up [idMovimiento]="egreso" *ngIf="egreso" (close)="egreso=null" (update)="update()">
+</app-directo-pop-up>
+<app-directo-ingreso-pop-up [idMovimiento]="ingreso" *ngIf="ingreso" (close)="ingreso=null" (update)="update()">
+</app-directo-ingreso-pop-up>

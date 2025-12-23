@@ -1,0 +1,105 @@
+<table class="table table-bordered table-striped table-hover no-footer principal">
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>Enero</th>
+      <th>Febero</th>
+      <th>Marzo</th>
+      <th>Abril</th>
+      <th>Mayo</th>
+      <th>Junio</th>
+      <th>Julio</th>
+      <th>Agosto</th>
+      <th>Septiembre</th>
+      <th>Octubre</th>
+      <th>Noviembre</th>
+      <th>Diciembre</th>
+      <th>Total Categoria</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let element of contenido">
+      <td class="text">{{element.tipo}}</td>
+      <td>$ {{element.enero | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.febrero | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.marzo | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.abril | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.mayo | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.junio | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.julio | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.agosto | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.septiembre | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.octubre | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.noviembre | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.diciembre | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{element.enero + element.febrero + element.marzo + element.abril + element.mayo + element.junio + element.julio + 
+        element.agosto + element.septiembre + element.octubre + element.noviembre + element.diciembre | number:'1.0-0' | comatopoint}}</td>
+    </tr>
+    <tr class="bold">
+      <td class="text">Total gastos</td>
+      <td>$ {{retTotalMes("enero") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("febrero") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("marzo") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("abril") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("mayo") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("junio") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("julio") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("agosto") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("septiembre") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("octubre") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("noviembre") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalMes("diciembre") | number:'1.0-0' | comatopoint}}</td>
+      <td>$ {{retTotalGeneral() | number:'1.0-0' | comatopoint}}</td>
+    </tr>
+    <ng-container *ngIf="inversiones">
+      <tr *ngFor="let element of inversiones">
+        <td class="text">{{element.tipo}}</td>
+        <td>$ {{element.enero | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.febrero | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.marzo | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.abril | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.mayo | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.junio | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.julio | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.agosto | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.septiembre | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.octubre | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.noviembre | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.diciembre | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{element.enero + element.febrero + element.marzo + element.abril + element.mayo + element.junio + element.julio + 
+          element.agosto + element.septiembre + element.octubre + element.noviembre + element.diciembre | number:'1.0-0' | comatopoint}}</td>
+      </tr>
+      <tr class="bold">
+        <td class="text">Total general</td>
+        <td>$ {{retTotalMesInversiones("enero") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("febrero") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("marzo") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("abril") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("mayo") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("junio") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("julio") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("agosto") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("septiembre") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("octubre") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("noviembre") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalMesInversiones("diciembre") | number:'1.0-0' | comatopoint}}</td>
+        <td>$ {{retTotalGeneralInversiones() | number:'1.0-0' | comatopoint}}</td>
+      </tr>
+  </ng-container>
+    <!-- <tr class="bold">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Total General</td>
+      
+    </tr> -->
+  </tbody>
+</table>

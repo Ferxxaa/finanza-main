@@ -1,0 +1,27 @@
+thead {
+    background-color: #1a9702;
+    font-weight: bold;
+    color: white;
+}
+
+.bgWhite {
+    background-color: white !important;
+}
+
+.bgWhite td {
+    border: 1px solid white;
+}
+
+.bgWhite:hover {
+    background-color: white !important;
+}
+
+.brRigt {
+    border-right: 1px solid rgb(232, 232, 232) !important;
+}
+
+/******* Cotizacion *********/
+.cotizacion{
+    font-size: 14px;
+    color: blue;
+}

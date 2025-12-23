@@ -1,0 +1,36 @@
+table{
+    margin-top: 10px;
+    /* table-layout: fixed; */
+}
+
+th{
+    background-color: #0070c0;
+    color: white;
+    text-transform: capitalize !important;
+    text-align: center;
+}
+
+thead{
+    top:0;
+    position: sticky;
+}
+
+td{
+    text-align: right;
+}
+
+.text{
+    text-align: left;
+}
+
+tbody tr td:nth-child(14){
+    font-weight: bold;
+}
+
+tr *:nth-child(n+1){
+    width: 7%;
+}
+
+tr *:nth-child(1){
+    width: 9%;
+}

@@ -1,0 +1,11 @@
+/************** Media Queries ************/
+@media (max-width: 800px) {
+    .master>.col-6{
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .mat-form-field{
+        width: 100%;
+    }
+}

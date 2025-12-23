@@ -1,0 +1,288 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+* {
+    font-family: Open Sans, sans-serif;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.col-md-2 {
+    width: 16.6666666667%;
+}
+
+.fondo {
+    float: left;
+    height: 627px;
+    width: 100%;
+    background: url("/assets/Images/header.jpg") top left no-repeat;
+    -webkit-background-size: 100% 50%;
+    /* Safari 3.0 */
+    -moz-background-size: 100% 50%;
+    /* Gecko 1.9.2 (Firefox 3.6) */
+    -o-background-size: 100% 50%;
+    /* Opera 9.5 */
+    background-size: 100% 50%;
+    /* Gecko 2.0 (Firefox 4.0) and other CSS3-compliant browsers */
+}
+
+.bg2 {
+    background: url(http://trazas-nbi.com//images/bg-prolongado.jpg) top left repeat-x #2894c7;
+}
+
+.sidebar {
+    background-color: #026AA7;
+}
+
+.modal .modal-dialog {
+    top: 100px;
+}
+
+.modal-dialog .widget-icon {
+    font-size: 70px;
+    position: absolute;
+    z-index: 9;
+    margin: -35px 0px 0px -30px;
+    color: red;
+    opacity: 1;
+}
+
+.modal-dialog .widget-card {
+    padding-top: 40px
+}
+
+.modal-header {
+    background-color: #1a70b7;
+    margin-left: 1px;
+    margin-top: 1px;
+    height: 50px;
+    border: 0px;
+    border-radius: 3px 3px 0px 0px;
+    border-bottom: 0px;
+    /*background: url("/assets/Images/header.jpg") top left no-repeat;
+        -webkit-background-size: 100% 100%;*/
+    /* Safari 3.0 */
+    /*    -moz-background-size: 100% 100%;           /* Gecko 1.9.2 (Firefox 3.6) */
+    /*    -o-background-size: 100% 100%;           /* Opera 9.5 */
+    /*    background-size: 100% 100%;           /* Gecko 2.0 (Firefox 4.0) and other CSS3-compliant browsers */
+}
+
+legend {
+    /* font-size: large !important; */
+    border-bottom: 0px !important;
+    min-height: 5px;
+}
+
+.widget>header+.widget-body {
+    margin-top: 0 !important;
+}
+
+.modal-title,
+.modal-header .form-group .close {
+    font-weight: bold;
+    color: white;
+    opacity: 1;
+}
+
+.modal-header .icon {
+    height: 30px !important;
+    width: 30px !important;
+    padding: 2px;
+    border: 2px solid white;
+    border-radius: 0px !important;
+    margin-top: -5px;
+    margin-right: 10px;
+    color: white;
+}
+
+.error {
+    border-color: red;
+    background-color: #ffcece;
+}
+
+.center {
+    text-align: center;
+}
+
+.fc-event-inner {
+    text-align: center;
+}
+
+.fc-event-title {
+    font-size: 17px;
+}
+
+table#space {
+    border-collapse: separate;
+    border-spacing: 0px 5px;
+    border-color: transparent;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+a {
+    cursor: pointer;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+/* ********************************** Iconos tablas *********************************** */
+
+.drop:hover {
+    color: #CC0000;
+}
+
+.drop {
+    color: red;
+}
+
+.blue {
+    color: #218BC3;
+}
+
+.blue:hover {
+    color: blue;
+}
+
+
+/* ********************************** Label ********************************** */
+
+div.row.labelHeder {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.opcional {
+    color: #7c7c7c;
+    font-size: 12px;
+}
+
+.opcional::before {
+    content: " - Opcional"
+}
+
+main {
+    padding-top: 65px !important;
+    max-height: 100%;
+    overflow: auto;
+}
+
+.validador {
+    font-size: 10px;
+}
+
+.Invalid {
+    border-color: red !important;
+}
+
+
+/* ********************************** Paginacion ********************************** */
+
+.ngx-pagination {
+    padding-left: 0px;
+}
+
+
+/* ********************************** PopUp ********************************** */
+
+.bkPopUp {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1;
+}
+
+.popUp {
+    position: fixed;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 1em;
+    border-radius: 0.3em;
+    animation: Editar 0.5s cubic-bezier(0.5, 0.5, 0.5, 1.15);
+}
+
+.titlePopUp {
+    font-weight: bold;
+    font-size: 1.5em;
+    border-bottom: 1px solid gainsboro;
+    margin-bottom: 10px;
+}
+
+.bold {
+    font-weight: bold !important;
+}
+
+.justificado {
+    text-align: justify;
+}
+
+.caja {
+    margin-top: 1em;
+    border: 1px solid gray;
+    padding: 0.4em 0px;
+    min-height: 10px;
+    max-width: 100%;
+}
+
+@keyframes Editar {
+    from {
+        top: -100%;
+    }
+}
+
+
+/* .Max {
+    max-width: 700px;
+    margin: auto;
+} */
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.Fcenter {
+    justify-content: center;
+}
+
+.Fcenter .btn {
+    margin: 0px 4px;
+}
+
+.cortar {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: inherit;
+    overflow: hidden;
+}
+
+/********* scroll **********/
+*::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #F5F5F5;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #a5a5a5;
+}

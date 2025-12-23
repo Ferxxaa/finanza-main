@@ -1,0 +1,296 @@
+<app-loading *ngIf="loading"></app-loading>
+
+<div class="row">
+
+    <div class="col-lg-6">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Area de negocio</strong>
+                </h4>
+            </header>
+
+            <div class="widget-body">
+                <form #CForm="ngForm">
+                    <fieldset>
+                        <legend></legend>
+                        <app-add-area-negocio (addAreaNegocio)="reloadAreaNegocio()"></app-add-area-negocio>
+                        <!-- <div class="col-lg-12">
+                            <div class="container">
+                                <div class="row labelHeder">
+                                    <div class="col-6">
+                                        Area de negocio
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-control" type="text" placeholder="Area de negocio"
+                                            name="txtNombre" required [(ngModel)]="centroCosto.nombre"
+                                            [class.Invalid]="CForm.controls.txtNombre.touched && CForm.controls.txtNombre.status=='INVALID'">
+                                    </div>
+                                    <div class="col-6">
+                                        <input id="chkCentroEstado" name="chkCentroEstado" type="checkbox" checked
+                                            class="custom-control-input" [(ngModel)]="centroCosto.activo">
+                                        <label class="custom-control-label" for="chkCentroEstado">Activo</label>
+                                    </div>
+                                </div> -->
+                        <!-- {{centroCosto.nombre}} -->
+                        <!-- {{centroCosto | json}} -->
+                        <!-- <div class="flex">
+                                    <button class="btn btn-primary " (click)="Agregar()"
+                                        [disabled]="!CForm.valid">Guardar</button>
+                                    <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+                                </div>
+                            </div>
+                        </div> -->
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-lg-6">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h4 style="color: white;">
+                    <strong>Centro de costos</strong>
+                </h4>
+            </header>
+
+            <div class="widget-body">
+                <form #SCForm="ngForm">
+                    <fieldset>
+                        <legend></legend>
+                        <app-add-centro-costo (addCentroCostoEvent)="reloadCentroCosto()"></app-add-centro-costo>
+                        <!-- <div class="col-lg-12">
+
+                            <div class="container">
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Area de negocio
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-10"> -->
+                        <!-- <input class="form-control" name="drdCentroCosto" type="text" placeholder="--- Seleccione una opción ---" list="CentroCosto" required [(ngModel)]="subCentroCosto.centroCosto" [class.Invalid]="SCForm.controls.drdCentroCosto.touched && SCForm.controls.drdCentroCosto.status=='INVALID'"> -->
+                        <!-- <select id="drdCentroCosto"
+                                            class="dropdown-toggle select2-chosen-2 form-control requiered"
+                                            [(ngModel)]="subCentroCosto._id" name="drdCentroCosto"
+                                            (change)="AsignaCentroCosto()">
+                                            <option value=0 selected>--- Seleccione una opcion ---
+                                            </option>
+                                            <option *ngFor="let cetroCosto of centrosCostos; let i = index"
+                                                value={{cetroCosto._id}}>
+                                                {{cetroCosto.nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <input id="chkSubCentroEstado" name="chkSubCentroEstado" type="checkbox"
+                                            class="custom-control-input" [(ngModel)]="subCentroCostoDatos.activo">
+                                        <label class="custom-control-label" for="chkSubCentroEstado">Activo</label>
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Centro de costo
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input class="form-control" type="text" placeholder="Centro de costo"
+                                            name="txtSubccNombre" required [(ngModel)]="subCentroCostoDatos.nombre"
+                                            [class.Invalid]="SCForm.controls.txtSubccNombre.touched && SCForm.controls.txtSubccNombre.status=='INVALID'">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Monto proyectado
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input class="form-control" type="number" placeholder="Monto proyectado"
+                                            name="txtMontoProyectado" required
+                                            [(ngModel)]="subCentroCostoDatos.montoProgramado">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Color de fondo
+                                        <span class="opcional"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12"> -->
+                        <!-- <input class="form-control" type="text" placeholder="Color fondo" name="txtColorFondo" [(ngModel)]="subCentroCosto.fondo"> -->
+                        <!-- <input class="form-control" type="color" name="txtColorFondo"
+                                            [(ngModel)]="subCentroCostoDatos.fondo">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Color de letras
+                                        <span class="opcional"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12"> -->
+                        <!-- <input class="form-control" type="text" placeholder="Color de letras" name="txtColorLetras" [(ngModel)]="subCentroCosto.letras"> -->
+                        <!-- <input class="form-control" type="color" name="txtColorLetras"
+                                            [(ngModel)]="subCentroCostoDatos.letras">
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Demo
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="dvCircle"
+                                            [ngStyle]="{'background-color':subCentroCostoDatos.fondo, 'color':subCentroCostoDatos.letras}">
+                                            aAbBcCdD
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row labelHeder">
+                                    <div class="col-12">
+                                        Responsable
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input class="form-control" type="text"
+                                            placeholder="--- Seleccione una opción ---" list="Responsables"
+                                            name="txtResponsable" required [(ngModel)]="subCentroCostoDatos.responsable"
+                                            [class.Invalid]="SCForm.controls.txtResponsable.touched && SCForm.controls.txtResponsable.status=='INVALID'"> -->
+                        <!-- [(ngModel)]="Proveedor.categoria"
+                                                [class.Invalid]="CForm.controls.txtCategoria.touched && CForm.controls.txtCategoria.status=='INVALID'" -->
+                        <!-- <datalist id="Responsables">
+                                            <option value="Jaime Olivares"></option>
+                                            <option value="Oscar Gómez"></option>
+                                            <option value="Orlando Cubillos"></option>
+                                        </datalist>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <mat-form-field>
+                                            <mat-label>Cliente</mat-label>
+                                            <mat-select placeholder="Cliente" name="drdCliente" [(ngModel)]="cliente"
+                                                (change)="cambiaCliente(cliente)">
+                                                <mat-option>--- Seleccione una opcion ---</mat-option>
+                                                <mat-option *ngFor="let cliente of mandantes$ | async"
+                                                    [value]="cliente.IdMandante">
+                                                    {{ cliente.NombreMandante }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div> -->
+                        <!-- {{subCentroCosto | json}} {{subCentroCostoDatos | json}} -->
+                        <!-- <div class="flex">
+                                    <button class="btn btn-primary" (click)="AgregaSubCentroCosto()"
+                                        [disabled]="!SCForm.valid">Guardar</button>
+                                    <button class="btn btn-secondary" (click)="Limpiar()">Limpiar</button>
+                                </div>
+                            </div>
+                        </div> -->
+
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </div>
+
+
+</div>
+
+<app-lista-centros-costo (configBolsa)="configurarBolsas($event)" (configIngreso)="configurarIngresos($event)"
+    (configContrato)="configurarContratos($event)" (configGarantia)="garantiaCentroCostos($event)"></app-lista-centros-costo>
+
+<!-- 
+<div class="row">
+    <div class="col-lg-12">
+        <section class="widget">
+            <header style="background-color: #555555">
+                <h2 style="color: white;">
+                    <strong>Mis centros de costo</strong>
+                </h2>
+            </header>
+
+            <div class="widget-body">
+                <fieldset>
+                    <legend></legend>
+
+                    <div class="row">
+                        <div class="col-12"> -->
+<!-- {{eCentroCosto | json}} ---------------- {{eSubCentroCostoDatos | json}} -->
+<!-- <table class="table table-bordered table-striped table-hover no-footer">
+                                <thead>
+                                    <tr>
+                                        <td>Area de negocio</td>
+                                        <td class="text-center">Centro de costo</td>
+                                        <td>Acciones</td> -->
+<!-- <td>Letras</td> -->
+<!-- </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let elementos of tabla | paginate: { itemsPerPage: 10, currentPage: p } | filtraCentroCostoActivo; let iPadre = index">
+                                        <td class="align-middle" (click)="popUp(elementos)">{{elementos.centroCosto}}
+                                        </td>
+                                        <td class="align-middle text-center" (click)="popUp(elementos)"
+                                            [ngStyle]="{'background-color':elementos.fondo, 'color':elementos.letras}">
+                                            {{elementos.subCentroCosto}}
+                                        </td> -->
+<!-- <td>
+                                                    <div class="dvCircle" [ngStyle]="{'background-color':elementos.fondo, 'color':elementos.letras}">
+                                                        aAbBcCdD
+                                                    </div>
+                                                </td> -->
+<!-- <td class="acciones">
+                                            <button mat-raised-button color="primary" matTooltip="Bolsas"
+                                                [matTooltipPosition]="'above'" (click)="configurarBolsas(elementos)">
+                                                <i class="fa fa-gears"></i>
+                                            </button>
+                                            <button mat-raised-button color="primary" matTooltip="Ingresos"
+                                                [matTooltipPosition]="'above'" (click)="configurarIngresos(elementos)">
+                                                <i class="fa fa-money"></i>
+                                            </button>
+                                            <button mat-raised-button color="primary" matTooltip="Contratos"
+                                                [matTooltipPosition]="'above'" (click)="configurarContratos(elementos)">
+                                                <i class="fa fa-plus-circle"></i>
+                                            </button>
+                                            <button mat-raised-button color="primary" matTooltip="Garantias"
+                                                [matTooltipPosition]="'above'"
+                                                (click)="garantiaCentroCostos(elementos)">
+                                                <i class="fa fa-usd"></i>
+                                            </button>
+                                        </td> -->
+<!-- <td >
+                                        </td> -->
+<!-- </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </section>
+    </div>
+</div> -->
+
+<app-edit-centro-costo [eCentroCosto]="eCentroCosto" [indiceSub]="indiceSub"
+    *ngIf="eCentroCosto && eSubCentroCostoDatos" (loadingEmit)="cargando($event)" (cerrarEmit)="Limpiar()"
+    (carDatos)="CargaDatos()"></app-edit-centro-costo>
+<app-config-bolsas *ngIf="confBolsa" [centroCosto]="confBolsa" (cerrar)="confBolsa=null"></app-config-bolsas>
+<app-config-ingresos *ngIf="confIngresos" [centroCosto]="confIngresos" (cerrar)="confIngresos=null">
+</app-config-ingresos>
+<app-add-contrato *ngIf="confContratos" [centroCosto]="confContratos" (cerrar)="confContratos=null">
+</app-add-contrato>
+<app-garantias *ngIf="garantiaCentroCosto" [centroCosto]="garantiaCentroCosto" (cerrar)="garantiaCentroCosto=null">
+</app-garantias>
+<!-- <app-bolsas *ngIf="bolsa" [centroCosto]="bolsa" (cerrar)="bolsa=null"></app-bolsas> -->

@@ -1,0 +1,24 @@
+<table class="table table-bordered table-striped table-hover no-footer">
+  <thead>
+    <tr>
+      <th>Numero Orden</th>
+      <th>Disponibilidad</th>
+      <th>Precio</th>
+      <th>Tiempo de entrega</th>
+      <th>Calidad</th>
+      <th>SSO Y MA</th>
+      <th>Observación</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let evaluacion of ordenesPorProveedor ">
+      <td>{{evaluacion.folio}}</td>
+      <td>{{evaluacion.disponibilidad}}</td>
+      <td>{{evaluacion.precio}}</td>
+      <td>{{evaluacion.tiempo}}</td>
+      <td>{{evaluacion.calidad}}</td>
+      <td>{{evaluacion.categoria!=1 ? evaluacion.ssoma : 'N/A'}}</td>
+      <td>{{evaluacion.Comentario}}</td>
+    </tr>
+  </tbody>
+</table>

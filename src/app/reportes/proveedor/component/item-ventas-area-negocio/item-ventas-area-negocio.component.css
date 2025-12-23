@@ -1,0 +1,36 @@
+thead tr th{
+    position: sticky;
+    top: 0;
+}
+
+th{
+    background-color: #0070c0 !important;
+    color: white;
+    text-transform: capitalize !important;
+    font-weight: bold;
+}
+
+.monto{
+    text-align: right;
+}
+
+.agno,
+.agno:hover{
+    background-color: #797979 !important;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.myCollapse {
+    visibility: collapse;
+}
+
+.total{
+    color: rgb(191, 190, 255);
+}
+
+.red{
+    color: red;
+}

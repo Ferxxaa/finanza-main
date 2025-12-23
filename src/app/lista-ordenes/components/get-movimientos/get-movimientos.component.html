@@ -1,0 +1,91 @@
+<ng-template #NoData>
+  <app-pop-up-login-fixed></app-pop-up-login-fixed>
+</ng-template>
+
+<ng-template #cero>0</ng-template>
+
+<table class="table table-bordered table-striped table-hover no-footer">
+  <thead>
+    <tr>
+      <td>Fecha</td>
+      <td>Orden de compra</td>
+      <td>Proveedor</td>
+      <td>Centro de Costo</td>
+      <td class="descrip">Descripción</td>
+      <td>Estado</td>
+      <td>Tipo OC</td>
+      <td>Responsable</td>
+      <td>Monto con Iva</td>
+      <td>Iva</td>
+      <td>Boleta</td>
+      <td>Monto Neto</td>
+      <td>Mail</td>
+      <td>Evaluar</td>
+    </tr>
+  </thead>
+  <tbody *ngIf="viewListadoMovimientos$ | async as viewListadoMovimientos else NoData">
+    <tr *ngFor="let flujo of viewListadoMovimientos; let i = index">
+      <td (click)="PopUp(flujo)">
+        {{flujo.fechaCreacion | date:'dd/MM/yy':'UTC'}}</td>
+      <td (click)="PopUp(flujo)">
+        <div class="cortar">
+          <span *ngIf="flujo.tipoOC==tiposMovimiento.ordenPedido">OP </span> {{flujo.folio}}
+        </div>
+      </td>
+      <td (click)="PopUp(flujo)">
+        <div class="cortar">{{flujo.nombre}}</div>
+      </td>
+      <td class="text-center" (click)="PopUp(flujo)" [style.color]="flujo.letras"
+        [style.background-color]="flujo.fondo">
+        <div class="cortar">{{flujo.nombreCentroCosto}}</div>
+      </td>
+      <td (click)="PopUp(flujo)" class="descrip">
+        <div class="cortar">{{flujo.descripcion}}</div>
+      </td>
+      <td (click)="PopUp(flujo)">
+        <span *ngIf="flujo.estado == 1">Pendiente</span>
+        <span *ngIf="flujo.estado == 2">Aprobada</span>
+        <span *ngIf="flujo.estado == 3" class="text-danger">Rechazada</span>
+        <span *ngIf="flujo.estado == 4">Pagada</span>
+        <span *ngIf="flujo.estado == 5" class="text-danger">Anulada</span>
+        <span *ngIf="flujo.estado == 6">Proyeccion</span>
+      </td>
+      <td (click)="PopUp(flujo)">
+        <span *ngIf="flujo.categoria == 1">Producto</span>
+        <span *ngIf="flujo.categoria == 2">Servicio</span>
+        <span *ngIf="flujo.categoria == 3">Subcontrato</span>
+      </td>
+      <td (click)="PopUp(flujo)">
+        <span *ngIf="flujo.idSolicitador">{{flujo.idSolicitador | responsableName: responsables}}</span>
+      </td>
+      <td (click)="PopUp(flujo)">$
+        {{flujo.totalItem + flujo.iva - flujo.boleta | number : '1.0-0' | comatopoint}}</td>
+      <td (click)="PopUp(flujo)">$
+        {{flujo.iva | number : '1.0-0' | comatopoint}}</td>
+      <td (click)="PopUp(flujo)">$
+        {{flujo.boleta | number : '1.0-0' | comatopoint}}</td>
+      <td (click)="PopUp(flujo)">$
+        {{flujo.totalItem - flujo.boleta | number : '1.0-0' | comatopoint}}
+      </td>
+      <td class="text-center">
+        <div *ngIf="flujo.estado == 2">
+          <i *ngIf="!flujo.correo" (click)="sendMail(flujo)" class="fa fa-envelope"></i>
+          <i *ngIf="flujo.correo" class="fa fa-check"></i>
+        </div>
+      </td>
+      <td class="text-center">
+        <span *ngIf="flujo.estado == 2 && !flujo.disponibilidad" (click)="evaluar(flujo)"
+          class="text-warning fa fa-star-o"></span>
+        <span [style.color]="getColor(flujo)" *ngIf="flujo.disponibilidad" class="fa fa-star"></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-oc-pop-up [idMovimiento]="idMovimiento" *ngIf="idMovimiento" (close)="idMovimiento=null"></app-oc-pop-up>
+<app-op-pop-up [idMovimiento]="idMovimientoEP" *ngIf="idMovimientoEP" (close)="idMovimientoEP=null"></app-op-pop-up>
+<app-directo-pop-up [idMovimiento]="egreso" *ngIf="egreso" (close)="egreso=null"></app-directo-pop-up>
+<app-directo-ingreso-pop-up [idMovimiento]="ingreso" *ngIf="ingreso" (close)="ingreso=null">
+</app-directo-ingreso-pop-up>
+<app-evaluacion *ngIf="movEvaluar" [Orden]="movEvaluar" (actualizar)="load()" (cerrar)="load()">
+</app-evaluacion>

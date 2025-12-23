@@ -1,0 +1,64 @@
+<!-- <section class="widget">
+    <header style="background-color: #555555">
+        <h4 style="color: white;">
+            <strong>Cierre de año</strong>
+        </h4>
+    </header>
+    <div class="widget-body"> -->
+        <div class="cierreAnual">
+            <mat-form-field class="mt30">
+                <mat-select placeholder="Año" [(ngModel)]="agno">
+                    <mat-option [value]="2018">2018</mat-option>
+                    <mat-option [value]="2019">2019</mat-option>
+                    <mat-option [value]="2020">2020</mat-option>
+                    <mat-option [value]="2021">2021</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="mb30">
+              <div class="input-group date">
+                  <input id="txtfechaCorte" name="txtfechaCorte" type="text" (focusout)="AsignaFechaCorte()" class="form-control"/>
+                  <span class="input-group-addon">
+                      <span class="fa fa-calendar"></span>
+                  </span>
+              </div>
+            </div>
+
+            <mat-list class="grid">
+                <h3 mat-subheader="mat-subheader" class="bold">Centros de costo</h3>
+                <h3 mat-subheader="mat-subheader"></h3>
+                <mat-list-item *ngFor="let centro of centroCosto$ | async | subCentroCosto" (click)="activate(centro)" class="li" [ngClass]="{'isActive': isActive(centro)}">
+                    <mat-icon mat-list-icon="mat-list-icon">
+                      <!-- request_page -->
+                      request_quote
+                    </mat-icon>
+                    <h4 mat-line="mat-line">{{centro.nombre}} <span class="float-right">{{filtraCierresCentroCosto(centro.nombre) | number:'1.2-2'}}%</span></h4>
+                </mat-list-item>
+            </mat-list>
+
+            <div class="Action mt15">
+                <button mat-raised-button="mat-raised-button" color="primary" (click)="concluir()">Concluir</button>
+                <button mat-raised-button="mat-raised-button" (click)="limpiar()">Cancelar</button>
+            </div>
+
+        </div>
+        <!-- <table class="table table-bordered table-striped table-hover no-footer principal mt30">
+          <thead>
+            <tr>
+              <th>subCentroCosto</th>
+              <th>Folio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of arrConcluir">
+              <tr *ngFor="let orden of item">
+                <td>{{orden.subCentroCosto}}</td>
+                <td>{{orden.folio}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table> -->
+    <!-- </div>
+</section> -->
+
+<app-pop-up-loading *ngIf="loading"></app-pop-up-loading>
