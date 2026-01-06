@@ -6,8 +6,76 @@
     color: white !important;
 }
 
+.sidebar-nav-title a {
+    color: inherit !important;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar-nav-title a:hover,
+.sidebar-nav-title a:focus {
+    color: inherit !important;
+    text-decoration: none;
+}
+
 li a {
     color: white !important;
+}
+
+/* Mantiene el botón/título de Finanzas en verde aunque el sidebar esté gris en Home */
+a.sidebar-section-finanzas {
+    background-color: #1a9702 !important;
+    color: white !important;
+    display: block;
+}
+
+a.sidebar-section-finanzas:hover,
+a.sidebar-section-finanzas:focus {
+    background-color: #1a9702 !important;
+    color: white !important;
+    text-decoration: none;
+}
+
+/* Proyectos en azul */
+a.sidebar-section-proyectos {
+    background-color: #026AA7 !important;
+    color: white !important;
+    display: block;
+}
+
+a.sidebar-section-proyectos:hover,
+a.sidebar-section-proyectos:focus {
+    background-color: #026AA7 !important;
+    color: white !important;
+    text-decoration: none;
+}
+
+/* Tareas en morado */
+a.sidebar-section-tareas {
+    background-color: #800080 !important;
+    color: white !important;
+    display: block;
+}
+
+a.sidebar-section-tareas:hover,
+a.sidebar-section-tareas:focus {
+    background-color: #800080 !important;
+    color: white !important;
+    text-decoration: none;
+}
+
+/* Licitaciones en naranjo */
+a.sidebar-section-licitaciones {
+    background-color: #f48826 !important;
+    color: white !important;
+    display: block;
+}
+
+a.sidebar-section-licitaciones:hover,
+a.sidebar-section-licitaciones:focus {
+    background-color: #f48826 !important;
+    color: white !important;
+    text-decoration: none;
 }
 
 .sidebar-nav>li ul {

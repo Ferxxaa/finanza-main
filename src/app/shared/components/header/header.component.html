@@ -33,7 +33,7 @@
 
     <div class="header-right">
         <div class="dropdown bell-wrapper hidden-sm-down">
-            <a href="#" class="dropdown-toggle nav-link" id="bell-dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle nav-link" id="bell-dropdown-toggle" data-toggle="dropdown" (click)="onBellClick($event)">
                 <i class="fa fa-bell fa-lg"></i>
                 <span *ngIf="unreadCount > 0" class="badge badge-pill badge-danger bell-badge">
                     {{unreadCount}}

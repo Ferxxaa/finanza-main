@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import { Alert } from 'selenium-webdriver';
 
@@ -9,6 +9,8 @@ import { Alert } from 'selenium-webdriver';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+
+  isHomeRoute: boolean = false;
 
   //Perfiles
   Sistema: boolean;
@@ -49,6 +51,13 @@ export class NavComponent implements OnInit {
 
   ngOnInit() {
 
+    this.updateIsHomeRoute(this.router.url);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateIsHomeRoute(event.urlAfterRedirects || event.url);
+      }
+    });
+
     if (!localStorage.hasOwnProperty('usuario')) {
       console.log("usuario no logueado");
     } else {
@@ -81,6 +90,11 @@ export class NavComponent implements OnInit {
 
   getGerente(){
     return this.SubGerenteProy;
+  }
+
+  private updateIsHomeRoute(url: string) {
+    const normalized = (url || '').split('?')[0].split('#')[0];
+    this.isHomeRoute = normalized === '/Home' || normalized.startsWith('/Home/');
   }
 
 }

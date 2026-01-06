@@ -1,4 +1,4 @@
-<nav id="sidebar" class="sidebar" role="navigation" style="background-color: #1a9702;">
+<nav id="sidebar" class="sidebar" role="navigation" [style.background-color]="isHomeRoute ? '#4b4b4d' : '#1a9702'">
     <!-- need this .js class to initiate slimscroll -->
     <div class="js-sidebar-content">
         <header class="logo hidden-sm-down">
@@ -10,40 +10,41 @@
         <h5 class="sidebar-nav-title">Menu </h5>
         <ul id="ulMenuPrincipal" class="sidebar-nav">
             <li>
-                <a [routerLink]="['/Home']" routerLinkActive="router-link-active">Home
+                <a href="#sidebar-HomeMenu" data-toggle="collapse" aria-expanded="false">Home
                     <span class="icon">
                         <i class="fa fa-desktop"></i>
+                    </span>
+                </a>
+                <ul class="collapse" id="sidebar-HomeMenu">
+                    <li>
+                        <a [routerLink]="['/Home']" routerLinkActive="router-link-active">Home</a>
+                    </li>
+                    <li *ngIf="Sistema">
+                        <a href="http://proyectos.trazas-nbi.com/Usuarios">Administración de Usuarios</a>
+                    </li>
+                    <li *ngIf="Sistema">
+                        <a href="http://proyectos.trazas-nbi.com/Perfiles">Perfiles de Usuarios</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="sidebar-nav" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">
+            <li>
+                <a class="sidebar-section-finanzas" href="#sidebar-group-finanzas" data-toggle="collapse" aria-expanded="false">
+                    Finanzas
+                    <span class="icon">
+                        <i class="fa fa-bank"></i>
                     </span>
                 </a>
             </li>
         </ul>
 
-        <div *ngIf="Sistema">
-            <h5 class="sidebar-nav-title">Administración de Usuarios</h5>
-            <ul id="ulMenuPrincipal" class="sidebar-nav">
-                <li>
-                    <a href="#sidebar-Usuarios" data-toggle="collapse" data-parent="#sidebar">
-                        Administración
-                        <span class="icon">
-                            <i class="glyphicon glyphicon-align-right"></i>
-                        </span>
-                    </a>
-                    <ul class="collapse" id="sidebar-Usuarios">
-                        <li>
-                            <a href="http://proyectos.trazas-nbi.com/Usuarios">Administración de Usuarios</a>
-                        </li>
-                        <li>
-                            <a href="http://proyectos.trazas-nbi.com/Perfiles">Perfiles de Usuarios</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <h5 class="sidebar-nav-title">Finanzas </h5>
-        <ul id="ulMenuPrincipal" class="sidebar-nav" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">
+        <div class="collapse" id="sidebar-group-finanzas" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">
+            <div id="sidebar-finanzas-accordion">
+                <ul id="ulMenuPrincipal" class="sidebar-nav">
             <li>
-                <a href="#sidebar-Finanzas" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Finanzas" data-toggle="collapse" data-parent="#sidebar-finanzas-accordion">
                     Configuración
                     <span class="icon">
                         <i class="fa fa-bank"></i>
@@ -69,7 +70,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#sidebar-Compra" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Compra" data-toggle="collapse" data-parent="#sidebar-finanzas-accordion">
                     Compra
                     <span class="icon">
                         <i class="fa fa-cubes"></i>
@@ -87,7 +88,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#sidebar-Vistas" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Vistas" data-toggle="collapse" data-parent="#sidebar-finanzas-accordion">
                     Flujo caja
                     <span class="icon">
                         <i class="fa fa-file-excel-o"></i>
@@ -101,7 +102,7 @@
                 </ul>
             </li>
             <li *ngIf="JefeAdministracion || GerenteAdmin">
-                <a href="#sidebar-Reporte" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Reporte" data-toggle="collapse" data-parent="#sidebar-finanzas-accordion">
                     Reportes Opera...
                     <span class="icon">
                         <i class="fa fa-cogs"></i>
@@ -114,7 +115,7 @@
                 </ul>
             </li>
             <li *ngIf="JefeAdministracion || GerenteAdmin">
-                <a href="#sidebar-ReporteFinanciero" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-ReporteFinanciero" data-toggle="collapse" data-parent="#sidebar-finanzas-accordion">
                     Reportes Financiero
                     <span class="icon">
                         <i class="fa fa-cogs"></i>
@@ -128,12 +129,26 @@
                     <li><a [routerLink]="['/Consolidado']">Consolidado Rentabilidad</a></li>
                 </ul>
             </li>
+                </ul>
+            </div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li>
+                <a class="sidebar-section-proyectos" href="#sidebar-group-proyectos" data-toggle="collapse" aria-expanded="false">
+                    Proyectos
+                    <span class="icon">
+                        <i class="glyphicon glyphicon-align-right"></i>
+                    </span>
+                </a>
+            </li>
         </ul>
 
-        <h5 class="sidebar-nav-title">Gerenciamiento de Proyectos </h5>
-        <ul id="ulMenuPrincipal" class="sidebar-nav">
+        <div class="collapse" id="sidebar-group-proyectos">
+            <div id="sidebar-proyectos-accordion">
+                <ul id="ulMenuPrincipal" class="sidebar-nav">
             <li>
-                <a href="#sidebar-Proyectos" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Proyectos" data-toggle="collapse" data-parent="#sidebar-proyectos-accordion">
                     Proyectos
                     <span class="icon">
                         <i class="glyphicon glyphicon-align-right"></i>
@@ -164,7 +179,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#sidebar-Configuración" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Configuración" data-toggle="collapse" data-parent="#sidebar-proyectos-accordion">
                     Configuración
                     <span class="icon">
                         <i class="fa fa-tasks"></i>
@@ -188,52 +203,60 @@
                         <i class="fa fa-archive"></i>
                     </span>Mis Proyectos</a>
             </li>
+                </ul>
+            </div>
+        </div>
+
+        <ul class="sidebar-nav">
             <li>
-                <a href="#sidebar-Tareas" data-toggle="collapse" data-parent="#sidebar">
+                <a class="sidebar-section-tareas" href="#sidebar-group-tareas" data-toggle="collapse" aria-expanded="false">
                     Tareas
                     <span class="icon">
                         <i class="fa fa-tasks"></i>
                     </span>
                 </a>
-                <ul class="collapse" id="sidebar-Tareas" aria-expanded="false" style="height: 0px;">
+            </li>
+        </ul>
+
+        <div class="collapse" id="sidebar-group-tareas">
+            <div id="sidebar-tareas-accordion">
+                <ul class="sidebar-nav">
                     <li>
                         <a href="http://proyectos.trazas-nbi.com/Ver-Tareas">
                             Mis Tareas
+                            <span class="icon">
+                                <i class="fa fa-tasks"></i>
+                            </span>
                         </a>
                     </li>
                     <li>
                         <a href="http://proyectos.trazas-nbi.com/Calendario-Tareas">
                             Calendario
+                            <span class="icon">
+                                <i class="fa fa-calendar"></i>
+                            </span>
                         </a>
                     </li>
                 </ul>
+            </div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li>
+                <a class="sidebar-section-licitaciones" href="#sidebar-group-licitaciones" data-toggle="collapse" aria-expanded="false">
+                    Licitaciones
+                    <span class="icon">
+                        <i class="fa fa-briefcase"></i>
+                    </span>
+                </a>
             </li>
         </ul>
 
-
-        <!-- <h5 class="sidebar-nav-title">Tareas </h5>
-        <ul class="sidebar-nav">
-
-            <li>
-                <a href="http://proyectos.trazas-nbi.com/Ver-Tareas">
-                    <span class="icon">
-                        <i class="glyphicon glyphicon-tasks"></i>
-                    </span> Mis Tareas
-                </a>
-            </li>
-            <li>
-                <a href="http://proyectos.trazas-nbi.com/Calendario-Tareas">
-                    <span class="icon">
-                        <i class="fa fa-calendar"></i>
-                    </span> Calendario
-                </a>
-            </li>
-        </ul> -->
-
-        <h5 class="sidebar-nav-title">Licitaciones</h5>
-        <ul class="sidebar-nav">
+        <div class="collapse" id="sidebar-group-licitaciones">
+            <div id="sidebar-licitaciones-accordion">
+                <ul class="sidebar-nav">
             <li *ngIf="DirectorLic">
-                <a href="#sidebar-Licitaciones" data-toggle="collapse" data-parent="#sidebar">
+                <a href="#sidebar-Licitaciones" data-toggle="collapse" data-parent="#sidebar-licitaciones-accordion">
                     Administración
                     <span class="icon">
                         <i class="fa fa-briefcase"></i>
@@ -276,6 +299,8 @@
                         <i class="fa fa-bar-chart-o"></i>
                     </span>Gráficos</a>
             </li>
-        </ul>
+                </ul>
+            </div>
+        </div>
     </div>
 </nav>

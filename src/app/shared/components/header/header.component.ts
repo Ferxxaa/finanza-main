@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Http, Response } from '@angular/http';
 
 import { environment } from '../../../../environments/environment';
 import { cotizacionService } from '../../../services/cotizacionService.service';
@@ -8,6 +9,9 @@ import { sMovimientoService } from '../../../services/sMovimiento.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
 
 @Component({
   selector: 'app-header',
@@ -27,8 +31,12 @@ export class HeaderComponent implements OnInit {
 
   private pollSub: Subscription | null = null;
 
+  private profilesLoaded: boolean = false;
+  private profilesLoading: boolean = false;
+
   constructor(
     private route: Router,
+    private http: Http,
     private cotizacionesService: cotizacionService,
     private movimientoService: sMovimientoService
   ) {
@@ -41,13 +49,7 @@ export class HeaderComponent implements OnInit {
       }
     }
 
-    if (localStorage.hasOwnProperty('perfiles')) {
-      try {
-        this.profileIds = (JSON.parse(localStorage.perfiles) || []).map(el => Number(el.idPerfil));
-      } catch (e) {
-        this.profileIds = [];
-      }
-    }
+    // Perfiles NO se leen desde localStorage: se cargan desde BD vía API
   }
 
   ngOnInit() {
@@ -55,6 +57,12 @@ export class HeaderComponent implements OnInit {
 
     // Polling para que sea "real" entre usuarios sin websockets
     this.pollSub = Observable.interval(30000).subscribe(() => this.refreshPending());
+  }
+
+  onBellClick(event: any) {
+    // Evita el salto al tope por el href="#" pero deja que Bootstrap maneje el toggle del dropdown
+    if (event && event.preventDefault) event.preventDefault();
+    this.refreshPending();
   }
 
   ngOnDestroy() {
@@ -73,6 +81,24 @@ export class HeaderComponent implements OnInit {
   }
 
   private refreshPending() {
+    // Primero carga perfiles reales desde BD
+    if (this.userId && !this.profilesLoaded && !this.profilesLoading) {
+      this.profilesLoading = true;
+      this.loadProfilesFromDb(this.userId).subscribe(ids => {
+        this.profileIds = ids;
+        this.profilesLoaded = true;
+        this.profilesLoading = false;
+        this.refreshPending();
+      }, _ => {
+        this.profileIds = [];
+        this.profilesLoaded = true;
+        this.profilesLoading = false;
+        this.notifications = [];
+        this.unreadCount = 0;
+      });
+      return;
+    }
+
     const isJefeAdmin = this.profileIds.includes(environment.perfiles.jefeAdministracion);
     const isGerenteAdmin = this.profileIds.includes(environment.perfiles.gerenteAdmin);
 
@@ -121,6 +147,21 @@ export class HeaderComponent implements OnInit {
       this.notifications = [];
       this.unreadCount = 0;
     }
+  }
+
+  private loadProfilesFromDb(userId: number): Observable<number[]> {
+    // Mismo endpoint que se usa en LoginComponent.getPerfiles()
+    const url = `${environment.url}UsuariosPerfiles/GetUsuariosPerfilesByIdUsuario/IdUsuario=${userId}`;
+    return this.http
+      .get(url)
+      .map((res: Response) => res.json())
+      .map((rows: any[]) => {
+        if (!Array.isArray(rows)) return [];
+        return rows
+          .map(r => Number(r.idPerfil))
+          .filter(n => !Number.isNaN(n));
+      })
+      .catch(_ => Observable.of([]));
   }
 
   private applyPendingSnapshot(next: Array<{ title: string; body: string; link: string; createdAt: Date }>, total: number) {
