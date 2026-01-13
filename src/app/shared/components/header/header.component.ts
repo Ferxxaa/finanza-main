@@ -217,7 +217,8 @@ export class HeaderComponent implements OnInit {
     const isSistema = this.profileIds.includes(environment.perfiles.sistema);
     const isSubgerente = this.profileIds.includes(environment.perfiles.subgerente);
 
-    const canSeeCotizacionesPendientes = isAdministracion || isJefeAdmin || isGerenteAdmin || isSistema;
+    // Requerimiento: Cotizaciones pendientes solo para JefeAdministracion
+    const canSeeCotizacionesPendientes = isJefeAdmin;
     // Requerimiento: OC por aprobar solo para Gerente-Administracion
     const canAprobarOC = isGerenteAdmin;
 
