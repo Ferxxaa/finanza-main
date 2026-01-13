@@ -79,10 +79,18 @@
                 <ul class="collapse" id="sidebar-Compra">
                     <li><a [routerLink]="['/Cotizacion']">Cargar cotización</a></li>
                     <li><a [routerLink]="['/MisCotizaciones']">Mis Cotizaciones</a></li>
-                    <li><a [routerLink]="['/Cotizaciones']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">Cotizaciones pendientes</a></li>
+                    <li>
+                        <a [routerLink]="['/Cotizaciones']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">
+                            Cotizaciones pendientes
+                        </a>
+                    </li>
                     <li><a [routerLink]="['/OrdenCompra']" *ngIf="Administracion || JefeAdministracion || GerenteAdmin">Orden de compra</a></li>
                     <li><a [routerLink]="['/MisOrdenCompra']">Mis Ordenes de compra</a></li>
-                    <li *ngIf="SubGerenteProy"><a [routerLink]="['/Aprobacion']">Aprobación OC</a></li>
+                    <li *ngIf="SubGerenteProy">
+                        <a [routerLink]="['/Aprobacion']">
+                            Aprobación OC
+                        </a>
+                    </li>
                     <li><a [routerLink]="['/EditaOC']">Ordenes rechazadas</a></li>
                     <li><a [routerLink]="['/Ordenes']">Lista Ordenes de compra</a></li>
                 </ul>

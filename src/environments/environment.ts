@@ -5,8 +5,10 @@
 
 export const environment = {
   production: false,
+  notificationsPollMs: 5000,
   url: "http://trazas-nbi.com:1234/api/",
-  nest: "http://localhost:3000/",
+  // Si no estás corriendo el backend Nest localmente, usa el servidor remoto
+  nest: "http://trazas-nbi.com:3000/",
   // node: "http://localhost:3700/api/",
   node: "http://trazas-nbi.com:3700/api/",
   // reporte: "http://localhost:3900/api/",

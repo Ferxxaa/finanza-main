@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
-import { Alert } from 'selenium-webdriver';
+
+
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
+  providers: []
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
 
   isHomeRoute: boolean = false;
 
@@ -37,7 +39,10 @@ export class NavComponent implements OnInit {
   controlador: string = 'UsuariosPerfiles/'
   urlFull: string = this.urlBase + this.controlador
 
-  constructor(private _http: Http, private router: Router) {
+  constructor(
+    private _http: Http,
+    private router: Router
+  ) {
     this.Sistema = false;
     this.DirectorProy = false;
     this.CoordinadorProy = false;
@@ -86,6 +91,9 @@ export class NavComponent implements OnInit {
         console.log(err.message);
       }
     }
+  }
+
+  ngOnDestroy() {
   }
 
   getGerente(){

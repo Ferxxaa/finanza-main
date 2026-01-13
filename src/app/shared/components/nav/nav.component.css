@@ -88,3 +88,8 @@ a.sidebar-section-licitaciones:focus {
     /* background-color: #4f5a5f !important; */
     background-color: #6e7178 !important;
 }
+
+.menu-badge {
+    float: right;
+    margin-top: 2px;
+}

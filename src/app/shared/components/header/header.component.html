@@ -40,36 +40,92 @@
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right animated fadeInUp" id="bell-dropdown-menu">
-                <section class="card notifications">
-                    <header class="card-header">
-                        <div class="text-xs-center mb-sm">
-                            <strong>Notificaciones</strong>
-                        </div>
-                    </header>
-
-                    <div class="list-group thin-scroll bell-list">
-                        <a
-                            *ngFor="let n of notifications"
-                            href="#"
-                            class="list-group-item"
-                            (click)="openNotification(n, $event)"
-                        >
-                            <p class="no-margin overflow-hidden">
-                                <strong>{{n.title}}</strong>
-                                <br />
-                                <span>{{n.body}}</span>
-                                <br />
-                                <small class="text-muted">{{n.createdAt | date:'yyyy-MM-dd HH:mm'}}</small>
-                            </p>
-                        </a>
-
-                        <div *ngIf="notifications.length === 0" class="list-group-item text-xs-center text-muted">
-                            Sin notificaciones
+                <div class="notifications-dropdown">
+                    <div class="notifications-header-dropdown">
+                        <h4>Notificaciones</h4>
+                        <div class="notifications-actions">
+                            <button class="btn btn-sm" [ngClass]="{'active': viewMode === 'new'}" title="Ver nuevas" (click)="setViewMode('new', $event)">
+                                Nuevas
+                            </button>
+                            <button class="btn btn-sm" [ngClass]="{'active': viewMode === 'all'}" title="Ver todas" (click)="setViewMode('all', $event)">
+                                Todas
+                            </button>
+                            <button class="btn-icon" title="Actualizar" (click)="refreshNow($event)">
+                                <i class="fa" [ngClass]="{'fa-refresh': !isRefreshing, 'fa-spinner fa-spin': isRefreshing}"></i>
+                            </button>
+                            <button class="btn-icon" title="Marcar todas como leídas" (click)="markAllAsRead($event)" [disabled]="unreadCount === 0">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button class="btn-icon" title="Cerrar" (click)="closeNotificationsDropdown($event)">
+                                <i class="fa fa-times"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <footer class="card-footer text-sm"></footer>
-                </section>
+                    <div *ngIf="getBrowserNotificationPermission() !== 'granted'" class="notifications-permission">
+                        <a href="#" (click)="enableBrowserNotifications($event)">
+                            <i class="fa fa-bell-o" aria-hidden="true"></i>
+                            Habilitar notificaciones del navegador
+                            <span class="permission-state">({{getBrowserNotificationPermission()}})</span>
+                        </a>
+                    </div>
+
+                    <div class="notifications-list" [ngClass]="{'is-empty': notifications.length === 0}">
+                        <a
+                            *ngFor="let n of notifications"
+                            href="#"
+                            class="notification-item"
+                            (click)="openNotification(n, $event)"
+                        >
+                            <div class="notification-avatar">
+                                <i
+                                    class="fa"
+                                    [ngClass]="{
+                                        'fa-file-text-o': n.link === '/Cotizaciones',
+                                        'fa-check-square-o': n.link === '/Aprobacion',
+                                        'fa-bell-o': n.link !== '/Cotizaciones' && n.link !== '/Aprobacion'
+                                    }"
+                                    [style.color]="n.link === '/Cotizaciones' ? '#2b7bbb' : (n.link === '/Aprobacion' ? '#1f7a3a' : '#6c757d')"
+                                ></i>
+                            </div>
+
+                            <div class="notification-content">
+                                <div class="notification-title">{{n.title}}</div>
+                                <div class="notification-description">{{n.body}}</div>
+                                <div class="notification-dates">
+                                    <div class="notification-created">
+                                        <i class="fa fa-clock-o"></i>
+                                        <span>{{n.createdAt | date:'dd/MM HH:mm'}}</span>
+                                    </div>
+                                    <div class="notification-origin" *ngIf="n.link === '/Cotizaciones'">
+                                        <i class="fa fa-tag"></i>
+                                        <span>Cotizaciones</span>
+                                    </div>
+                                    <div class="notification-origin" *ngIf="n.link === '/Aprobacion'">
+                                        <i class="fa fa-tag"></i>
+                                        <span>Aprobación OC</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="notification-status">
+                                <div
+                                    class="priority-indicator"
+                                    [ngClass]="{
+                                        'priority-cot': n.link === '/Cotizaciones',
+                                        'priority-oc': n.link === '/Aprobacion'
+                                    }"
+                                ></div>
+                            </div>
+                        </a>
+
+                        <div *ngIf="notifications.length === 0" class="notification-empty">
+                            <div class="notification-empty-icon"><i class="fa fa-bell-slash-o"></i></div>
+                            <div class="notification-empty-title">Sin notificaciones</div>
+                            <div class="notification-empty-subtitle">Cuando haya pendientes, aparecerán aquí.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

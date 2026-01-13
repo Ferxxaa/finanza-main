@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  notificationsPollMs: 5000,
   url: "http://trazas-nbi.com:1234/api/",
   nest: "http://trazas-nbi.com:3000/",
   node: "http://trazas-nbi.com:3700/api/",
