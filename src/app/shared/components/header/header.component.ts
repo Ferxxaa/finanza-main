@@ -41,15 +41,18 @@ export class HeaderComponent implements OnInit {
   private initializedCounts: boolean = false;
   private lastCotizacionesCount: number = 0;
   private lastAprobacionOcCount: number = 0;
+  private lastRechazadasOcCount: number = 0;
   private lastToastAtMs: number = 0;
 
   private currentCotizacionesCount: number = 0;
   private currentAprobacionOcCount: number = 0;
+  private currentRechazadasOcCount: number = 0;
 
   private seenCotizacionesCount: number = 0;
   private seenAprobacionOcCount: number = 0;
+  private seenRechazadasOcCount: number = 0;
 
-  private readonly seenStorageKey: string = 'finanza.notifications.seenCounts.v1';
+  private readonly seenStorageKeyBase: string = 'finanza.notifications.seenCounts.v1';
 
   private profilesLoaded: boolean = false;
   private profilesLoading: boolean = false;
@@ -63,7 +66,8 @@ export class HeaderComponent implements OnInit {
     if (localStorage.hasOwnProperty('usuario')) {
       try {
         this.usuario = JSON.parse(localStorage.usuario);
-        this.userId = Number(this.usuario.idUsuario || 0);
+        // Distintos módulos guardan distintas propiedades; intenta cubrir todas
+        this.userId = Number(this.usuario.idUsuario || this.usuario.IdUsuario || this.usuario.id || this.usuario.Id || 0);
       } catch (e) {
         this.userId = 0;
       }
@@ -127,6 +131,7 @@ export class HeaderComponent implements OnInit {
     // Marca como visto lo que está pendiente ahora (persistente)
     this.seenCotizacionesCount = this.currentCotizacionesCount;
     this.seenAprobacionOcCount = this.currentAprobacionOcCount;
+    this.seenRechazadasOcCount = this.currentRechazadasOcCount;
     this.saveSeenCountsToStorage();
     this.rebuildNotificationsFromCurrentCounts();
   }
@@ -221,6 +226,8 @@ export class HeaderComponent implements OnInit {
     const canSeeCotizacionesPendientes = isJefeAdmin;
     // Requerimiento: OC por aprobar solo para Gerente-Administracion
     const canAprobarOC = isGerenteAdmin;
+    // Requerimiento: OC rechazadas debe notificar al creador
+    const canSeeOcRechazadas = !!this.userId;
 
     const cotizaciones$ = canSeeCotizacionesPendientes
       ? this.cotizacionesService.getCotizacionesPendientes().catch(_ => Observable.of([]))
@@ -232,19 +239,31 @@ export class HeaderComponent implements OnInit {
         .catch(_ => Observable.of([]))
       : Observable.of([]);
 
-    Observable.forkJoin([cotizaciones$, aprobacionOc$]).subscribe((results: any[]) => {
+    const rechazadasOc$ = canSeeOcRechazadas
+      ? this.movimientoService.getRechazadas()
+        .map(list => (list || [])
+          // Algunos flujos usan idSolicitador; se considera "creador" cualquiera de los dos
+          .filter(m => Number(m.idCreador) === Number(this.userId) || Number(m.idSolicitador) === Number(this.userId))
+          .filter(m => Number(m.tipo) === environment.tiposOC.ordenCompra))
+        .catch(_ => Observable.of([]))
+      : Observable.of([]);
+
+    Observable.forkJoin([cotizaciones$, aprobacionOc$, rechazadasOc$]).subscribe((results: any[]) => {
       const cotizaciones = (results && results[0]) ? results[0] : [];
       const ocPorAprobar = (results && results[1]) ? results[1] : [];
+      const ocRechazadas = (results && results[2]) ? results[2] : [];
 
       const countCotizaciones = Array.isArray(cotizaciones) ? cotizaciones.length : 0;
       const countOC = Array.isArray(ocPorAprobar) ? ocPorAprobar.length : 0;
+      const countOcRechazadas = Array.isArray(ocRechazadas) ? ocRechazadas.length : 0;
 
       this.currentCotizacionesCount = countCotizaciones;
       this.currentAprobacionOcCount = countOC;
+      this.currentRechazadasOcCount = countOcRechazadas;
 
-      this.applySnapshotFromCounts(countCotizaciones, countOC);
+      this.applySnapshotFromCounts(countCotizaciones, countOC, countOcRechazadas);
 
-      this.maybeShowBrowserToasts(countCotizaciones, countOC);
+      this.maybeShowBrowserToasts(countCotizaciones, countOC, countOcRechazadas);
 
       this.isRefreshing = false;
       this.lastUpdatedAt = new Date();
@@ -267,22 +286,25 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  private maybeShowBrowserToasts(countCotizaciones: number, countOC: number) {
+  private maybeShowBrowserToasts(countCotizaciones: number, countOC: number, countOcRechazadas: number) {
     // No spamear en el primer load
     if (!this.initializedCounts) {
       this.initializedCounts = true;
       this.lastCotizacionesCount = countCotizaciones;
       this.lastAprobacionOcCount = countOC;
+      this.lastRechazadasOcCount = countOcRechazadas;
       return;
     }
 
     const increasedCot = countCotizaciones > this.lastCotizacionesCount;
     const increasedOC = countOC > this.lastAprobacionOcCount;
+    const increasedRech = countOcRechazadas > this.lastRechazadasOcCount;
 
     this.lastCotizacionesCount = countCotizaciones;
     this.lastAprobacionOcCount = countOC;
+    this.lastRechazadasOcCount = countOcRechazadas;
 
-    if (!increasedCot && !increasedOC) return;
+    if (!increasedCot && !increasedOC && !increasedRech) return;
 
     // Requiere soporte y permiso
     let permission = 'unsupported';
@@ -323,6 +345,15 @@ export class HeaderComponent implements OnInit {
         `Ahora tienes ${countOC} Orden(es) de Compra por aprobar.`,
         '/Aprobacion',
         'oc-por-aprobar'
+      );
+    }
+
+    if (increasedRech) {
+      this.showBrowserToast(
+        'Orden(es) de compra rechazada(s)',
+        `Tienes ${countOcRechazadas} Orden(es) de Compra rechazada(s) para corregir.`,
+        '/EditaOC',
+        'oc-rechazadas'
       );
     }
   }
@@ -385,7 +416,7 @@ export class HeaderComponent implements OnInit {
     this.unreadCount = total;
   }
 
-  private applySnapshotFromCounts(countCotizaciones: number, countOC: number) {
+  private applySnapshotFromCounts(countCotizaciones: number, countOC: number, countOcRechazadas: number) {
     const now = new Date();
 
     // Si el pendiente baja (alguien resolvió items), ajusta el "visto" hacia abajo
@@ -399,17 +430,23 @@ export class HeaderComponent implements OnInit {
       this.seenAprobacionOcCount = countOC || 0;
       shouldPersistSeen = true;
     }
+    if ((this.seenRechazadasOcCount || 0) > (countOcRechazadas || 0)) {
+      this.seenRechazadasOcCount = countOcRechazadas || 0;
+      shouldPersistSeen = true;
+    }
     if (shouldPersistSeen) {
       this.saveSeenCountsToStorage();
     }
 
     const unseenCot = Math.max(0, (countCotizaciones || 0) - (this.seenCotizacionesCount || 0));
     const unseenOC = Math.max(0, (countOC || 0) - (this.seenAprobacionOcCount || 0));
+    const unseenRech = Math.max(0, (countOcRechazadas || 0) - (this.seenRechazadasOcCount || 0));
 
     const next: Array<{ title: string; body: string; link: string; createdAt: Date }> = [];
 
     const includeCot = this.viewMode === 'all' ? (countCotizaciones > 0) : (unseenCot > 0);
     const includeOC = this.viewMode === 'all' ? (countOC > 0) : (unseenOC > 0);
+    const includeRech = this.viewMode === 'all' ? (countOcRechazadas > 0) : (unseenRech > 0);
 
     if (includeCot) {
       next.push({
@@ -429,11 +466,20 @@ export class HeaderComponent implements OnInit {
       });
     }
 
-    this.applyPendingSnapshot(next, unseenCot + unseenOC);
+    if (includeRech) {
+      next.push({
+        title: 'Órdenes de compra rechazadas',
+        body: `Tienes ${countOcRechazadas} Orden(es) de Compra rechazada(s) para corregir.`,
+        link: '/EditaOC',
+        createdAt: now
+      });
+    }
+
+    this.applyPendingSnapshot(next, unseenCot + unseenOC + unseenRech);
   }
 
   private rebuildNotificationsFromCurrentCounts() {
-    this.applySnapshotFromCounts(this.currentCotizacionesCount, this.currentAprobacionOcCount);
+    this.applySnapshotFromCounts(this.currentCotizacionesCount, this.currentAprobacionOcCount, this.currentRechazadasOcCount);
   }
 
   private acknowledgeNotificationLink(link: string) {
@@ -445,6 +491,9 @@ export class HeaderComponent implements OnInit {
     if (link === '/Aprobacion') {
       this.seenAprobacionOcCount = this.currentAprobacionOcCount;
     }
+    if (link === '/EditaOC') {
+      this.seenRechazadasOcCount = this.currentRechazadasOcCount;
+    }
 
     this.saveSeenCountsToStorage();
     this.rebuildNotificationsFromCurrentCounts();
@@ -452,16 +501,19 @@ export class HeaderComponent implements OnInit {
 
   private loadSeenCountsFromStorage() {
     try {
-      const raw = localStorage.getItem(this.seenStorageKey);
+      const raw = localStorage.getItem(this.getSeenStorageKey());
       if (!raw) return;
       const parsed = JSON.parse(raw);
       const cot = Number(parsed && parsed.cotizaciones);
       const oc = Number(parsed && parsed.aprobacionOc);
+      const rech = Number(parsed && parsed.rechazadasOc);
       this.seenCotizacionesCount = Number.isFinite(cot) ? cot : 0;
       this.seenAprobacionOcCount = Number.isFinite(oc) ? oc : 0;
+      this.seenRechazadasOcCount = Number.isFinite(rech) ? rech : 0;
     } catch (_) {
       this.seenCotizacionesCount = 0;
       this.seenAprobacionOcCount = 0;
+      this.seenRechazadasOcCount = 0;
     }
   }
 
@@ -469,12 +521,18 @@ export class HeaderComponent implements OnInit {
     try {
       const payload = {
         cotizaciones: this.seenCotizacionesCount || 0,
-        aprobacionOc: this.seenAprobacionOcCount || 0
+        aprobacionOc: this.seenAprobacionOcCount || 0,
+        rechazadasOc: this.seenRechazadasOcCount || 0
       };
-      localStorage.setItem(this.seenStorageKey, JSON.stringify(payload));
+      localStorage.setItem(this.getSeenStorageKey(), JSON.stringify(payload));
     } catch (_) {
       // ignore
     }
+  }
+
+  private getSeenStorageKey(): string {
+    // Evita que el "visto" se mezcle entre usuarios en el mismo navegador
+    return `${this.seenStorageKeyBase}.${Number(this.userId || 0)}`;
   }
 
   CerrarSesion(){

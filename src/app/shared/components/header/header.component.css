@@ -218,6 +218,10 @@
     background: #1f7a3a;
 }
 
+.priority-indicator.priority-rech {
+    background: #dc3545;
+}
+
 .notification-empty {
     text-align: center;
     padding: 18px 14px;

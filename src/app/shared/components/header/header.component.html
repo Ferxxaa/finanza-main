@@ -83,9 +83,10 @@
                                     [ngClass]="{
                                         'fa-file-text-o': n.link === '/Cotizaciones',
                                         'fa-check-square-o': n.link === '/Aprobacion',
+                                        'fa-times-circle-o': n.link === '/EditaOC',
                                         'fa-bell-o': n.link !== '/Cotizaciones' && n.link !== '/Aprobacion'
                                     }"
-                                    [style.color]="n.link === '/Cotizaciones' ? '#2b7bbb' : (n.link === '/Aprobacion' ? '#1f7a3a' : '#6c757d')"
+                                    [style.color]="n.link === '/Cotizaciones' ? '#2b7bbb' : (n.link === '/Aprobacion' ? '#1f7a3a' : (n.link === '/EditaOC' ? '#dc3545' : '#6c757d'))"
                                 ></i>
                             </div>
 
@@ -105,6 +106,10 @@
                                         <i class="fa fa-tag"></i>
                                         <span>Aprobación OC</span>
                                     </div>
+                                    <div class="notification-origin" *ngIf="n.link === '/EditaOC'">
+                                        <i class="fa fa-tag"></i>
+                                        <span>OC Rechazada</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -113,7 +118,8 @@
                                     class="priority-indicator"
                                     [ngClass]="{
                                         'priority-cot': n.link === '/Cotizaciones',
-                                        'priority-oc': n.link === '/Aprobacion'
+                                        'priority-oc': n.link === '/Aprobacion',
+                                        'priority-rech': n.link === '/EditaOC'
                                     }"
                                 ></div>
                             </div>
