@@ -14,6 +14,20 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 
+type BellNotificationKind = 'cotizacion' | 'oc-aprobar' | 'oc-rechazada';
+
+interface BellNotification {
+  id: string;
+  kind: BellNotificationKind;
+  title: string;
+  body: string;
+  link: string;
+  createdAt: Date | null;
+  createdAtText?: string;
+  priority: number | null; // 1=baja, 2=media, 3=alta
+  priorityLabel?: string;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -22,7 +36,7 @@ import 'rxjs/add/observable/of';
 })
 export class HeaderComponent implements OnInit {
 
-  notifications: Array<{ title: string; body: string; link: string; createdAt: Date }> = [];
+  notifications: BellNotification[] = [];
   unreadCount: number = 0; // pendientes NO vistos (derivado de conteos)
 
   isRefreshing: boolean = false;
@@ -38,21 +52,19 @@ export class HeaderComponent implements OnInit {
   private pollSub: Subscription | null = null;
   private visibilityHandler: any = null;
 
-  private initializedCounts: boolean = false;
-  private lastCotizacionesCount: number = 0;
-  private lastAprobacionOcCount: number = 0;
-  private lastRechazadasOcCount: number = 0;
+  private initializedSnapshot: boolean = false;
+  private lastUnseenIds: { [id: string]: 1 } = {};
   private lastToastAtMs: number = 0;
 
-  private currentCotizacionesCount: number = 0;
-  private currentAprobacionOcCount: number = 0;
-  private currentRechazadasOcCount: number = 0;
+  private allNotifications: BellNotification[] = [];
 
-  private seenCotizacionesCount: number = 0;
-  private seenAprobacionOcCount: number = 0;
-  private seenRechazadasOcCount: number = 0;
+  private lastCotizaciones: any[] = [];
+  private lastOcPorAprobar: any[] = [];
+  private lastOcRechazadas: any[] = [];
 
-  private readonly seenStorageKeyBase: string = 'finanza.notifications.seenCounts.v1';
+  private readonly seenStorageKeyBase: string = 'finanza.notifications.seen.v2';
+  private seenIds: { [id: string]: 1 } = {};
+  private seenList: string[] = [];
 
   private profilesLoaded: boolean = false;
   private profilesLoading: boolean = false;
@@ -75,7 +87,7 @@ export class HeaderComponent implements OnInit {
 
     // Perfiles NO se leen desde localStorage: se cargan desde BD vía API
 
-    this.loadSeenCountsFromStorage();
+    this.loadSeenFromStorage();
   }
 
   ngOnInit() {
@@ -121,19 +133,18 @@ export class HeaderComponent implements OnInit {
     if (event && event.preventDefault) event.preventDefault();
     if (event && event.stopPropagation) event.stopPropagation();
     this.viewMode = mode;
-    this.rebuildNotificationsFromCurrentCounts();
+    this.rebuildNotificationsView();
   }
 
   markAllAsRead(event: any) {
     if (event && event.preventDefault) event.preventDefault();
     if (event && event.stopPropagation) event.stopPropagation();
 
-    // Marca como visto lo que está pendiente ahora (persistente)
-    this.seenCotizacionesCount = this.currentCotizacionesCount;
-    this.seenAprobacionOcCount = this.currentAprobacionOcCount;
-    this.seenRechazadasOcCount = this.currentRechazadasOcCount;
-    this.saveSeenCountsToStorage();
-    this.rebuildNotificationsFromCurrentCounts();
+    // Marca como visto todo lo que está en el snapshot actual
+    for (const n of (this.allNotifications || [])) {
+      this.markSeen(n.id);
+    }
+    this.rebuildNotificationsView();
   }
 
   closeNotificationsDropdown(event: any) {
@@ -183,10 +194,16 @@ export class HeaderComponent implements OnInit {
     this.visibilityHandler = null;
   }
 
-  openNotification(n: { title: string; body: string; link: string; createdAt: Date }, event: any) {
+  openNotification(n: BellNotification, event: any) {
     if (event && event.preventDefault) event.preventDefault();
     if (event && event.stopPropagation) event.stopPropagation();
-    this.acknowledgeNotificationLink(n.link);
+
+    // Instagram-like: al click se marca como vista SOLO esa notificación
+    if (n && n.id) {
+      this.markSeen(n.id);
+      this.rebuildNotificationsView();
+    }
+
     if (n.link) {
       this.route.navigate([n.link]);
     }
@@ -208,10 +225,9 @@ export class HeaderComponent implements OnInit {
         this.profileIds = [];
         this.profilesLoaded = true;
         this.profilesLoading = false;
-        this.notifications = [];
-        this.unreadCount = 0;
+        // No limpies la UI si falla el endpoint de perfiles; igual podemos notificar rechazadas por creador.
         this.isRefreshing = false;
-        this.lastUpdatedAt = new Date();
+        this.refreshPending();
       });
       return;
     }
@@ -230,13 +246,13 @@ export class HeaderComponent implements OnInit {
     const canSeeOcRechazadas = !!this.userId;
 
     const cotizaciones$ = canSeeCotizacionesPendientes
-      ? this.cotizacionesService.getCotizacionesPendientes().catch(_ => Observable.of([]))
+      ? this.cotizacionesService.getCotizacionesPendientes().catch(_ => Observable.of(null))
       : Observable.of([]);
 
     const aprobacionOc$ = canAprobarOC
       ? this.movimientoService.getPorAprobar()
         .map(list => (list || []).filter(m => Number(m.tipo) === environment.tiposOC.ordenCompra))
-        .catch(_ => Observable.of([]))
+        .catch(_ => Observable.of(null))
       : Observable.of([]);
 
     const rechazadasOc$ = canSeeOcRechazadas
@@ -245,25 +261,21 @@ export class HeaderComponent implements OnInit {
           // Algunos flujos usan idSolicitador; se considera "creador" cualquiera de los dos
           .filter(m => Number(m.idCreador) === Number(this.userId) || Number(m.idSolicitador) === Number(this.userId))
           .filter(m => Number(m.tipo) === environment.tiposOC.ordenCompra))
-        .catch(_ => Observable.of([]))
+        .catch(_ => Observable.of(null))
       : Observable.of([]);
 
     Observable.forkJoin([cotizaciones$, aprobacionOc$, rechazadasOc$]).subscribe((results: any[]) => {
-      const cotizaciones = (results && results[0]) ? results[0] : [];
-      const ocPorAprobar = (results && results[1]) ? results[1] : [];
-      const ocRechazadas = (results && results[2]) ? results[2] : [];
+      const cotizaciones = (results && results[0] !== null && results[0] !== undefined) ? results[0] : this.lastCotizaciones;
+      const ocPorAprobar = (results && results[1] !== null && results[1] !== undefined) ? results[1] : this.lastOcPorAprobar;
+      const ocRechazadas = (results && results[2] !== null && results[2] !== undefined) ? results[2] : this.lastOcRechazadas;
 
-      const countCotizaciones = Array.isArray(cotizaciones) ? cotizaciones.length : 0;
-      const countOC = Array.isArray(ocPorAprobar) ? ocPorAprobar.length : 0;
-      const countOcRechazadas = Array.isArray(ocRechazadas) ? ocRechazadas.length : 0;
+      // Actualiza caches solo cuando la respuesta viene (aunque sea [])
+      this.lastCotizaciones = Array.isArray(cotizaciones) ? cotizaciones : [];
+      this.lastOcPorAprobar = Array.isArray(ocPorAprobar) ? ocPorAprobar : [];
+      this.lastOcRechazadas = Array.isArray(ocRechazadas) ? ocRechazadas : [];
 
-      this.currentCotizacionesCount = countCotizaciones;
-      this.currentAprobacionOcCount = countOC;
-      this.currentRechazadasOcCount = countOcRechazadas;
-
-      this.applySnapshotFromCounts(countCotizaciones, countOC, countOcRechazadas);
-
-      this.maybeShowBrowserToasts(countCotizaciones, countOC, countOcRechazadas);
+      const built = this.buildNotifications(cotizaciones, ocPorAprobar, ocRechazadas);
+      this.applySnapshot(built);
 
       this.isRefreshing = false;
       this.lastUpdatedAt = new Date();
@@ -286,25 +298,10 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  private maybeShowBrowserToasts(countCotizaciones: number, countOC: number, countOcRechazadas: number) {
-    // No spamear en el primer load
-    if (!this.initializedCounts) {
-      this.initializedCounts = true;
-      this.lastCotizacionesCount = countCotizaciones;
-      this.lastAprobacionOcCount = countOC;
-      this.lastRechazadasOcCount = countOcRechazadas;
-      return;
-    }
-
-    const increasedCot = countCotizaciones > this.lastCotizacionesCount;
-    const increasedOC = countOC > this.lastAprobacionOcCount;
-    const increasedRech = countOcRechazadas > this.lastRechazadasOcCount;
-
-    this.lastCotizacionesCount = countCotizaciones;
-    this.lastAprobacionOcCount = countOC;
-    this.lastRechazadasOcCount = countOcRechazadas;
-
-    if (!increasedCot && !increasedOC && !increasedRech) return;
+  private maybeShowBrowserToasts(newUnseenByKind: { cot: number; oc: number; rech: number }) {
+    if (!newUnseenByKind) return;
+    const total = (newUnseenByKind.cot || 0) + (newUnseenByKind.oc || 0) + (newUnseenByKind.rech || 0);
+    if (total <= 0) return;
 
     // Requiere soporte y permiso
     let permission = 'unsupported';
@@ -330,32 +327,27 @@ export class HeaderComponent implements OnInit {
     if (nowMs - this.lastToastAtMs < 10000) return;
     this.lastToastAtMs = nowMs;
 
-    if (increasedCot) {
-      this.showBrowserToast(
-        'Nueva(s) cotización(es) pendiente(s)',
-        `Ahora tienes ${countCotizaciones} cotización(es) pendiente(s).`,
-        '/Cotizaciones',
-        'cotizaciones-pendientes'
-      );
+    let link = '/Cotizaciones';
+    let tag = 'finanza-notifications';
+    if ((newUnseenByKind.rech || 0) > 0) {
+      link = '/EditaOC';
+      tag = 'oc-rechazadas';
+    } else if ((newUnseenByKind.oc || 0) > 0) {
+      link = '/Aprobacion';
+      tag = 'oc-por-aprobar';
     }
 
-    if (increasedOC) {
-      this.showBrowserToast(
-        'Nueva(s) OC por aprobar',
-        `Ahora tienes ${countOC} Orden(es) de Compra por aprobar.`,
-        '/Aprobacion',
-        'oc-por-aprobar'
-      );
-    }
+    const parts: string[] = [];
+    if ((newUnseenByKind.cot || 0) > 0) parts.push(`Cotizaciones: ${newUnseenByKind.cot}`);
+    if ((newUnseenByKind.oc || 0) > 0) parts.push(`OC por aprobar: ${newUnseenByKind.oc}`);
+    if ((newUnseenByKind.rech || 0) > 0) parts.push(`OC rechazadas: ${newUnseenByKind.rech}`);
 
-    if (increasedRech) {
-      this.showBrowserToast(
-        'Orden(es) de compra rechazada(s)',
-        `Tienes ${countOcRechazadas} Orden(es) de Compra rechazada(s) para corregir.`,
-        '/EditaOC',
-        'oc-rechazadas'
-      );
-    }
+    this.showBrowserToast(
+      'Tienes nueva(s) notificación(es)',
+      parts.join(' · '),
+      link,
+      tag
+    );
   }
 
   private showBrowserToast(title: string, body: string, link: string, tag: string) {
@@ -377,7 +369,6 @@ export class HeaderComponent implements OnInit {
           // ignore
         }
         try {
-          this.acknowledgeNotificationLink(link);
           this.route.navigate([link]);
         } catch (_) {
           // ignore
@@ -408,125 +399,289 @@ export class HeaderComponent implements OnInit {
       .catch(_ => Observable.of([]));
   }
 
-  private applyPendingSnapshot(next: Array<{ title: string; body: string; link: string; createdAt: Date }>, total: number) {
-    // Merge simple: evita duplicados por título
-    const byTitle: { [k: string]: { title: string; body: string; link: string; createdAt: Date } } = {};
-    next.forEach(n => (byTitle[n.title] = n));
-    this.notifications = Object.keys(byTitle).map(k => byTitle[k]);
-    this.unreadCount = total;
+  private applySnapshot(all: BellNotification[]) {
+    const sorted = (all || [])
+      .slice()
+      .sort((a, b) => (b.createdAt ? b.createdAt.getTime() : 0) - (a.createdAt ? a.createdAt.getTime() : 0));
+
+    this.allNotifications = sorted;
+    this.rebuildNotificationsView();
+
+    // Toasts: detecta nuevos NO vistos vs snapshot anterior
+    const unseenNow: { [id: string]: 1 } = {};
+    const byKind = { cot: 0, oc: 0, rech: 0 };
+    for (const n of sorted) {
+      if (!this.isSeen(n.id)) {
+        unseenNow[n.id] = 1;
+      }
+    }
+
+    if (!this.initializedSnapshot) {
+      this.initializedSnapshot = true;
+      this.lastUnseenIds = unseenNow;
+      return;
+    }
+
+    // nuevos = unseenNow - lastUnseenIds
+    for (const n of sorted) {
+      if (!this.isSeen(n.id) && !this.lastUnseenIds[n.id]) {
+        if (n.kind === 'cotizacion') byKind.cot++;
+        if (n.kind === 'oc-aprobar') byKind.oc++;
+        if (n.kind === 'oc-rechazada') byKind.rech++;
+      }
+    }
+
+    this.lastUnseenIds = unseenNow;
+    this.maybeShowBrowserToasts(byKind);
   }
 
-  private applySnapshotFromCounts(countCotizaciones: number, countOC: number, countOcRechazadas: number) {
-    const now = new Date();
-
-    // Si el pendiente baja (alguien resolvió items), ajusta el "visto" hacia abajo
-    // para que futuras subidas vuelvan a contarse como nuevas.
-    let shouldPersistSeen = false;
-    if ((this.seenCotizacionesCount || 0) > (countCotizaciones || 0)) {
-      this.seenCotizacionesCount = countCotizaciones || 0;
-      shouldPersistSeen = true;
-    }
-    if ((this.seenAprobacionOcCount || 0) > (countOC || 0)) {
-      this.seenAprobacionOcCount = countOC || 0;
-      shouldPersistSeen = true;
-    }
-    if ((this.seenRechazadasOcCount || 0) > (countOcRechazadas || 0)) {
-      this.seenRechazadasOcCount = countOcRechazadas || 0;
-      shouldPersistSeen = true;
-    }
-    if (shouldPersistSeen) {
-      this.saveSeenCountsToStorage();
-    }
-
-    const unseenCot = Math.max(0, (countCotizaciones || 0) - (this.seenCotizacionesCount || 0));
-    const unseenOC = Math.max(0, (countOC || 0) - (this.seenAprobacionOcCount || 0));
-    const unseenRech = Math.max(0, (countOcRechazadas || 0) - (this.seenRechazadasOcCount || 0));
-
-    const next: Array<{ title: string; body: string; link: string; createdAt: Date }> = [];
-
-    const includeCot = this.viewMode === 'all' ? (countCotizaciones > 0) : (unseenCot > 0);
-    const includeOC = this.viewMode === 'all' ? (countOC > 0) : (unseenOC > 0);
-    const includeRech = this.viewMode === 'all' ? (countOcRechazadas > 0) : (unseenRech > 0);
-
-    if (includeCot) {
-      next.push({
-        title: 'Cotizaciones pendientes',
-        body: `Tienes ${countCotizaciones} cotización(es) pendiente(s) para gestionar.`,
-        link: '/Cotizaciones',
-        createdAt: now
-      });
-    }
-
-    if (includeOC) {
-      next.push({
-        title: 'Órdenes de compra pendientes',
-        body: `Tienes ${countOC} Orden(es) de Compra pendiente(s) de aprobación.`,
-        link: '/Aprobacion',
-        createdAt: now
-      });
-    }
-
-    if (includeRech) {
-      next.push({
-        title: 'Órdenes de compra rechazadas',
-        body: `Tienes ${countOcRechazadas} Orden(es) de Compra rechazada(s) para corregir.`,
-        link: '/EditaOC',
-        createdAt: now
-      });
-    }
-
-    this.applyPendingSnapshot(next, unseenCot + unseenOC + unseenRech);
+  private rebuildNotificationsView() {
+    const unseen = (this.allNotifications || []).filter(n => !this.isSeen(n.id));
+    this.unreadCount = unseen.length;
+    this.notifications = this.viewMode === 'all' ? (this.allNotifications || []) : unseen;
   }
 
-  private rebuildNotificationsFromCurrentCounts() {
-    this.applySnapshotFromCounts(this.currentCotizacionesCount, this.currentAprobacionOcCount, this.currentRechazadasOcCount);
+  private buildNotifications(cotizaciones: any[], ocPorAprobar: any[], ocRechazadas: any[]): BellNotification[] {
+    const out: BellNotification[] = [];
+
+    // Cotizaciones pendientes: 1 notificación por cotización
+    if (Array.isArray(cotizaciones)) {
+      for (const c of cotizaciones) {
+        const id = String(c && (c.idCotizacion || c.id || c._id || ''));
+        if (!id) continue;
+        const rawDate = c && (c.fechaCreacion || c.createdAt || c.fecha);
+        const createdAt = this.tryParseAnyDate(rawDate);
+        const createdAtText = this.formatDateText(rawDate);
+        const priority = this.normalizePriority(c && (c.prioridad || c.Prioridad));
+        const priorityLabel = this.getPriorityLabel(priority);
+        out.push({
+          id: `cot:${id}`,
+          kind: 'cotizacion',
+          title: `Cotización #${id}`,
+          body: (c && c.observacion) ? String(c.observacion) : 'Cotización pendiente para gestionar.',
+          link: '/Cotizaciones',
+          createdAt: createdAt,
+          createdAtText: createdAtText || undefined,
+          priority: priority,
+          priorityLabel: priorityLabel
+        });
+      }
+    }
+
+    // OC por aprobar: 1 notificación por movimiento
+    if (Array.isArray(ocPorAprobar)) {
+      for (const m of ocPorAprobar) {
+        const idMov = String(m && (m.idMovimiento || m.id || m._id || ''));
+        if (!idMov) continue;
+        const folio = (m && (m.folio != null)) ? String(m.folio) : idMov;
+        const proveedor = (m && m.proveedor && m.proveedor.nombre) ? String(m.proveedor.nombre) : '';
+        const desc = (m && m.descripcion) ? String(m.descripcion) : '';
+        const rawDate = m && (m.fechaCreacion || m.createdAt || m.fecha);
+        const createdAt = this.tryParseAnyDate(rawDate);
+        const createdAtText = this.formatDateText(rawDate);
+        const priority = this.normalizePriority(m && (m.prioridad || m.Prioridad));
+        const priorityLabel = this.getPriorityLabel(priority);
+        const body = [proveedor, desc].filter(Boolean).join(' · ') || 'Orden de compra pendiente de aprobación.';
+        out.push({
+          id: `oc-apr:${idMov}`,
+          kind: 'oc-aprobar',
+          title: `OC #${folio} por aprobar`,
+          body: body,
+          link: '/Aprobacion',
+          createdAt: createdAt,
+          createdAtText: createdAtText || undefined,
+          priority: priority,
+          priorityLabel: priorityLabel
+        });
+      }
+    }
+
+    // OC rechazadas (creador): 1 notificación por movimiento
+    if (Array.isArray(ocRechazadas)) {
+      for (const m of ocRechazadas) {
+        const idMov = String(m && (m.idMovimiento || m.id || m._id || ''));
+        if (!idMov) continue;
+        const folio = (m && (m.folio != null)) ? String(m.folio) : idMov;
+        const motivo = (m && m.motivoRechazo) ? String(m.motivoRechazo) : '';
+        const desc = (m && m.descripcion) ? String(m.descripcion) : '';
+        const rawDate = m && (m.fechaCreacion || m.createdAt || m.fecha);
+        const createdAt = this.tryParseAnyDate(rawDate);
+        const createdAtText = this.formatDateText(rawDate);
+        const priority = this.normalizePriority(m && (m.prioridad || m.Prioridad));
+        const priorityLabel = this.getPriorityLabel(priority);
+        const body = [motivo, desc].filter(Boolean).join(' · ') || 'Orden de compra rechazada. Requiere corrección.';
+        out.push({
+          id: `oc-rech:${idMov}`,
+          kind: 'oc-rechazada',
+          title: `OC #${folio} rechazada`,
+          body: body,
+          link: '/EditaOC',
+          createdAt: createdAt,
+          createdAtText: createdAtText || undefined,
+          priority: priority,
+          priorityLabel: priorityLabel
+        });
+      }
+    }
+
+    return out;
   }
 
-  private acknowledgeNotificationLink(link: string) {
-    if (!link) return;
-
-    if (link === '/Cotizaciones') {
-      this.seenCotizacionesCount = this.currentCotizacionesCount;
+  private normalizePriority(value: any): number | null {
+    try {
+      if (value === null || value === undefined) return null;
+      const n = Number(value);
+      if (Number.isNaN(n)) return null;
+      if (n === 1 || n === 2 || n === 3) return n;
+      return null;
+    } catch (_) {
+      return null;
     }
-    if (link === '/Aprobacion') {
-      this.seenAprobacionOcCount = this.currentAprobacionOcCount;
-    }
-    if (link === '/EditaOC') {
-      this.seenRechazadasOcCount = this.currentRechazadasOcCount;
-    }
-
-    this.saveSeenCountsToStorage();
-    this.rebuildNotificationsFromCurrentCounts();
   }
 
-  private loadSeenCountsFromStorage() {
+  private getPriorityLabel(priority: number | null): string | undefined {
+    if (priority === 1) return 'Baja';
+    if (priority === 2) return 'Media';
+    if (priority === 3) return 'Alta';
+    return undefined;
+  }
+
+  private formatDateText(value: any): string | null {
+    try {
+      if (!value) return null;
+      if (value instanceof Date) return null;
+
+      // Caso común que rompe la hora: "YYYY-MM-DD" (JS lo interpreta como UTC y termina mostrando 21:00 en -03)
+      // Aquí mostramos solo la fecha (sin hora) para no mentir.
+      if (typeof value === 'string') {
+        const s = value.trim();
+        const onlyDate = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+        if (onlyDate) {
+          const y = Number(onlyDate[1]);
+          const mo = Number(onlyDate[2]);
+          const d = Number(onlyDate[3]);
+          const dd = (d < 10 ? '0' : '') + String(d);
+          const mm = (mo < 10 ? '0' : '') + String(mo);
+          return `${dd}/${mm}/${y}`;
+        }
+      }
+
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  private formatDateParts(y: number, m: number, d: number, hh: number, mm: number): string {
+    const dd = (d < 10 ? '0' : '') + String(d);
+    const mo = (m < 10 ? '0' : '') + String(m);
+    const h = (hh < 10 ? '0' : '') + String(hh);
+    const mi = (mm < 10 ? '0' : '') + String(mm);
+    return `${dd}/${mo} ${h}:${mi}`;
+  }
+
+  private markSeen(id: string) {
+    if (!id) return;
+    if (this.seenIds[id]) return;
+    this.seenIds[id] = 1;
+    this.seenList.push(id);
+
+    // Limpieza simple para no crecer sin límite
+    const MAX = 500;
+    while (this.seenList.length > MAX) {
+      const removed = this.seenList.shift();
+      if (removed) {
+        delete this.seenIds[removed];
+      }
+    }
+    this.saveSeenToStorage();
+  }
+
+  private isSeen(id: string): boolean {
+    return !!(id && this.seenIds && this.seenIds[id]);
+  }
+
+  private loadSeenFromStorage() {
     try {
       const raw = localStorage.getItem(this.getSeenStorageKey());
       if (!raw) return;
       const parsed = JSON.parse(raw);
-      const cot = Number(parsed && parsed.cotizaciones);
-      const oc = Number(parsed && parsed.aprobacionOc);
-      const rech = Number(parsed && parsed.rechazadasOc);
-      this.seenCotizacionesCount = Number.isFinite(cot) ? cot : 0;
-      this.seenAprobacionOcCount = Number.isFinite(oc) ? oc : 0;
-      this.seenRechazadasOcCount = Number.isFinite(rech) ? rech : 0;
+      const arr: any[] = Array.isArray(parsed) ? parsed : (Array.isArray(parsed && parsed.seen) ? parsed.seen : []);
+      this.seenIds = {};
+      this.seenList = [];
+      for (const v of arr) {
+        const id = String(v || '').trim();
+        if (!id) continue;
+        if (this.seenIds[id]) continue;
+        this.seenIds[id] = 1;
+        this.seenList.push(id);
+      }
     } catch (_) {
-      this.seenCotizacionesCount = 0;
-      this.seenAprobacionOcCount = 0;
-      this.seenRechazadasOcCount = 0;
+      this.seenIds = {};
+      this.seenList = [];
     }
   }
 
-  private saveSeenCountsToStorage() {
+  private saveSeenToStorage() {
     try {
-      const payload = {
-        cotizaciones: this.seenCotizacionesCount || 0,
-        aprobacionOc: this.seenAprobacionOcCount || 0,
-        rechazadasOc: this.seenRechazadasOcCount || 0
-      };
-      localStorage.setItem(this.getSeenStorageKey(), JSON.stringify(payload));
+      localStorage.setItem(this.getSeenStorageKey(), JSON.stringify(this.seenList || []));
     } catch (_) {
       // ignore
+    }
+  }
+
+  private tryParseAnyDate(value: any): Date | null {
+    try {
+      if (!value) return null;
+      if (value instanceof Date && !isNaN(value.getTime())) return value;
+
+      // "YYYY-MM-DD" -> parse como fecha local (evita corrimiento a 21:00 por UTC)
+      if (typeof value === 'string') {
+        const s = value.trim();
+        const onlyDate = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+        if (onlyDate) {
+          const y = Number(onlyDate[1]);
+          const m = Number(onlyDate[2]);
+          const d = Number(onlyDate[3]);
+          const local = new Date(y, m - 1, d, 0, 0, 0, 0);
+          return isNaN(local.getTime()) ? null : local;
+        }
+      }
+
+      // .NET style: /Date(1700000000000)/
+      if (typeof value === 'string') {
+        const m = /\/Date\((\d+)\)\//.exec(value);
+        if (m && m[1]) {
+          const ms = Number(m[1]);
+          if (!isNaN(ms)) {
+            const dotNet = new Date(ms);
+            if (!isNaN(dotNet.getTime())) return dotNet;
+          }
+        }
+      }
+
+      // Numeric timestamps
+      if (typeof value === 'number') {
+        const dNum = new Date(value);
+        return isNaN(dNum.getTime()) ? null : dNum;
+      }
+
+      // Common backend format: "YYYY-MM-DD HH:mm:ss" (not always parsed reliably)
+      if (typeof value === 'string') {
+        const s = value.trim();
+        const hasSpaceTime = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(:\d{2})?(\.\d+)?$/.test(s);
+        if (hasSpaceTime) {
+          const normalized = s.replace(' ', 'T');
+          const dNorm = new Date(normalized);
+          if (!isNaN(dNorm.getTime())) return dNorm;
+        }
+      }
+
+      const d = new Date(value);
+      if (isNaN(d.getTime())) return null;
+      return d;
+    } catch (_) {
+      return null;
     }
   }
 

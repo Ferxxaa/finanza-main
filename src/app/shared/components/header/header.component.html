@@ -84,7 +84,7 @@
                                         'fa-file-text-o': n.link === '/Cotizaciones',
                                         'fa-check-square-o': n.link === '/Aprobacion',
                                         'fa-times-circle-o': n.link === '/EditaOC',
-                                        'fa-bell-o': n.link !== '/Cotizaciones' && n.link !== '/Aprobacion'
+                                        'fa-bell-o': n.link !== '/Cotizaciones' && n.link !== '/Aprobacion' && n.link !== '/EditaOC'
                                     }"
                                     [style.color]="n.link === '/Cotizaciones' ? '#2b7bbb' : (n.link === '/Aprobacion' ? '#1f7a3a' : (n.link === '/EditaOC' ? '#dc3545' : '#6c757d'))"
                                 ></i>
@@ -96,7 +96,7 @@
                                 <div class="notification-dates">
                                     <div class="notification-created">
                                         <i class="fa fa-clock-o"></i>
-                                        <span>{{n.createdAt | date:'dd/MM HH:mm'}}</span>
+                                        <span>{{n.createdAtText ? n.createdAtText : (n.createdAt ? (n.createdAt | date:'dd/MM/yyyy HH:mm') : '--')}}</span>
                                     </div>
                                     <div class="notification-origin" *ngIf="n.link === '/Cotizaciones'">
                                         <i class="fa fa-tag"></i>
@@ -116,10 +116,11 @@
                             <div class="notification-status">
                                 <div
                                     class="priority-indicator"
+                                    [attr.title]="n.priorityLabel ? ('Prioridad: ' + n.priorityLabel) : 'Prioridad: -'"
                                     [ngClass]="{
-                                        'priority-cot': n.link === '/Cotizaciones',
-                                        'priority-oc': n.link === '/Aprobacion',
-                                        'priority-rech': n.link === '/EditaOC'
+                                        'priority-low': n.priority === 1,
+                                        'priority-med': n.priority === 2,
+                                        'priority-high': n.priority === 3
                                     }"
                                 ></div>
                             </div>
